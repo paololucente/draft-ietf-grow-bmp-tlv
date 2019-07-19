@@ -16,7 +16,7 @@ Generating text from xml
 > You'll do this each time you want to generate a text version
 
 ```
-tievens@$ xml2rfc draft-lucente-grow-bmp-tlv.xml --text
+$ xml2rfc draft-lucente-grow-bmp-tlv.xml --text
 Parsing file draft-lucente-grow-bmp-tlv.xml
 Created file draft-lucente-grow-bmp-tlv.txt
 ```

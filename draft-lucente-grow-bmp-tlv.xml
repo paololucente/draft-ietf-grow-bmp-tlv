@@ -16,7 +16,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-lucente-bmp-tlv-01"
+<rfc category="std" docName="draft-lucente-grow-bmp-tlv-01"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -140,7 +140,7 @@
 
 	<section title="TLV encoding">
 	    <t>
-		TLV data type is already defined in <xref target="RFC7854">Section 4.4</xref>
+		TLV data type is already defined in <xref target="RFC7854">Section 4.4 of</xref>
 		for the Initiation and Peer Up message types. A TLV consists of:
 	    </t>
 	    <t>
@@ -181,7 +181,7 @@
         <section title="BMP Message Format">
             <section title="Common Header" anchor="CommonHeader">
                 <t>
-		    <xref target="RFC7854">Section 4.1</xref> defines the Common
+		    <xref target="RFC7854">Section 4.1 of</xref> defines the Common
 		    Header. While the structure remains unaltered, the following
 		    two definitions are changed:
 		     
@@ -200,8 +200,8 @@
             </section>
 	    <section title="TLV data in Route Monitoring" anchor="TLVinRM">
 		<t>
-		    The Route Monitoring message type is defined in <xref target="RFC7854">Section 4.6</xref>.
-		    The BGP Update PDU <xref target="RFC4271">Section 4.3</xref> MAY
+		    The Route Monitoring message type is defined in <xref target="RFC7854">Section 4.6 of</xref>.
+		    The BGP Update PDU <xref target="RFC4271">Section 4.3 of</xref> MAY
 		    be followed by TLV data. This document defines the following new
 		    codes to help stateless parsing of BGP Update PDUs:
                     <list style="symbols">
@@ -213,7 +213,7 @@
 	    </section>
 	    <section title="TLV data in Peer Down" anchor="TLVinPD">
 		<t>
-		    The Peer Down Notification message type is defined in <xref target="RFC7854">Section 4.9</xref>.
+		    The Peer Down Notification message type is defined in <xref target="RFC7854">Section 4.9 of</xref>.
 		    TLV data MAY now follow any Reason code.
 		</t>
 	    </section>
