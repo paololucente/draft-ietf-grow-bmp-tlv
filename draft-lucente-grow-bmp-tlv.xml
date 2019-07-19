@@ -171,10 +171,10 @@
 	    </figure>
 
 	    <t>
-		TLVs can be sent in any order. Multiple TLVs of the same type can
-		be repeated as part of the same message and it is left to the
-		specific use-cases whether all, any, the first or the last TLV
-		should be considered. 
+		TLVs SHOULD be sorted by their code point. Multiple TLVs of the
+		same type can be repeated as part of the same message and it is
+		left to the specific use-cases whether all, any, the first or
+		the last TLV should be considered. 
 	    </t>
 	</section>
 
