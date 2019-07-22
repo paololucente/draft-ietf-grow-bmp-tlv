@@ -16,7 +16,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-lucente-grow-bmp-tlv-01"
+<rfc category="std" docName="draft-lucente-grow-bmp-tlv-00"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -274,7 +274,7 @@
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
             <t>
-		TBD.
+		The authors would like to thank Jeff Haas for his valuable input.
             </t>
         </section>
 
