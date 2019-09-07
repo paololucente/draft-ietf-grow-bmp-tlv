@@ -1,7 +1,7 @@
 TLV support for BMP Route Monitoring and Peer Down Messages
 ===========================================================
 
-> ### draft-lucente-grow-bmp-tlv
+> ### draft-ietf-grow-bmp-tlv
 
 - - -
 
@@ -16,7 +16,7 @@ Generating text from xml
 > You'll do this each time you want to generate a text version
 
 ```
-$ xml2rfc draft-lucente-grow-bmp-tlv.xml --text
-Parsing file draft-lucente-grow-bmp-tlv.xml
-Created file draft-lucente-grow-bmp-tlv.txt
+$ xml2rfc draft-ietf-grow-bmp-tlv.xml --text
+Parsing file draft-ietf-grow-bmp-tlv.xml
+Created file draft-ietf-grow-bmp-tlv.txt
 ```
