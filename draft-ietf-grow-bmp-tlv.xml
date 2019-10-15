@@ -16,7 +16,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-tlv-00"
+<rfc category="std" docName="draft-ietf-grow-bmp-tlv-01"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -214,7 +214,9 @@
 	    <section title="TLV data in Peer Down" anchor="TLVinPD">
 		<t>
 		    The Peer Down Notification message type is defined in <xref target="RFC7854">Section 4.9 of</xref>.
-		    TLV data MAY now follow any Reason code.
+		    In case of Reason code 1 and 3, a BGP Notification PDU follows; the PDU MAY be followed by TLV data.
+		    In case of Reason code 2, a 2-byte field to give additional FSM info follows; this field MAY be
+		    followed by TLV data. For all other Reason codes, TLV data MAY follow the Reason field.
 		</t>
 	    </section>
 	    <section title="TLV data in other BMP messages" anchor="TLVinOther">
