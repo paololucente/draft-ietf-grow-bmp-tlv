@@ -77,15 +77,15 @@
         <abstract>
             <t>
 		Most of the message types defined by the BGP Monitoring Protocol (BMP)
-		do provision for optional trailing data; however Route Monitoring 
-		message (to provide a snapshot of the monitored Routing Information
-		Base) and Peer Down message (to indicate that a peering session was
+		do provision for optional trailing data. However, Route Monitoring 
+		messages (to provide a snapshot of the monitored Routing Information
+		Base) and Peer Down messages (to indicate that a peering session was
 		terminated) do not. Supporting optional data in TLV format across
 		all BMP message types allows for an homogeneous and extensible surface
 		that would be useful for the most different use-cases that need to
-		convey additional data to a BMP station. While this document does not
-		want to cover any specific utilization scenario, it defines a simple
-		way to support optional TLV data in all message types.
+		convey additional data to a BMP station. While it is not intended
+		for this document to cover any specific utilization scenario, it defines
+		a simple way to support optional TLV data in all message types.
             </t>
         </abstract>
     </front>
@@ -117,10 +117,10 @@
 
            <t>
 		This means that both Route Monitoring and Peer Down messages have
-		a non-extensible format. In the Route Monitoring case this is limiting
-		if wanting to transmit characteristics of transported NLRIs (ie. to
-		help stateless parsing) or vendor-specific data; in the Peer Down case
-		this is limiting if wanting to match TLVs shipped with the Peer Up.
+		a non-extensible format. In the Route Monitoring case, this is limiting
+		if transmitting characteristics of transported NLRIs is desired (ie. to
+		help stateless parsing) or vendor-specific data. In the Peer Down case,
+		this is limiting if matching TLVs sent with the Peer Up is desired.
 		The proposal of this document is to bump the BMP version, for backward
 		compatibility, and allow all message types to provision for trailing
 		TLV data.
@@ -140,7 +140,7 @@
 
 	<section title="TLV encoding">
 	    <t>
-		TLV data type is already defined in <xref target="RFC7854">Section 4.4 of</xref>
+		The TLV data type is already defined in <xref target="RFC7854">Section 4.4 of</xref>
 		for the Initiation and Peer Up message types. A TLV consists of:
 	    </t>
 	    <t>
@@ -172,7 +172,7 @@
 
 	    <t>
 		TLVs SHOULD be sorted by their code point. Multiple TLVs of the
-		same type can be repeated as part of the same message and it is
+		same type can be repeated as part of the same message, and it is
 		left to the specific use-cases whether all, any, the first or
 		the last TLV should be considered. 
 	    </t>
@@ -193,7 +193,7 @@
 			<t>
 				Message Length: Length of the message in bytes
 				(including headers, data, encapsulated messages
-				and TLV data if any)
+				and TLV data, if any)
 			</t>
 		    </list> 
                 </t>
@@ -205,17 +205,17 @@
 		    be followed by TLV data. This document defines the following new
 		    codes to help stateless parsing of BGP Update PDUs:
                     <list style="symbols">
-                        <t>Type = &IANA_RM_CODE_4B_ASN;: the BGP Update PDU is encoded with support for 4-octet AS number capability <xref target="RFC6793">RFC 6793</xref>, value MUST be boolean.</t>
-			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, value MUST be boolean.</t>
-			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, value MUST be boolean.</t>
+                        <t>Type = &IANA_RM_CODE_4B_ASN;: the BGP Update PDU is encoded with support for the 4-octet AS number capability <xref target="RFC6793">RFC 6793</xref>, value MUST be boolean.</t>
+			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, value MUST be boolean.</t>
+			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, value MUST be boolean.</t>
                     </list>
 		</t>
 	    </section>
 	    <section title="TLV data in Peer Down" anchor="TLVinPD">
 		<t>
 		    The Peer Down Notification message type is defined in <xref target="RFC7854">Section 4.9 of</xref>.
-		    In case of Reason code 1 and 3, a BGP Notification PDU follows; the PDU MAY be followed by TLV data.
-		    In case of Reason code 2, a 2-byte field to give additional FSM info follows; this field MAY be
+		    For Reason codes 1 or 3, a BGP Notification PDU follows; the PDU MAY be followed by TLV data.
+		    For Reason code 2, a 2-byte field to give additional FSM info follows; this field MAY be
 		    followed by TLV data. For all other Reason codes, TLV data MAY follow the Reason field.
 		</t>
 	    </section>
@@ -239,19 +239,19 @@
 
 		<list style="symbols">
 		    <t>
-			Type = &IANA_RM_CODE_4B_ASN;: Support for 4-octet AS number capability.
-			The value field contains a boolean value. 1 if the BGP Update PDU
+			Type = &IANA_RM_CODE_4B_ASN;: Support for the 4-octet AS number capability.
+			The value field contains a boolean value of 1 if the BGP Update PDU
 			enclosed in the Route Monitoring message was encoded according to the
 			capability.
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_PATH_ID;: ADD-PATH capability. The value field
-			contains a boolean value. 1 if the BGP Update PDU enclosed in the Route
+			contains a boolean value of 1 if the BGP Update PDU enclosed in the Route
 			Monitoring message was encoded according to the capability.
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_MULTI_LABELS;: Multiple Labels capability. The
-			value field contains a boolean value. 1 if the BGP Update PDU
+			value field contains a boolean value of 1 if the BGP Update PDU
 			enclosed in the Route Monitoring message was encoded according to the
 			capability.
 		    </t>
