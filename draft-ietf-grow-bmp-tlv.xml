@@ -16,7 +16,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-tlv-01"
+<rfc category="std" docName="draft-ietf-grow-bmp-tlv-02"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -276,7 +276,8 @@
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
             <t>
-		The authors would like to thank Jeff Haas for his valuable input.
+		The authors would like to thank Jeff Haas for his valuable input. The authors
+		would also like to thank Greg Skinner for his review.
             </t>
         </section>
 
