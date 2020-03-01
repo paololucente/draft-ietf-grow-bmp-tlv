@@ -12,7 +12,7 @@ Expires: September 2, 2020                                       H. Smit
 
 
       TLV support for BMP Route Monitoring and Peer Down Messages
-                       draft-ietf-grow-bmp-tlv-03
+                       draft-ietf-grow-bmp-tlv-02
 
 Abstract
 
