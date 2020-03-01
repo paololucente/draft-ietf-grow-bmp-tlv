@@ -16,7 +16,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-tlv-02"
+<rfc category="std" docName="draft-ietf-grow-bmp-tlv-03"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -65,7 +65,7 @@
             </address>
         </author>
 
-        <date year="2019"/>
+        <date year="2020"/>
 
         <area>General</area>
 
@@ -175,6 +175,9 @@
 		same type can be repeated as part of the same message, and it is
 		left to the specific use-cases whether all, any, the first or
 		the last TLV should be considered. 
+	    </t>
+	    <t>
+		TLVs can be recursive and include sub-TLVs as their value.
 	    </t>
 	</section>
 
