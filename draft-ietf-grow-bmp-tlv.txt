@@ -6,13 +6,13 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: September 2, 2020                                       H. Smit
+Expires: September 11, 2020                                      H. Smit
                                                              Independent
-                                                           March 1, 2020
+                                                          March 10, 2020
 
 
       TLV support for BMP Route Monitoring and Peer Down Messages
-                       draft-ietf-grow-bmp-tlv-02
+                       draft-ietf-grow-bmp-tlv-03
 
 Abstract
 
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 2, 2020.
+   This Internet-Draft will expire on September 11, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Lucente, et al.         Expires September 2, 2020               [Page 1]
+Lucente, et al.        Expires September 11, 2020               [Page 1]
 
 Internet-Draft                   BMP TLV                      March 2020
 
@@ -76,13 +76,13 @@ Table of Contents
    4.  BMP Message Format  . . . . . . . . . . . . . . . . . . . . .   4
      4.1.  Common Header . . . . . . . . . . . . . . . . . . . . . .   4
      4.2.  TLV data in Route Monitoring  . . . . . . . . . . . . . .   4
-     4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   4
-     4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   4
+     4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   5
+     4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   5
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Lucente, et al.         Expires September 2, 2020               [Page 2]
+Lucente, et al.        Expires September 11, 2020               [Page 2]
 
 Internet-Draft                   BMP TLV                      March 2020
 
@@ -158,17 +158,46 @@ Internet-Draft                   BMP TLV                      March 2020
    the specific use-cases whether all, any, the first or the last TLV
    should be considered.
 
-   TLVs can be recursive and include sub-TLVs as their value.
+   TLVs can be recursive and include sub-TLVs as their value.  This
+   approach can be useful to build container TLVs to better isolate a
+   group of TLVs for the same function from TLVs meant for different
+   functions.  This scheme SHOULD be used whenever a certain function
 
 
 
-
-
-
-Lucente, et al.         Expires September 2, 2020               [Page 3]
+Lucente, et al.        Expires September 11, 2020               [Page 3]
 
 Internet-Draft                   BMP TLV                      March 2020
 
+
+   requires a spcific mapping to NLRIs contained in the Route Monitor
+   BGP message.  Here below an example of a TLV for fictional function
+   'FuncA' containing two sub-TLV types, 'X' and 'Y':
+
+
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |        Type FuncA (2 octets)  |     Length (2 octets)         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |        Sub-Type X (2 octets)  |     Length (2 octets)         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      ~                     Value (variable)                          ~
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |        Sub-Type Y (2 octets)  |     Length (2 octets)         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      ~                     Value (variable)                          ~
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |        Sub-Type X (2 octets)  |     Length (2 octets)         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      ~                     Value (variable)                          ~
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |        Sub-Type Y (2 octets)  |     Length (2 octets)         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      ~                     Value (variable)                          ~
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+                                 Figure 2
 
 4.  BMP Message Format
 
@@ -188,6 +217,15 @@ Internet-Draft                   BMP TLV                      March 2020
 
    The Route Monitoring message type is defined in Section 4.6 of
    [RFC7854].  The BGP Update PDU Section 4.3 of [RFC4271] MAY be
+
+
+
+
+Lucente, et al.        Expires September 11, 2020               [Page 4]
+
+Internet-Draft                   BMP TLV                      March 2020
+
+
    followed by TLV data.  This document defines the following new codes
    to help stateless parsing of BGP Update PDUs:
 
@@ -216,16 +254,6 @@ Internet-Draft                   BMP TLV                      March 2020
    provision for TLV data.  It is RECOMMENDED that all future BMP
    message types will provision for trailing TLV data.
 
-
-
-
-
-
-Lucente, et al.         Expires September 2, 2020               [Page 4]
-
-Internet-Draft                   BMP TLV                      March 2020
-
-
 5.  Security Considerations
 
    It is not believed that this document adds any additional security
@@ -244,6 +272,15 @@ Internet-Draft                   BMP TLV                      March 2020
    o  Type = TBD2: ADD-PATH capability.  The value field contains a
       boolean value of 1 if the BGP Update PDU enclosed in the Route
       Monitoring message was encoded according to the capability.
+
+
+
+
+
+Lucente, et al.        Expires September 11, 2020               [Page 5]
+
+Internet-Draft                   BMP TLV                      March 2020
+
 
    o  Type = TBD3: Multiple Labels capability.  The value field contains
       a boolean value of 1 if the BGP Update PDU enclosed in the Route
@@ -271,17 +308,6 @@ Internet-Draft                   BMP TLV                      March 2020
               DOI 10.17487/RFC7854, June 2016,
               <https://www.rfc-editor.org/info/rfc7854>.
 
-
-
-
-
-
-
-Lucente, et al.         Expires September 2, 2020               [Page 5]
-
-Internet-Draft                   BMP TLV                      March 2020
-
-
    [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
               "Advertisement of Multiple Paths in BGP", RFC 7911,
               DOI 10.17487/RFC7911, July 2016,
@@ -297,8 +323,20 @@ Internet-Draft                   BMP TLV                      March 2020
 
 Acknowledgements
 
-   The authors would like to thank Jeff Haas for his valuable input.
-   The authors would also like to thank Greg Skinner for his review.
+   The authors would like to thank Jeff Haas and Camilo Cardona for
+   their valuable input.  The authors would also like to thank Greg
+   Skinner for his review.
+
+
+
+
+
+
+
+Lucente, et al.        Expires September 11, 2020               [Page 6]
+
+Internet-Draft                   BMP TLV                      March 2020
+
 
 Authors' Addresses
 
@@ -333,4 +371,22 @@ Authors' Addresses
 
 
 
-Lucente, et al.         Expires September 2, 2020               [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lucente, et al.        Expires September 11, 2020               [Page 7]

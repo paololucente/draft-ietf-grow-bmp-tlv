@@ -16,7 +16,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-tlv-02"
+<rfc category="std" docName="draft-ietf-grow-bmp-tlv-03"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -177,8 +177,41 @@
 		the last TLV should be considered. 
 	    </t>
 	    <t>
-		TLVs can be recursive and include sub-TLVs as their value.
+		TLVs can be recursive and include sub-TLVs as their value. This
+		approach can be useful to build container TLVs to better isolate
+		a group of TLVs for the same function from TLVs meant for different
+		functions. This scheme SHOULD be used whenever a certain function
+		requires a spcific mapping to NLRIs contained in the Route Monitor
+		BGP message. Here below an example of a TLV for fictional function
+		'FuncA' containing two sub-TLV types, 'X' and 'Y':
 	    </t>
+
+	    <figure anchor="BMP-TLV-header-with-subTLVs" align="center">
+	    	<artwork align="center">
+	    	    <![CDATA[
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |        Type FuncA (2 octets)  |     Length (2 octets)         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |        Sub-Type X (2 octets)  |     Length (2 octets)         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  ~		        Value (variable)			  ~
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |        Sub-Type Y (2 octets)  |     Length (2 octets)         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  ~		        Value (variable)			  ~
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |        Sub-Type X (2 octets)  |     Length (2 octets)         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  ~		        Value (variable)			  ~
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |        Sub-Type Y (2 octets)  |     Length (2 octets)         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  ~		        Value (variable)			  ~
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	    	    ]]>
+	    	</artwork>
+	    </figure>
 	</section>
 
         <section title="BMP Message Format">
@@ -279,8 +312,8 @@
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
             <t>
-		The authors would like to thank Jeff Haas for his valuable input. The authors
-		would also like to thank Greg Skinner for his review.
+		The authors would like to thank Jeff Haas and Camilo Cardona for their valuable
+		input. The authors would also like to thank Greg Skinner for his review.
             </t>
         </section>
 
