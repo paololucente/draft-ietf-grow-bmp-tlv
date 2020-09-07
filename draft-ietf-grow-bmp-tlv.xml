@@ -118,12 +118,12 @@
            <t>
 		This means that both Route Monitoring and Peer Down messages have
 		a non-extensible format. In the Route Monitoring case, this is limiting
-		if transmitting characteristics of transported NLRIs is desired (ie. to
-		help stateless parsing) or vendor-specific data. In the Peer Down case,
-		this is limiting if matching TLVs sent with the Peer Up is desired.
-		The proposal of this document is to bump the BMP version, for backward
-		compatibility, and allow all message types to provision for trailing
-		TLV data.
+		if wanting to transmit characteristics of transported NLRIs (ie. to
+		help stateless parsing) or to add vendor-specific data. In the Peer
+		Down case, this is limiting if matching TLVs sent with the Peer Up is
+		desired. The proposal of this document is to bump the BMP version, for
+		backward compatibility, and allow all message types to provision for
+		trailing TLV data.
             </t>
         </section>
 
@@ -181,9 +181,10 @@
 		approach can be useful to build container TLVs to better isolate
 		a group of TLVs for the same function from TLVs meant for different
 		functions. This scheme SHOULD be used whenever a certain function
-		requires a spcific mapping to NLRIs contained in the Route Monitor
-		BGP message. Here below an example of a TLV for fictional function
-		'FuncA' containing two sub-TLV types, 'X' and 'Y':
+		requires a specific mapping related to the order of NLRIs contained
+		in the Route Monitor BGP message. Here below an example of a TLV
+		for fictional function 'FuncA' containing two sub-TLV types, 'X'
+		and 'Y':
 	    </t>
 
 	    <figure anchor="BMP-TLV-header-with-subTLVs" align="center">
@@ -227,9 +228,9 @@
 				to '4' for all messages.
 			</t>
 			<t>
-				Message Length: Length of the message in bytes
-				(including headers, data, encapsulated messages
-				and TLV data, if any)
+				Message Length: Total length of the message in
+				bytes (including headers, encapsulated BGP message
+				and optional data)
 			</t>
 		    </list> 
                 </t>
@@ -239,7 +240,7 @@
 		    The Route Monitoring message type is defined in <xref target="RFC7854">Section 4.6 of</xref>.
 		    The BGP Update PDU <xref target="RFC4271">Section 4.3 of</xref> MAY
 		    be followed by TLV data. This document defines the following new
-		    codes to help stateless parsing of BGP Update PDUs:
+		    code points to help stateless parsing of BGP Update PDUs:
                     <list style="symbols">
                         <t>Type = &IANA_RM_CODE_4B_ASN;: the BGP Update PDU is encoded with support for the 4-octet AS number capability <xref target="RFC6793">RFC 6793</xref>, value MUST be boolean.</t>
 			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, value MUST be boolean.</t>
