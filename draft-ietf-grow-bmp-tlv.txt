@@ -73,16 +73,16 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  TLV encoding  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  BMP Message Format  . . . . . . . . . . . . . . . . . . . . .   5
-     4.1.  Common Header . . . . . . . . . . . . . . . . . . . . . .   5
-     4.2.  TLV data in Route Monitoring  . . . . . . . . . . . . . .   5
+   4.  BMP Message Format  . . . . . . . . . . . . . . . . . . . . .   4
+     4.1.  Common Header . . . . . . . . . . . . . . . . . . . . . .   4
+     4.2.  TLV data in Route Monitoring  . . . . . . . . . . . . . .   4
      4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   5
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   5
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   7
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
 
@@ -158,10 +158,10 @@ Internet-Draft                   BMP TLV                   November 2020
    the specific use-cases whether all, any, the first or the last TLV
    should be considered.
 
-   TLVs can be recursive and include sub-TLVs as their value.  This
-   approach can be useful to build container TLVs to better isolate a
-   group of TLVs for the same function from TLVs meant for different
-
+   In Route Monitoring messages there may be a need to map TLVs to NLRIs
+   contained in the BGP Update message, for example, to express
+   additional characteristics of a specific NLRI.  For this purose
+   specifically TLVs in Route Monitoring messages can be optionally
 
 
 
@@ -170,38 +170,6 @@ Lucente, et al.           Expires May 19, 2021                  [Page 3]
 Internet-Draft                   BMP TLV                   November 2020
 
 
-   functions.  Here below an example of a TLV for fictional function
-   'FuncA' containing two sub-TLV types, 'X' and 'Y':
-
-
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        Type FuncA (2 octets)  |     Length (2 octets)         |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        Sub-Type X (2 octets)  |     Length (2 octets)         |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      ~                     Value (variable)                          ~
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        Sub-Type Y (2 octets)  |     Length (2 octets)         |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      ~                     Value (variable)                          ~
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        Sub-Type X (2 octets)  |     Length (2 octets)         |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      ~                     Value (variable)                          ~
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        Sub-Type Y (2 octets)  |     Length (2 octets)         |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      ~                     Value (variable)                          ~
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-
-                                 Figure 2
-
-   In Route Monitoring messages there may be a need to map TLVs to NLRIs
-   contained in the BGP Update message, for example, to express
-   additional characteristics of a specific NLRI.  For this purose
-   specifically TLVs in Route Monitoring messages can be optionally
    indexed, with the index starting at zero to refer to the first NLRI,
    and encoded as in the following figure:
 
@@ -216,15 +184,7 @@ Internet-Draft                   BMP TLV                   November 2020
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
-                                 Figure 3
-
-
-
-
-Lucente, et al.           Expires May 19, 2021                  [Page 4]
-
-Internet-Draft                   BMP TLV                   November 2020
-
+                                 Figure 2
 
 4.  BMP Message Format
 
@@ -257,6 +217,15 @@ Internet-Draft                   BMP TLV                   November 2020
    o  Type = TBD3: the BGP Update PDU is encoded with the Multiple
       Labels capability RFC 8277 [RFC8277], value MUST be boolean.
 
+
+
+
+
+Lucente, et al.           Expires May 19, 2021                  [Page 4]
+
+Internet-Draft                   BMP TLV                   November 2020
+
+
 4.3.  TLV data in Peer Down
 
    The Peer Down Notification message type is defined in Section 4.9 of
@@ -271,16 +240,6 @@ Internet-Draft                   BMP TLV                   November 2020
    All other message types defined in RFC7854 [RFC7854] do already
    provision for TLV data.  It is RECOMMENDED that all future BMP
    message types will provision for trailing TLV data.
-
-
-
-
-
-
-Lucente, et al.           Expires May 19, 2021                  [Page 5]
-
-Internet-Draft                   BMP TLV                   November 2020
-
 
 5.  Security Considerations
 
@@ -312,6 +271,17 @@ Internet-Draft                   BMP TLV                   November 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+
+
+Lucente, et al.           Expires May 19, 2021                  [Page 5]
+
+Internet-Draft                   BMP TLV                   November 2020
+
+
    [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
               Border Gateway Protocol 4 (BGP-4)", RFC 4271,
               DOI 10.17487/RFC4271, January 2006,
@@ -326,17 +296,6 @@ Internet-Draft                   BMP TLV                   November 2020
               Monitoring Protocol (BMP)", RFC 7854,
               DOI 10.17487/RFC7854, June 2016,
               <https://www.rfc-editor.org/info/rfc7854>.
-
-
-
-
-
-
-
-Lucente, et al.           Expires May 19, 2021                  [Page 6]
-
-Internet-Draft                   BMP TLV                   November 2020
-
 
    [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
               "Advertisement of Multiple Paths in BGP", RFC 7911,
@@ -368,6 +327,17 @@ Authors' Addresses
    Email: paolo@ntt.net
 
 
+
+
+
+
+
+
+Lucente, et al.           Expires May 19, 2021                  [Page 6]
+
+Internet-Draft                   BMP TLV                   November 2020
+
+
    Yunan Gu
    Huawei
    Huawei Bld., No.156 Beiqing Rd.
@@ -382,6 +352,36 @@ Authors' Addresses
    NL
 
    Email: hhw.smit@xs4all.nl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
