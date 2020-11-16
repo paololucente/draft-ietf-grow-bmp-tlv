@@ -180,7 +180,7 @@
 	    <t>
 	        In Route Monitoring messages there may be a need to map TLVs to NLRIs
 		contained in the BGP Update message, for example, to express additional
-		characteristics of a specific NLRI. For this purose specifically TLVs
+		characteristics of a specific NLRI. For this purpose specifically TLVs
 		in Route Monitoring messages can be optionally indexed, with the index
 		starting at zero to refer to the first NLRI, and encoded as in the
 		following figure:

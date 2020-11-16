@@ -160,7 +160,7 @@ Internet-Draft                   BMP TLV                   November 2020
 
    In Route Monitoring messages there may be a need to map TLVs to NLRIs
    contained in the BGP Update message, for example, to express
-   additional characteristics of a specific NLRI.  For this purose
+   additional characteristics of a specific NLRI.  For this purpose
    specifically TLVs in Route Monitoring messages can be optionally
 
 
