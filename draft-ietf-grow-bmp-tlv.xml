@@ -16,7 +16,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-tlv-05"
+<rfc category="std" docName="draft-ietf-grow-bmp-tlv-04"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -254,6 +254,16 @@
         <section title="Security Considerations">
             <t>
                 It is not believed that this document adds any additional security considerations.
+            </t>
+        </section>
+
+        <section title="Operational Considerations">
+            <t>
+                In Route Monitoring messages, the number of TLVs can be bound to the amount of NLRIs
+		carried in the BGP Update message. This may degrade the packing of information in such
+		messages and have specific impacts on the memory and CPU used in a BMP implementation.
+		As a result of that it should always be possible to disable such features to mitigate
+		their impact.
             </t>
         </section>
 
