@@ -83,7 +83,7 @@ Table of Contents
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
    8.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -158,10 +158,10 @@ Internet-Draft                   BMP TLV                   November 2020
    the specific use-cases whether all, any, the first or the last TLV
    should be considered.
 
-   In Route Monitoring messages there may be a need to map TLVs to NLRIs
-   contained in the BGP Update message, for example, to express
-   additional characteristics of a specific NLRI.  For this purpose
-   specifically TLVs in Route Monitoring messages can be optionally
+   Route Monitoring messages may require per-NLRI TLVs, that is, there
+   may be a need to map TLVs to NLRIs contained in the BGP Update
+   message, for example, to express additional characteristics of a
+   specific NLRI.  For this purpose specifically, TLVs in Route
 
 
 
@@ -170,8 +170,9 @@ Lucente, et al.           Expires May 21, 2021                  [Page 3]
 Internet-Draft                   BMP TLV                   November 2020
 
 
-   indexed, with the index starting at zero to refer to the first NLRI,
-   and encoded as in the following figure:
+   Monitoring messages can be optionally indexed, with the index
+   starting at zero to refer to the first NLRI, and encoded as in the
+   following figure:
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -185,6 +186,11 @@ Internet-Draft                   BMP TLV                   November 2020
 
 
                                  Figure 2
+
+   Of the BMP message types defined so far, indexed TLVs do apply only
+   to Route Monitoring messages and, for example, they do not apply to
+   Route Mirroring ones because the sender may not be aware of the
+   payload of the transported BGP Update message.
 
 4.  BMP Message Format
 
@@ -211,12 +217,6 @@ Internet-Draft                   BMP TLV                   November 2020
       4-octet AS number capability RFC 6793 [RFC6793], value MUST be
       boolean.
 
-   o  Type = TBD2: the BGP Update PDU is encoded with the ADD-PATH
-      capability RFC 7911 [RFC7911], value MUST be boolean.
-
-   o  Type = TBD3: the BGP Update PDU is encoded with the Multiple
-      Labels capability RFC 8277 [RFC8277], value MUST be boolean.
-
 
 
 
@@ -225,6 +225,12 @@ Lucente, et al.           Expires May 21, 2021                  [Page 4]
 
 Internet-Draft                   BMP TLV                   November 2020
 
+
+   o  Type = TBD2: the BGP Update PDU is encoded with the ADD-PATH
+      capability RFC 7911 [RFC7911], value MUST be boolean.
+
+   o  Type = TBD3: the BGP Update PDU is encoded with the Multiple
+      Labels capability RFC 8277 [RFC8277], value MUST be boolean.
 
 4.3.  TLV data in Peer Down
 
@@ -269,18 +275,16 @@ Internet-Draft                   BMP TLV                   November 2020
       boolean value of 1 if the BGP Update PDU enclosed in the Route
       Monitoring message was encoded according to the capability.
 
-   o  Type = TBD3: Multiple Labels capability.  The value field contains
-      a boolean value of 1 if the BGP Update PDU enclosed in the Route
-      Monitoring message was encoded according to the capability.
-
-
-
 
 
 Lucente, et al.           Expires May 21, 2021                  [Page 5]
 
 Internet-Draft                   BMP TLV                   November 2020
 
+
+   o  Type = TBD3: Multiple Labels capability.  The value field contains
+      a boolean value of 1 if the BGP Update PDU enclosed in the Route
+      Monitoring message was encoded according to the capability.
 
 8.  Normative References
 
@@ -323,10 +327,6 @@ Acknowledgements
    their valuable input.  The authors would also like to thank Greg
    Skinner for his review.
 
-Authors' Addresses
-
-
-
 
 
 
@@ -337,6 +337,8 @@ Lucente, et al.           Expires May 21, 2021                  [Page 6]
 
 Internet-Draft                   BMP TLV                   November 2020
 
+
+Authors' Addresses
 
    Paolo Lucente
    NTT
@@ -361,8 +363,6 @@ Internet-Draft                   BMP TLV                   November 2020
    NL
 
    Email: hhw.smit@xs4all.nl
-
-
 
 
 
