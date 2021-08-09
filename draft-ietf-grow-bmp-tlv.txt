@@ -170,9 +170,10 @@ Lucente & Gu            Expires February 10, 2022               [Page 3]
 Internet-Draft                   BMP TLV                     August 2021
 
 
-   Monitoring messages can be optionally indexed, with the index
-   starting at zero to refer to the first NLRI, and encoded as in the
-   following figure:
+   Monitoring messages MUST be indexed, with the index starting at one
+   (1) to refer to the first NLRI.  Index zero (0) specifies that a TLV
+   does apply to all NLRIs contained in the BGP Update message.  Indexed
+   TLVs are encoded as in the following figure:
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -216,7 +217,6 @@ Internet-Draft                   BMP TLV                     August 2021
    o  Type = TBD1: the BGP Update PDU is encoded with support for the
       4-octet AS number capability RFC 6793 [RFC6793], value MUST be
       boolean.
-
 
 
 

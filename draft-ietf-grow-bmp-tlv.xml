@@ -168,9 +168,11 @@
 	        Route Monitoring messages may require per-NLRI TLVs, that is, there may
 		be a need to map TLVs to NLRIs contained in the BGP Update message, for
 		example, to express additional characteristics of a specific NLRI. For
-		this purpose specifically, TLVs in Route Monitoring messages can be
-		optionally indexed, with the index starting at zero to refer to the
-		first NLRI, and encoded as in the following figure:
+		this purpose specifically, TLVs in Route Monitoring messages MUST be
+		indexed, with the index starting at one (1) to refer to the first NLRI.
+		Index zero (0) specifies that a TLV does apply to all NLRIs contained in
+		the BGP Update message. Indexed TLVs are encoded as in the following
+		figure:
 	    </t>
 
 	    <figure anchor="BMP-indexed-TLV-header" align="center">
