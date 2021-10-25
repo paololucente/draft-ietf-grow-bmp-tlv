@@ -6,7 +6,7 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: February 10, 2022                                August 9, 2021
+Expires: April 28, 2022                                 October 25, 2021
 
 
       TLV support for BMP Route Monitoring and Peer Down Messages
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 10, 2022.
+   This Internet-Draft will expire on April 28, 2022.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Lucente & Gu            Expires February 10, 2022               [Page 1]
+Lucente & Gu             Expires April 28, 2022                 [Page 1]
 
-Internet-Draft                   BMP TLV                     August 2021
+Internet-Draft                   BMP TLV                    October 2021
 
 
    (https://trustee.ietf.org/license-info) in effect on the date of
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Lucente & Gu            Expires February 10, 2022               [Page 2]
+Lucente & Gu             Expires April 28, 2022                 [Page 2]
 
-Internet-Draft                   BMP TLV                     August 2021
+Internet-Draft                   BMP TLV                    October 2021
 
 
    This means that both Route Monitoring and Peer Down messages have a
@@ -165,9 +165,9 @@ Internet-Draft                   BMP TLV                     August 2021
 
 
 
-Lucente & Gu            Expires February 10, 2022               [Page 3]
+Lucente & Gu             Expires April 28, 2022                 [Page 3]
 
-Internet-Draft                   BMP TLV                     August 2021
+Internet-Draft                   BMP TLV                    October 2021
 
 
    Monitoring messages MUST be indexed, with the index starting at one
@@ -221,9 +221,9 @@ Internet-Draft                   BMP TLV                     August 2021
 
 
 
-Lucente & Gu            Expires February 10, 2022               [Page 4]
+Lucente & Gu             Expires April 28, 2022                 [Page 4]
 
-Internet-Draft                   BMP TLV                     August 2021
+Internet-Draft                   BMP TLV                    October 2021
 
 
    o  Type = TBD2: the BGP Update PDU is encoded with the ADD-PATH
@@ -277,9 +277,9 @@ Internet-Draft                   BMP TLV                     August 2021
 
 
 
-Lucente & Gu            Expires February 10, 2022               [Page 5]
+Lucente & Gu             Expires April 28, 2022                 [Page 5]
 
-Internet-Draft                   BMP TLV                     August 2021
+Internet-Draft                   BMP TLV                    October 2021
 
 
    o  Type = TBD3: Multiple Labels capability.  The value field contains
@@ -333,9 +333,9 @@ Acknowledgements
 
 
 
-Lucente & Gu            Expires February 10, 2022               [Page 6]
+Lucente & Gu             Expires April 28, 2022                 [Page 6]
 
-Internet-Draft                   BMP TLV                     August 2021
+Internet-Draft                   BMP TLV                    October 2021
 
 
 Authors' Addresses
@@ -389,4 +389,4 @@ Authors' Addresses
 
 
 
-Lucente & Gu            Expires February 10, 2022               [Page 7]
+Lucente & Gu             Expires April 28, 2022                 [Page 7]
