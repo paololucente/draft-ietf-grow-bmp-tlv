@@ -64,9 +64,9 @@
         <abstract>
             <t>
 		Most of the message types defined by the BGP Monitoring Protocol (BMP)
-		do provision for optional trailing data. However, Route Monitoring 
-		messages (to provide a snapshot of the monitored Routing Information
-		Base) and Peer Down messages (to indicate that a peering session was
+		make provision for optional trailing data. However, Route Monitoring
+		messages (which provide a snapshot of the monitored Routing Information
+		Base) and Peer Down messages (which indicate that a peering session was
 		terminated) do not. Supporting optional data in TLV format across
 		all BMP message types allows for an homogeneous and extensible surface
 		that would be useful for the most different use-cases that need to
@@ -104,12 +104,12 @@
 
            <t>
 		This means that both Route Monitoring and Peer Down messages have
-		a non-extensible format. In the Route Monitoring case, this is limiting
-		if wanting to transmit characteristics of transported NLRIs (ie. to
-		help stateless parsing) or to add vendor-specific data. In the Peer
-		Down case, this is limiting if matching TLVs sent with the Peer Up is
-		desired. The proposal of this document is to bump the BMP version, for
-		backward compatibility, and allow all message types to provision for
+		a non-extensible format. In the Route Monitoring case, this is prevents
+		the transmission of characteristics of transported NLRIs (e.g. to
+		help with stateless parsing) or of vendor-specific data. In the Peer
+        Down case, this prevents matching with TLVs previously sent with the Peer Up message.
+        The proposal of this document is to bump the BMP version, for
+		backward compatibility, and allow all message types to make provision for
 		trailing TLV data.
             </t>
         </section>
@@ -191,9 +191,9 @@
 	    </figure>
 
 	    <t>
-	        Of the BMP message types defined so far, indexed TLVs do apply only to
+	        Of the BMP message types defined so far, indexed TLVs apply only to
 		Route Monitoring messages and, for example, they do not apply to Route
-		Mirroring ones because the sender may not be aware of the payload of
+		Mirroring messages because the sender may not be aware of the payload of
 		the transported BGP Update message.
 	    </t>
 	</section>
@@ -241,8 +241,8 @@
 	    </section>
 	    <section title="TLV data in other BMP messages" anchor="TLVinOther">
 		<t>
-		    All other message types defined in <xref target="RFC7854">RFC7854</xref> do already provision for TLV data.
-		    It is RECOMMENDED that all future BMP message types will provision for trailing TLV data.
+		    All other message types defined in <xref target="RFC7854">RFC7854</xref> already provide for TLV data.
+		    It is RECOMMENDED that all future BMP message types also provide for trailing TLV data.
 		</t>
 	    </section>
         </section>
