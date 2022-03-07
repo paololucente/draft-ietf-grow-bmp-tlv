@@ -68,7 +68,7 @@
 		messages (which provide a snapshot of the monitored Routing Information
 		Base) and Peer Down messages (which indicate that a peering session was
 		terminated) do not. Supporting optional data in TLV format across
-		all BMP message types allows for an homogeneous and extensible surface
+		all BMP message types allows for a homogeneous and extensible surface
 		that would be useful for the most different use-cases that need to
 		convey additional data to a BMP station. While it is not intended
 		for this document to cover any specific utilization scenario, it defines
@@ -308,7 +308,7 @@
             <t>
 		The authors would like to thank Jeff Haas, Camilo Cardona, Thomas Graf,
 		Pierre Francois and Ben Maddison for their valuable input. The authors
-		would also like to thank Greg Skinner for his review.
+		would also like to thank Greg Skinner and Zongpeng Du for their review.
             </t>
         </section>
 
