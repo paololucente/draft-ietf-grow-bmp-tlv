@@ -247,6 +247,19 @@
 	    </section>
         </section>
 
+        <section title="Error handling">
+            <t>
+		When a BGP PDU is enclosed in BMP messages (always for Route Monitoring messages,
+		in some cases for Peer Down messages), processing of optional trailing data is
+		subject to proper decoding of a well-formed BGP message.
+            </t>
+	    <t>
+		Additionally, it is worth nothing that <xref target="RFC8654">RFC8654</xref>
+		permits BGP Updates and other messages to grow to a length of 65535 octets. This
+		may cause a BMP PDU that attempts to encapsulate such long messages to overflow.
+	    </t>
+        </section>
+
         <section title="Security Considerations">
             <t>
                 It is not believed that this document adds any additional security considerations.
@@ -303,6 +316,7 @@
 		<?rfc include="reference.RFC.6793.xml"?>
 		<?rfc include="reference.RFC.7911.xml"?>
 		<?rfc include="reference.RFC.8277.xml"?>
+		<?rfc include="reference.RFC.8654.xml"?>
         </references>
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">

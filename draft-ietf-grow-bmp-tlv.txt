@@ -76,11 +76,12 @@ Table of Contents
      4.2.  TLV data in Route Monitoring  . . . . . . . . . . . . . .   4
      4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   5
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   5
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   6.  Operational Considerations  . . . . . . . . . . . . . . . . .   5
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   5
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   7.  Operational Considerations  . . . . . . . . . . . . . . . . .   5
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   7
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
@@ -104,7 +105,6 @@ Table of Contents
    o  Reason
 
    o  Data (only if Reason code is 1, 2 or 3)
-
 
 
 
@@ -249,12 +249,24 @@ Internet-Draft                   BMP TLV                      March 2021
    for TLV data.  It is RECOMMENDED that all future BMP message types
    also provide for trailing TLV data.
 
-5.  Security Considerations
+5.  Error handling
+
+   When a BGP PDU is enclosed in BMP messages (always for Route
+   Monitoring messages, in some cases for Peer Down messages),
+   processing of optional trailing data is subject to proper decoding of
+   a well-formed BGP message.
+
+   Additionally, it is worth nothing that RFC8654 [RFC8654] permits BGP
+   Updates and other messages to grow to a length of 65535 octets.  This
+   may cause a BMP PDU that attempts to encapsulate such long messages
+   to overflow.
+
+6.  Security Considerations
 
    It is not believed that this document adds any additional security
    considerations.
 
-6.  Operational Considerations
+7.  Operational Considerations
 
    In Route Monitoring messages, the number of TLVs can be bound to the
    amount of NLRIs carried in the BGP Update message.  This may degrade
@@ -263,7 +275,14 @@ Internet-Draft                   BMP TLV                      March 2021
    that it should always be possible to disable such features to
    mitigate their impact.
 
-7.  IANA Considerations
+
+
+Lucente & Gu            Expires September 8, 2022               [Page 5]
+
+Internet-Draft                   BMP TLV                      March 2021
+
+
+8.  IANA Considerations
 
    This document requests the definition of two new registries "BMP
    Route Monitoring Information TLVs" and "BMP Peer Down Information
@@ -274,14 +293,6 @@ Internet-Draft                   BMP TLV                      March 2021
       value field is set to 1 if the BGP Update PDU enclosed in the
       Route Monitoring message was encoded according to the capability.
 
-
-
-
-Lucente & Gu            Expires September 8, 2022               [Page 5]
-
-Internet-Draft                   BMP TLV                      March 2021
-
-
    o  Type = TBD2: ADD-PATH capability.  The value field is set to 1 if
       the BGP Update PDU enclosed in the Route Monitoring message was
       encoded according to the capability.
@@ -290,7 +301,7 @@ Internet-Draft                   BMP TLV                      March 2021
       to 1 if the BGP Update PDU enclosed in the Route Monitoring
       message was encoded according to the capability.
 
-8.  Normative References
+9.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -317,18 +328,7 @@ Internet-Draft                   BMP TLV                      March 2021
               DOI 10.17487/RFC7911, July 2016,
               <https://www.rfc-editor.org/info/rfc7911>.
 
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-   [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
-              Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
-              <https://www.rfc-editor.org/info/rfc8277>.
-
-Acknowledgements
-
-   The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
-   Graf, Pierre Francois and Ben Maddison for their valuable input.  The
 
 
 
@@ -338,6 +338,22 @@ Lucente & Gu            Expires September 8, 2022               [Page 6]
 Internet-Draft                   BMP TLV                      March 2021
 
 
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
+              Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
+              <https://www.rfc-editor.org/info/rfc8277>.
+
+   [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
+              Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
+              2019, <https://www.rfc-editor.org/info/rfc8654>.
+
+Acknowledgements
+
+   The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
+   Graf, Pierre Francois and Ben Maddison for their valuable input.  The
    authors would also like to thank Greg Skinner and Zongpeng Du for
    their review.
 
@@ -359,22 +375,6 @@ Authors' Addresses
    China
 
    Email: guyunan@huawei.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
