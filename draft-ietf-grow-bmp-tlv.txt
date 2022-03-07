@@ -215,8 +215,8 @@ Internet-Draft                   BMP TLV                      March 2021
    points to help stateless parsing of BGP Update PDUs:
 
    o  Type = TBD1: the BGP Update PDU is encoded with support for the
-      4-octet AS number capability RFC 6793 [RFC6793], value MUST be
-      boolean.
+      4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
+      and value MUST be 0 for false and 1 for true.
 
 
 
@@ -227,10 +227,12 @@ Internet-Draft                   BMP TLV                      March 2021
 
 
    o  Type = TBD2: the BGP Update PDU is encoded with the ADD-PATH
-      capability RFC 7911 [RFC7911], value MUST be boolean.
+      capability RFC 7911 [RFC7911], length MUST be 1 and value MUST be
+      0 for false and 1 for true.
 
    o  Type = TBD3: the BGP Update PDU is encoded with the Multiple
-      Labels capability RFC 8277 [RFC8277], value MUST be boolean.
+      Labels capability RFC 8277 [RFC8277], length MUST be 1 and value
+      MUST be 0 for false and 1 for true.
 
 4.3.  TLV data in Peer Down
 
@@ -267,13 +269,11 @@ Internet-Draft                   BMP TLV                      March 2021
    Monitoring and Peer Down messages (Section 4.2):
 
    o  Type = TBD1: Support for the 4-octet AS number capability.  The
-      value field contains a boolean value of 1 if the BGP Update PDU
-      enclosed in the Route Monitoring message was encoded according to
-      the capability.
+      value field is set to 1 if the BGP Update PDU enclosed in the
+      Route Monitoring message was encoded according to the capability.
 
-   o  Type = TBD2: ADD-PATH capability.  The value field contains a
-      boolean value of 1 if the BGP Update PDU enclosed in the Route
-      Monitoring message was encoded according to the capability.
+
+
 
 
 
@@ -282,9 +282,13 @@ Lucente & Gu            Expires September 8, 2022               [Page 5]
 Internet-Draft                   BMP TLV                      March 2021
 
 
-   o  Type = TBD3: Multiple Labels capability.  The value field contains
-      a boolean value of 1 if the BGP Update PDU enclosed in the Route
-      Monitoring message was encoded according to the capability.
+   o  Type = TBD2: ADD-PATH capability.  The value field is set to 1 if
+      the BGP Update PDU enclosed in the Route Monitoring message was
+      encoded according to the capability.
+
+   o  Type = TBD3: Multiple Labels capability.  The value field is set
+      to 1 if the BGP Update PDU enclosed in the Route Monitoring
+      message was encoded according to the capability.
 
 8.  Normative References
 
@@ -325,10 +329,6 @@ Acknowledgements
 
    The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
    Graf, Pierre Francois and Ben Maddison for their valuable input.  The
-   authors would also like to thank Greg Skinner and Zongpeng Du for
-   their review.
-
-
 
 
 
@@ -337,6 +337,9 @@ Lucente & Gu            Expires September 8, 2022               [Page 6]
 
 Internet-Draft                   BMP TLV                      March 2021
 
+
+   authors would also like to thank Greg Skinner and Zongpeng Du for
+   their review.
 
 Authors' Addresses
 
@@ -356,9 +359,6 @@ Authors' Addresses
    China
 
    Email: guyunan@huawei.com
-
-
-
 
 
 

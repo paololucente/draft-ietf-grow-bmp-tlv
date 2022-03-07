@@ -225,9 +225,9 @@
 		    be followed by TLV data. This document defines the following new
 		    code points to help stateless parsing of BGP Update PDUs:
                     <list style="symbols">
-                        <t>Type = &IANA_RM_CODE_4B_ASN;: the BGP Update PDU is encoded with support for the 4-octet AS number capability <xref target="RFC6793">RFC 6793</xref>, value MUST be boolean.</t>
-			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, value MUST be boolean.</t>
-			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, value MUST be boolean.</t>
+                        <t>Type = &IANA_RM_CODE_4B_ASN;: the BGP Update PDU is encoded with support for the 4-octet AS number capability <xref target="RFC6793">RFC 6793</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
+			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
+			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
                     </list>
 		</t>
 	    </section>
@@ -270,20 +270,18 @@
 		<list style="symbols">
 		    <t>
 			Type = &IANA_RM_CODE_4B_ASN;: Support for the 4-octet AS number capability.
-			The value field contains a boolean value of 1 if the BGP Update PDU
-			enclosed in the Route Monitoring message was encoded according to the
-			capability.
-		    </t>
-		    <t>
-			Type = &IANA_RM_CODE_PATH_ID;: ADD-PATH capability. The value field
-			contains a boolean value of 1 if the BGP Update PDU enclosed in the Route
+			The value field is set to 1 if the BGP Update PDU enclosed in the Route
 			Monitoring message was encoded according to the capability.
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_MULTI_LABELS;: Multiple Labels capability. The
-			value field contains a boolean value of 1 if the BGP Update PDU
-			enclosed in the Route Monitoring message was encoded according to the
-			capability.
+			Type = &IANA_RM_CODE_PATH_ID;: ADD-PATH capability. The value field is set
+			to 1 if the BGP Update PDU enclosed in the Route Monitoring message was
+			encoded according to the capability.
+		    </t>
+		    <t>
+			Type = &IANA_RM_CODE_MULTI_LABELS;: Multiple Labels capability. The value
+			field is set to 1 if the BGP Update PDU enclosed in the Route Monitoring
+			message was encoded according to the capability.
 		    </t>
 		</list>
             </t>
