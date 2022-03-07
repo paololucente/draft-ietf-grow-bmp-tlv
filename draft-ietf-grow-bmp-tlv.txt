@@ -265,14 +265,14 @@ Internet-Draft                   BMP TLV                      March 2021
 
 7.  IANA Considerations
 
-   This document defines the following new TLV types for BMP Route
-   Monitoring and Peer Down messages (Section 4.2):
+   This document requests the definition of two new registries "BMP
+   Route Monitoring Information TLVs" and "BMP Peer Down Information
+   TLVs".  As part of the "BMP Route Monitoring Information TLVs"
+   registry, the following new TLV types are defined (Section 4.2):
 
    o  Type = TBD1: Support for the 4-octet AS number capability.  The
       value field is set to 1 if the BGP Update PDU enclosed in the
       Route Monitoring message was encoded according to the capability.
-
-
 
 
 
