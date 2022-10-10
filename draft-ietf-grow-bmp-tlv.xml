@@ -29,10 +29,10 @@
             <organization>NTT</organization>
             <address>
                 <postal>
-                    <street>Siriusdreef 70-72</street>
-                    <city>Hoofddorp</city>
-                    <code>2132</code>
-                    <region>WT</region>
+                    <street>Veemweg 23</street>
+                    <city>Barneveld</city>
+                    <code>3771</code>
+                    <region>MT</region>
                     <country>NL</country>
                 </postal>
                 <email>paolo@ntt.net</email>
@@ -104,13 +104,13 @@
 
            <t>
 		This means that both Route Monitoring and Peer Down messages have
-		a non-extensible format. In the Route Monitoring case, this is prevents
+		a non-extensible format. In the Route Monitoring case, this prevents
 		the transmission of characteristics of transported NLRIs (e.g. to
 		help with stateless parsing) or of vendor-specific data. In the Peer
-        Down case, this prevents matching with TLVs previously sent with the Peer Up message.
-        The proposal of this document is to bump the BMP version, for
-		backward compatibility, and allow all message types to make provision for
-		trailing TLV data.
+		Down case, this prevents matching with TLVs previously sent with the
+		Peer Up message. The proposal of this document is to bump the BMP
+		version, for backward compatibility, and allow all message types
+		to make provision for trailing TLV data.
             </t>
         </section>
 
@@ -161,7 +161,8 @@
 		TLVs SHOULD be sorted by their code point. Multiple TLVs of the
 		same type can be repeated as part of the same message, and it is
 		left to the specific use-cases whether all, any, the first or
-		the last TLV should be considered. 
+		the last TLV should be considered as well as whether ordering
+		matters.
 	    </t>
 
 	    <t>
@@ -171,8 +172,9 @@
 		this purpose specifically, TLVs in Route Monitoring messages MUST be
 		indexed, with the index starting at one (1) to refer to the first NLRI.
 		Index zero (0) specifies that a TLV does apply to all NLRIs contained in
-		the BGP Update message. Indexed TLVs are encoded as in the following
-		figure:
+		the BGP Update message. Multiple TLVs of the same type and with the same
+		index can be repeated as part of the same message. Indexed TLVs are
+		encoded as in the following figure:
 	    </t>
 
 	    <figure anchor="BMP-indexed-TLV-header" align="center">
@@ -193,8 +195,8 @@
 	    <t>
 	        Of the BMP message types defined so far, indexed TLVs apply only to
 		Route Monitoring messages and, for example, they do not apply to Route
-		Mirroring messages because the sender may not be aware of the payload of
-		the transported BGP Update message.
+		Mirroring messages because the sender may not be aware of the payload
+		of the transported BGP Update message.
 	    </t>
 	</section>
 

@@ -78,7 +78,7 @@ Table of Contents
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   5
    5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   5
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   7.  Operational Considerations  . . . . . . . . . . . . . . . . .   5
+   7.  Operational Considerations  . . . . . . . . . . . . . . . . .   6
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   7
@@ -115,13 +115,13 @@ Internet-Draft                   BMP TLV                    October 2022
 
 
    This means that both Route Monitoring and Peer Down messages have a
-   non-extensible format.  In the Route Monitoring case, this is
-   prevents the transmission of characteristics of transported NLRIs
-   (e.g. to help with stateless parsing) or of vendor-specific data.  In
-   the Peer Down case, this prevents matching with TLVs previously sent
-   with the Peer Up message.  The proposal of this document is to bump
-   the BMP version, for backward compatibility, and allow all message
-   types to make provision for trailing TLV data.
+   non-extensible format.  In the Route Monitoring case, this prevents
+   the transmission of characteristics of transported NLRIs (e.g. to
+   help with stateless parsing) or of vendor-specific data.  In the Peer
+   Down case, this prevents matching with TLVs previously sent with the
+   Peer Up message.  The proposal of this document is to bump the BMP
+   version, for backward compatibility, and allow all message types to
+   make provision for trailing TLV data.
 
 2.  Terminology
 
@@ -156,7 +156,7 @@ Internet-Draft                   BMP TLV                    October 2022
    TLVs SHOULD be sorted by their code point.  Multiple TLVs of the same
    type can be repeated as part of the same message, and it is left to
    the specific use-cases whether all, any, the first or the last TLV
-   should be considered.
+   should be considered as well as whether ordering matters.
 
    Route Monitoring messages may require per-NLRI TLVs, that is, there
    may be a need to map TLVs to NLRIs contained in the BGP Update
@@ -172,8 +172,10 @@ Internet-Draft                   BMP TLV                    October 2022
 
    Monitoring messages MUST be indexed, with the index starting at one
    (1) to refer to the first NLRI.  Index zero (0) specifies that a TLV
-   does apply to all NLRIs contained in the BGP Update message.  Indexed
-   TLVs are encoded as in the following figure:
+   does apply to all NLRIs contained in the BGP Update message.
+   Multiple TLVs of the same type and with the same index can be
+   repeated as part of the same message.  Indexed TLVs are encoded as in
+   the following figure:
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -214,9 +216,7 @@ Internet-Draft                   BMP TLV                    October 2022
    followed by TLV data.  This document defines the following new code
    points to help stateless parsing of BGP Update PDUs:
 
-   o  Type = TBD1: the BGP Update PDU is encoded with support for the
-      4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
-      and value MUST be 0 for false and 1 for true.
+
 
 
 
@@ -225,6 +225,10 @@ Lucente & Gu             Expires April 13, 2023                 [Page 4]
 
 Internet-Draft                   BMP TLV                    October 2022
 
+
+   o  Type = TBD1: the BGP Update PDU is encoded with support for the
+      4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
+      and value MUST be 0 for false and 1 for true.
 
    o  Type = TBD2: the BGP Update PDU is encoded with the ADD-PATH
       capability RFC 7911 [RFC7911], length MUST be 1 and value MUST be
@@ -266,6 +270,18 @@ Internet-Draft                   BMP TLV                    October 2022
    It is not believed that this document adds any additional security
    considerations.
 
+
+
+
+
+
+
+
+Lucente & Gu             Expires April 13, 2023                 [Page 5]
+
+Internet-Draft                   BMP TLV                    October 2022
+
+
 7.  Operational Considerations
 
    In Route Monitoring messages, the number of TLVs can be bound to the
@@ -274,13 +290,6 @@ Internet-Draft                   BMP TLV                    October 2022
    on the memory and CPU used in a BMP implementation.  As a result of
    that it should always be possible to disable such features to
    mitigate their impact.
-
-
-
-Lucente & Gu             Expires April 13, 2023                 [Page 5]
-
-Internet-Draft                   BMP TLV                    October 2022
-
 
 8.  IANA Considerations
 
@@ -318,15 +327,6 @@ Internet-Draft                   BMP TLV                    October 2022
               DOI 10.17487/RFC6793, December 2012,
               <https://www.rfc-editor.org/info/rfc6793>.
 
-   [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
-              Monitoring Protocol (BMP)", RFC 7854,
-              DOI 10.17487/RFC7854, June 2016,
-              <https://www.rfc-editor.org/info/rfc7854>.
-
-   [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
-              "Advertisement of Multiple Paths in BGP", RFC 7911,
-              DOI 10.17487/RFC7911, July 2016,
-              <https://www.rfc-editor.org/info/rfc7911>.
 
 
 
@@ -337,6 +337,16 @@ Lucente & Gu             Expires April 13, 2023                 [Page 6]
 
 Internet-Draft                   BMP TLV                    October 2022
 
+
+   [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
+              Monitoring Protocol (BMP)", RFC 7854,
+              DOI 10.17487/RFC7854, June 2016,
+              <https://www.rfc-editor.org/info/rfc7854>.
+
+   [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
+              "Advertisement of Multiple Paths in BGP", RFC 7911,
+              DOI 10.17487/RFC7911, July 2016,
+              <https://www.rfc-editor.org/info/rfc7911>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -361,8 +371,8 @@ Authors' Addresses
 
    Paolo Lucente
    NTT
-   Siriusdreef 70-72
-   Hoofddorp, WT  2132
+   Veemweg 23
+   Barneveld, MT  3771
    NL
 
    Email: paolo@ntt.net
@@ -375,16 +385,6 @@ Authors' Addresses
    China
 
    Email: guyunan@huawei.com
-
-
-
-
-
-
-
-
-
-
 
 
 
