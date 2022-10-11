@@ -81,18 +81,18 @@
         <section title="Introduction" anchor="Introduction">
             <t>
 		The BGP Monitoring Protocol (BMP) is defined in <xref target="RFC7854">RFC 7854</xref>.
+	    </t>
 
-		<vspace blankLines="1"/>
-
+            <t>
 		The Route Monitoring message consists of:
 		<list style="symbols">
 			<t>Common Header</t>
 			<t>Per-Peer Header</t>
 			<t>BGP Update PDU</t>
 		</list>
+	    </t>
 
-		<vspace blankLines="1"/>
-
+	    <t>
 		The Peer Down Notification message consists of:
 		<list style="symbols">
 			<t>Common Header</t>
