@@ -114,14 +114,18 @@ Lucente & Gu             Expires April 18, 2023                 [Page 2]
 Internet-Draft                   BMP TLV                    October 2022
 
 
+   o  TLV (only if Reason code is 6)
+
    This means that both Route Monitoring and Peer Down messages have a
-   non-extensible format.  In the Route Monitoring case, this prevents
-   the transmission of characteristics of transported NLRIs (e.g. to
-   help with stateless parsing) or of vendor-specific data.  In the Peer
-   Down case, this prevents matching with TLVs previously sent with the
-   Peer Up message.  The proposal of this document is to bump the BMP
-   version, for backward compatibility, and allow all message types to
-   make provision for trailing TLV data.
+   non-extensible format (except for the specific case of Peer Down
+   Reason Code 6 as defined by RFC 9069 [RFC9069]).  In the Route
+   Monitoring case, this prevents the transmission of characteristics of
+   transported NLRIs (e.g. to help with stateless parsing) or of vendor-
+   specific data.  In the Peer Down case, this prevents matching with
+   TLVs previously sent with the Peer Up message.  The proposal of this
+   document is to bump the BMP version, for backward compatibility, and
+   allow all message types (except Route Mirroring which is meant for
+   debugging) to make provision for trailing TLV data.
 
 2.  Terminology
 
@@ -158,10 +162,6 @@ Internet-Draft                   BMP TLV                    October 2022
    the specific use-cases whether all, any, the first or the last TLV
    should be considered as well as whether ordering matters.
 
-   Route Monitoring messages may require per-NLRI TLVs, that is, there
-   may be a need to map TLVs to NLRIs contained in the BGP Update
-   message, for example, to express additional characteristics of a
-   specific NLRI.  For this purpose specifically, TLVs in Route
 
 
 
@@ -170,6 +170,10 @@ Lucente & Gu             Expires April 18, 2023                 [Page 3]
 Internet-Draft                   BMP TLV                    October 2022
 
 
+   Route Monitoring messages may require per-NLRI TLVs, that is, there
+   may be a need to map TLVs to NLRIs contained in the BGP Update
+   message, for example, to express additional characteristics of a
+   specific NLRI.  For this purpose specifically, TLVs in Route
    Monitoring messages MUST be indexed, with the index starting at one
    (1) to refer to the first NLRI.  Index zero (0) specifies that a TLV
    does apply to all NLRIs contained in the BGP Update message.
@@ -213,10 +217,6 @@ Internet-Draft                   BMP TLV                    October 2022
 
    The Route Monitoring message type is defined in Section 4.6 of
    [RFC7854].  The BGP Update PDU Section 4.3 of [RFC4271] MAY be
-   followed by TLV data.  This document defines the following new code
-   points to help stateless parsing of BGP Update PDUs:
-
-
 
 
 
@@ -225,6 +225,9 @@ Lucente & Gu             Expires April 18, 2023                 [Page 4]
 
 Internet-Draft                   BMP TLV                    October 2022
 
+
+   followed by TLV data.  This document defines the following new code
+   points to help stateless parsing of BGP Update PDUs:
 
    o  Type = TBD1: the BGP Update PDU is encoded with support for the
       4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
@@ -269,9 +272,6 @@ Internet-Draft                   BMP TLV                    October 2022
 
    It is not believed that this document adds any additional security
    considerations.
-
-
-
 
 
 
@@ -360,12 +360,17 @@ Internet-Draft                   BMP TLV                    October 2022
               Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
               2019, <https://www.rfc-editor.org/info/rfc8654>.
 
+   [RFC9069]  Evens, T., Bayraktar, S., Bhardwaj, M., and P. Lucente,
+              "Support for Local RIB in the BGP Monitoring Protocol
+              (BMP)", RFC 9069, DOI 10.17487/RFC9069, February 2022,
+              <https://www.rfc-editor.org/info/rfc9069>.
+
 Acknowledgements
 
    The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
-   Graf, Pierre Francois and Ben Maddison for their valuable input.  The
-   authors would also like to thank Greg Skinner and Zongpeng Du for
-   their review.
+   Graf, Pierre Francois, Ben Maddison and Tim Evens for their valuable
+   input.  The authors would also like to thank Greg Skinner and
+   Zongpeng Du for their review.
 
 Authors' Addresses
 
@@ -376,6 +381,17 @@ Authors' Addresses
    NL
 
    Email: paolo@ntt.net
+
+
+
+
+
+
+
+
+Lucente & Gu             Expires April 18, 2023                 [Page 7]
+
+Internet-Draft                   BMP TLV                    October 2022
 
 
    Yunan Gu
@@ -389,4 +405,44 @@ Authors' Addresses
 
 
 
-Lucente & Gu             Expires April 18, 2023                 [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lucente & Gu             Expires April 18, 2023                 [Page 8]

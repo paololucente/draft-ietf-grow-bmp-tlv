@@ -99,18 +99,22 @@
 			<t>Per-Peer Header</t>
 			<t>Reason</t>
 			<t>Data (only if Reason code is 1, 2 or 3)</t>
+			<t>TLV (only if Reason code is 6)</t>
 		</list>
 	   </t>
 
            <t>
 		This means that both Route Monitoring and Peer Down messages have
-		a non-extensible format. In the Route Monitoring case, this prevents
-		the transmission of characteristics of transported NLRIs (e.g. to
-		help with stateless parsing) or of vendor-specific data. In the Peer
-		Down case, this prevents matching with TLVs previously sent with the
-		Peer Up message. The proposal of this document is to bump the BMP
-		version, for backward compatibility, and allow all message types
-		to make provision for trailing TLV data.
+		a non-extensible format (except for the specific case of Peer Down
+		Reason Code 6 as defined by <xref target="RFC9069">RFC 9069</xref>).
+		In the Route Monitoring case, this prevents the transmission of
+		characteristics of transported NLRIs (e.g. to help with stateless
+		parsing) or of vendor-specific data. In the Peer Down case, this
+		prevents matching with TLVs previously sent with the Peer Up
+		message. The proposal of this document is to bump the BMP version,
+		for backward compatibility, and allow all message types (except
+		Route Mirroring which is meant for debugging) to make provision
+		for trailing TLV data.
             </t>
         </section>
 
@@ -319,13 +323,15 @@
 		<?rfc include="reference.RFC.7911.xml"?>
 		<?rfc include="reference.RFC.8277.xml"?>
 		<?rfc include="reference.RFC.8654.xml"?>
+		<?rfc include="reference.RFC.9069.xml"?>
         </references>
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
             <t>
 		The authors would like to thank Jeff Haas, Camilo Cardona, Thomas Graf,
-		Pierre Francois and Ben Maddison for their valuable input. The authors
-		would also like to thank Greg Skinner and Zongpeng Du for their review.
+		Pierre Francois, Ben Maddison and Tim Evens for their valuable input.
+		The authors would also like to thank Greg Skinner and Zongpeng Du for
+		their review.
             </t>
         </section>
 
