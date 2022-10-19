@@ -162,11 +162,11 @@
 	    </figure>
 
 	    <t>
-		TLVs SHOULD be sorted by their code point. Multiple TLVs of the
-		same type can be repeated as part of the same message, and it is
-		left to the specific use-cases whether all, any, the first or
-		the last TLV should be considered as well as whether ordering
-		matters.
+		TLVs SHOULD be sorted by the sender by their code point. Multiple
+		TLVs of the same type can be repeated as part of the same message,
+		and it is left to the specific use-cases whether all, any, the
+		first or the last TLV should be considered as well as whether
+		ordering matters.
 	    </t>
 
 	    <t>
