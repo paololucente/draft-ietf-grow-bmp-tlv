@@ -284,10 +284,11 @@
 
         <section title="IANA Considerations">
             <t>
-		This document requests the definition of two new registries "BMP Route Monitoring
-		Information TLVs" and "BMP Peer Down Information TLVs". As part of the "BMP Route
-		Monitoring Information TLVs" registry, the following new TLV types are defined
-		(<xref target="TLVinRM"/>):
+		This document requests the renaming of the "Peer Up TLVs" registry defined by
+		<xref target="I-D.ietf-grow-bmp-peer-up">BMP Peer Up Message Namespace</xref>
+                into "Peer Up and Peer Down TLVs" and the definition of one new registry "BMP
+		Route Monitoring TLVs". As part of the "BMP Route Monitoring TLVs" registry,
+		the following new TLV types are defined (<xref target="TLVinRM"/>):
 
 		<list style="symbols">
 		    <t>
@@ -324,6 +325,7 @@
 		<?rfc include="reference.RFC.8277.xml"?>
 		<?rfc include="reference.RFC.8654.xml"?>
 		<?rfc include="reference.RFC.9069.xml"?>
+		<?rfc include='reference.I-D.ietf-grow-bmp-peer-up'?>
         </references>
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">

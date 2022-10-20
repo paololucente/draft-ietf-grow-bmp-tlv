@@ -293,10 +293,12 @@ Internet-Draft                   BMP TLV                    October 2022
 
 8.  IANA Considerations
 
-   This document requests the definition of two new registries "BMP
-   Route Monitoring Information TLVs" and "BMP Peer Down Information
-   TLVs".  As part of the "BMP Route Monitoring Information TLVs"
-   registry, the following new TLV types are defined (Section 4.2):
+   This document requests the renaming of the "Peer Up TLVs" registry
+   defined by BMP Peer Up Message Namespace [I-D.ietf-grow-bmp-peer-up]
+   into "Peer Up and Peer Down TLVs" and the definition of one new
+   registry "BMP Route Monitoring TLVs".  As part of the "BMP Route
+   Monitoring TLVs" registry, the following new TLV types are defined
+   (Section 4.2):
 
    o  Type = TBD1: Support for the 4-octet AS number capability.  The
       value field is set to 1 if the BGP Update PDU enclosed in the
@@ -312,6 +314,12 @@ Internet-Draft                   BMP TLV                    October 2022
 
 9.  Normative References
 
+   [I-D.ietf-grow-bmp-peer-up]
+              Scudder, J., "BMP Peer Up Message Namespace", draft-ietf-
+              grow-bmp-peer-up-00 (work in progress), July 2019,
+              <https://www.ietf.org/archive/id/draft-ietf-grow-bmp-peer-
+              up-00.txt>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -322,14 +330,6 @@ Internet-Draft                   BMP TLV                    October 2022
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
 
-   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
-              Autonomous System (AS) Number Space", RFC 6793,
-              DOI 10.17487/RFC6793, December 2012,
-              <https://www.rfc-editor.org/info/rfc6793>.
-
-
-
-
 
 
 
@@ -337,6 +337,11 @@ Lucente & Gu             Expires April 22, 2023                 [Page 6]
 
 Internet-Draft                   BMP TLV                    October 2022
 
+
+   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
+              Autonomous System (AS) Number Space", RFC 6793,
+              DOI 10.17487/RFC6793, December 2012,
+              <https://www.rfc-editor.org/info/rfc6793>.
 
    [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
               Monitoring Protocol (BMP)", RFC 7854,
@@ -381,11 +386,6 @@ Authors' Addresses
    NL
 
    Email: paolo@ntt.net
-
-
-
-
-
 
 
 
