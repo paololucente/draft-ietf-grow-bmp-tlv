@@ -2,9 +2,10 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
         <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
-        <!ENTITY IANA_RM_CODE_4B_ASN "TBD1">
-        <!ENTITY IANA_RM_CODE_PATH_ID "TBD2">
-        <!ENTITY IANA_RM_CODE_MULTI_LABELS "TBD3">
+        <!ENTITY IANA_RM_CODE_GROUP "TBD1">
+        <!ENTITY IANA_RM_CODE_4B_ASN "TBD2">
+        <!ENTITY IANA_RM_CODE_PATH_ID "TBD3">
+        <!ENTITY IANA_RM_CODE_MULTI_LABELS "TBD4">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -228,14 +229,40 @@
 		<t>
 		    The Route Monitoring message type is defined in <xref target="RFC7854">Section 4.6 of</xref>.
 		    The BGP Update PDU <xref target="RFC4271">Section 4.3 of</xref> MAY
-		    be followed by TLV data. This document defines the following new
-		    code points to help stateless parsing of BGP Update PDUs:
+		    be followed by TLV data.
+		</t>
+	    <section title="Group TLV" anchor="GroupTLVinRM">
+		<t>
+		    In a Route Monitoring message where the BGP Update PDU carries N
+		    NLRIs, indexed TLVs do allow to handle the cases of 1:1 and N:1
+		    relationship among NLRIs and TLVs. The case of N:M relationship
+		    does instead require a form of grouping and hence this document
+		    defines a Group TLV to achieve this.
+		</t>
+		<t>
+		    The TLV MUST have an index set to zero. The value MUST contain:
+		    <list style="symbols">
+		    <t>A 2 bytes index whose value MUST be greater than the amount
+		    of NLRIs packed in the BGP Update PDU</t>
+		    <t>One or more 2 bytes indexes whose values MUST be less or
+		    equal to the amount of NLRIs packed in the BGP Update PDU</t>
+		    </list>
+		</t>
+		<t>
+		    The Group TLV code point is &IANA_RM_CODE_GROUP;
+		</t>
+	    </section>
+	    <section title="Stateless parsing TLVs">
+		<t>
+		    This document also defines the following new code points to
+		    help stateless parsing of BGP Update PDUs:
                     <list style="symbols">
                         <t>Type = &IANA_RM_CODE_4B_ASN;: the BGP Update PDU is encoded with support for the 4-octet AS number capability <xref target="RFC6793">RFC 6793</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
 			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
 			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
                     </list>
 		</t>
+	    </section>
 	    </section>
 	    <section title="TLV data in Peer Down" anchor="TLVinPD">
 		<t>
@@ -291,6 +318,10 @@
 		the following new TLV types are defined (<xref target="TLVinRM"/>):
 
 		<list style="symbols">
+		    <t>
+			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
+			field is defined in <xref target="GroupTLVinRM"/>
+		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_4B_ASN;: Support for the 4-octet AS number capability.
 			The value field is set to 1 if the BGP Update PDU enclosed in the Route
