@@ -2,10 +2,11 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
         <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
-        <!ENTITY IANA_RM_CODE_GROUP "TBD1">
-        <!ENTITY IANA_RM_CODE_4B_ASN "TBD2">
-        <!ENTITY IANA_RM_CODE_PATH_ID "TBD3">
-        <!ENTITY IANA_RM_CODE_MULTI_LABELS "TBD4">
+        <!ENTITY IANA_RM_CODE_BGP_PDU "TBD1">
+        <!ENTITY IANA_RM_CODE_GROUP "TBD2">
+        <!ENTITY IANA_RM_CODE_4B_ASN "TBD3">
+        <!ENTITY IANA_RM_CODE_PATH_ID "TBD4">
+        <!ENTITY IANA_RM_CODE_MULTI_LABELS "TBD5">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -65,15 +66,15 @@
         <abstract>
             <t>
 		Most of the message types defined by the BGP Monitoring Protocol (BMP)
-		make provision for optional trailing data. However, Route Monitoring
+		make provision for data in TLV format. However, Route Monitoring
 		messages (which provide a snapshot of the monitored Routing Information
 		Base) and Peer Down messages (which indicate that a peering session was
-		terminated) do not. Supporting optional data in TLV format across
+		terminated) do not. Supporting (optional) data in TLV format across
 		all BMP message types allows for a homogeneous and extensible surface
 		that would be useful for the most different use-cases that need to
 		convey additional data to a BMP station. While it is not intended
 		for this document to cover any specific utilization scenario, it defines
-		a simple way to support optional TLV data in all message types.
+		a simple way to support TLV data in all message types.
             </t>
         </abstract>
     </front>
@@ -113,9 +114,8 @@
 		parsing) or of vendor-specific data. In the Peer Down case, this
 		prevents matching with TLVs previously sent with the Peer Up
 		message. The proposal of this document is to bump the BMP version,
-		for backward compatibility, and allow all message types (except
-		Route Mirroring which is meant for debugging) to make provision
-		for trailing TLV data.
+		for backward compatibility, and allow all defined BMP message types
+		to make provision for TLV data.
             </t>
         </section>
 
@@ -228,8 +228,16 @@
 	    <section title="TLV data in Route Monitoring" anchor="TLVinRM">
 		<t>
 		    The Route Monitoring message type is defined in <xref target="RFC7854">Section 4.6 of</xref>.
-		    The BGP Update PDU <xref target="RFC4271">Section 4.3 of</xref> MAY
-		    be followed by TLV data.
+		    The consistency model selected to extend this message type with TLVs
+		    is with the Route Mirroring type where the Per-peer header is being
+		    followed by TLVs.  
+		</t>
+		<t>
+		    The BGP Update PDU <xref target="RFC4271">Section 4.3 of</xref>
+		    is encoded itself as part of a BGP Message TLV with code point
+		    &IANA_RM_CODE_BGP_PDU; and index set to zero. A Route Monitoring
+		    message MUST contain one BGP Message TLV which may be preceeded
+		    and followed by other optional TLV data.
 		</t>
 	    <section title="Group TLV" anchor="GroupTLVinRM">
 		<t>
@@ -267,29 +275,36 @@
 	    <section title="TLV data in Peer Down" anchor="TLVinPD">
 		<t>
 		    The Peer Down Notification message type is defined in <xref target="RFC7854">Section 4.9 of</xref>.
-		    For Reason codes 1 or 3, a BGP Notification PDU follows; the PDU MAY be followed by TLV data.
-		    For Reason code 2, a 2-byte field to give additional FSM info follows; this field MAY be
-		    followed by TLV data. For all other Reason codes, TLV data MAY follow the Reason field.
+		    The consistency model selected to extend this message
+		    type with TLVs is with the Peer Up type where optional
+		    TLVs are placed at the end of the message.
+		</t>
+		<t>
+		    This means for Reason codes 1 or 3, a BGP Notification
+		    PDU follows; the PDU MAY be followed by TLV data. For
+		    Reason code 2, a 2-byte field to give additional FSM
+		    info follows; this field MAY be followed by TLV data.
+		    For all other Reason codes, TLV data MAY follow the
+		    Reason field.
 		</t>
 	    </section>
 	    <section title="TLV data in other BMP messages" anchor="TLVinOther">
 		<t>
-		    All other message types defined in <xref target="RFC7854">RFC7854</xref> already provide for TLV data.
-		    It is RECOMMENDED that all future BMP message types also provide for trailing TLV data.
+		    All other message types defined in <xref target="RFC7854">RFC7854</xref>
+		    do already provision for TLV data. It is RECOMMENDED that
+		    all future BMP message types will also provide for TLV
+		    data following a consistency model with existing message
+		    types.
 		</t>
 	    </section>
         </section>
 
         <section title="Error handling">
-            <t>
-		When a BGP PDU is enclosed in BMP messages (always for Route Monitoring messages,
-		in some cases for Peer Down messages), processing of optional trailing data is
-		subject to proper decoding of a well-formed BGP message.
-            </t>
 	    <t>
-		Additionally, it is worth nothing that <xref target="RFC8654">RFC8654</xref>
-		permits BGP Updates and other messages to grow to a length of 65535 octets. This
-		may cause a BMP PDU that attempts to encapsulate such long messages to overflow.
+		It is worth nothing that <xref target="RFC8654">RFC8654</xref>
+		permits BGP Update and other messages to grow to a length of
+		65535 octets. This may cause a BMP PDU that attempts to encapsulate
+		such long messages to overflow.
 	    </t>
         </section>
 
@@ -301,11 +316,12 @@
 
         <section title="Operational Considerations">
             <t>
-                In Route Monitoring messages, the number of TLVs can be bound to the amount of NLRIs
-		carried in the BGP Update message. This may degrade the packing of information in such
-		messages and have specific impacts on the memory and CPU used in a BMP implementation.
-		As a result of that it should always be possible to disable such features to mitigate
-		their impact.
+                In Route Monitoring messages, the number of TLVs can be bound to
+		the amount of NLRIs carried in the BGP Update message. This may
+		degrade the packing of information in such messages and have
+		specific impacts on the memory and CPU used in a BMP implementation.
+		As a result of that it should always be possible to disable such
+		features to mitigate their impact.
             </t>
         </section>
 
@@ -318,6 +334,10 @@
 		the following new TLV types are defined (<xref target="TLVinRM"/>):
 
 		<list style="symbols">
+		    <t>
+			Type = &IANA_RM_CODE_BGP_PDU;: Support for BGP Message TLV. The value
+			field is defined in <xref target="TLVinRM"/>
+		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
 			field is defined in <xref target="GroupTLVinRM"/>
