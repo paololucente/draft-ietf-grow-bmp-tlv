@@ -4,9 +4,10 @@
         <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
         <!ENTITY IANA_RM_CODE_BGP_PDU "TBD1">
         <!ENTITY IANA_RM_CODE_GROUP "TBD2">
-        <!ENTITY IANA_RM_CODE_4B_ASN "TBD3">
-        <!ENTITY IANA_RM_CODE_PATH_ID "TBD4">
-        <!ENTITY IANA_RM_CODE_MULTI_LABELS "TBD5">
+        <!ENTITY IANA_RM_CODE_VRF "TBD3">
+        <!ENTITY IANA_RM_CODE_4B_ASN "TBD4">
+        <!ENTITY IANA_RM_CODE_PATH_ID "TBD5">
+        <!ENTITY IANA_RM_CODE_MULTI_LABELS "TBD6">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -260,6 +261,17 @@
 		    The Group TLV code point is &IANA_RM_CODE_GROUP;
 		</t>
 	    </section>
+	    <section title="VRF/Table Name TLV" anchor="VrfTLVinRM">
+		<t>
+		    The Information field contains a UTF-8 string whose value MUST
+		    be equal to the value of the VRF or table name (ie. RD instance
+		    name) being conveyed.  The string size MUST be within the range
+		    of 1 to 255 bytes.
+		</t>
+		<t>
+		    The VRF/Table Name TLV code point is &IANA_RM_CODE_VRF;
+		</t>
+	    </section>
 	    <section title="Stateless parsing TLVs">
 		<t>
 		    This document also defines the following new code points to
@@ -341,6 +353,10 @@
 		    <t>
 			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
 			field is defined in <xref target="GroupTLVinRM"/>
+		    </t>
+		    <t>
+			Type = &IANA_RM_CODE_VRF;: Support for VRF/Table Name TLV. The value
+			field is defined in <xref target="VrfTLVinRM"/>
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_4B_ASN;: Support for the 4-octet AS number capability.
