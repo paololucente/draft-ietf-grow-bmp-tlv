@@ -429,9 +429,9 @@ Internet-Draft                   BMP TLV                      March 2023
 Acknowledgements
 
    The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
-   Graf, Pierre Francois, Ben Maddison and Tim Evens for their valuable
-   input.  The authors would also like to thank Greg Skinner and
-   Zongpeng Du for their review.
+   Graf, Pierre Francois, Ben Maddison, Tim Evens and Luuk Hendriks for
+   their valuable input.  The authors would also like to thank Greg
+   Skinner and Zongpeng Du for their review.
 
 Authors' Addresses
 
