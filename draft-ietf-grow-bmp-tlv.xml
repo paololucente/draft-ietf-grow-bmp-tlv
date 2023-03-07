@@ -252,11 +252,16 @@
 		<t>
 		    The TLV MUST have an index set to zero. The value MUST contain:
 		    <list style="symbols">
-		    <t>A 2 bytes index whose value MUST be greater than the amount
-		    of NLRIs packed in the BGP Update PDU</t>
+		    <t>A 2 bytes Group Index whose value MUST be greater than the
+		    amount of NLRIs packed in the BGP Update PDU and MUST be unique
+		    to the message</t>
 		    <t>One or more 2 bytes indexes whose values MUST be less or
-		    equal to the amount of NLRIs packed in the BGP Update PDU</t>
+		    equal to the amount of NLRIs packed in the BGP Update PDU.</t>
 		    </list>
+		    A NLRI index can be listed as part of multiple Group TLVs within
+		    the same message. NLRI indexes within a Group TLV SHOULD be
+		    sorted by the sender. Finally, a Group Index MUST not recursively
+		    include another Group Index.
 		</t>
 		<t>
 		    The Group TLV code point is &IANA_RM_CODE_GROUP;

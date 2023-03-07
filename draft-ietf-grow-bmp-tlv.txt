@@ -77,16 +77,16 @@ Table of Contents
      4.2.  TLV data in Route Monitoring  . . . . . . . . . . . . . .   5
        4.2.1.  Group TLV . . . . . . . . . . . . . . . . . . . . . .   5
        4.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   5
-       4.2.3.  Stateless parsing TLVs  . . . . . . . . . . . . . . .   5
+       4.2.3.  Stateless parsing TLVs  . . . . . . . . . . . . . . .   6
      4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   6
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   6
    5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   6
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-   7.  Operational Considerations  . . . . . . . . . . . . . . . . .   6
+   7.  Operational Considerations  . . . . . . . . . . . . . . . . .   7
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .   7
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   8
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -248,11 +248,17 @@ Internet-Draft                   BMP TLV                      March 2023
 
    The TLV MUST have an index set to zero.  The value MUST contain:
 
-   *  A 2 bytes index whose value MUST be greater than the amount of
-      NLRIs packed in the BGP Update PDU
+   *  A 2 bytes Group Index whose value MUST be greater than the amount
+      of NLRIs packed in the BGP Update PDU and MUST be unique to the
+      message
 
    *  One or more 2 bytes indexes whose values MUST be less or equal to
-      the amount of NLRIs packed in the BGP Update PDU
+      the amount of NLRIs packed in the BGP Update PDU.
+
+   A NLRI index can be listed as part of multiple Group TLVs within the
+   same message.  NLRI indexes within a Group TLV SHOULD be sorted by
+   the sender.  Finally, a Group Index MUST not recursively include
+   another Group Index.
 
    The Group TLV code point is TBD2
 
@@ -265,14 +271,8 @@ Internet-Draft                   BMP TLV                      March 2023
 
    The VRF/Table Name TLV code point is TBD3
 
-4.2.3.  Stateless parsing TLVs
 
-   This document also defines the following new code points to help
-   stateless parsing of BGP Update PDUs:
 
-   *  Type = TBD4: the BGP Update PDU is encoded with support for the
-      4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
-      and value MUST be 0 for false and 1 for true.
 
 
 
@@ -281,6 +281,15 @@ Lucente & Gu            Expires 8 September 2023                [Page 5]
 
 Internet-Draft                   BMP TLV                      March 2023
 
+
+4.2.3.  Stateless parsing TLVs
+
+   This document also defines the following new code points to help
+   stateless parsing of BGP Update PDUs:
+
+   *  Type = TBD4: the BGP Update PDU is encoded with support for the
+      4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
+      and value MUST be 0 for false and 1 for true.
 
    *  Type = TBD5: the BGP Update PDU is encoded with the ADD-PATH
       capability RFC 7911 [RFC7911], length MUST be 1 and value MUST be
@@ -321,6 +330,14 @@ Internet-Draft                   BMP TLV                      March 2023
    It is not believed that this document adds any additional security
    considerations.
 
+
+
+
+Lucente & Gu            Expires 8 September 2023                [Page 6]
+
+Internet-Draft                   BMP TLV                      March 2023
+
+
 7.  Operational Considerations
 
    In Route Monitoring messages, the number of TLVs can be bound to the
@@ -329,14 +346,6 @@ Internet-Draft                   BMP TLV                      March 2023
    on the memory and CPU used in a BMP implementation.  As a result of
    that it should always be possible to disable such features to
    mitigate their impact.
-
-
-
-
-Lucente & Gu            Expires 8 September 2023                [Page 6]
-
-Internet-Draft                   BMP TLV                      March 2023
-
 
 8.  IANA Considerations
 
@@ -376,6 +385,15 @@ Internet-Draft                   BMP TLV                      March 2023
               24 July 2019, <https://datatracker.ietf.org/doc/html/
               draft-ietf-grow-bmp-peer-up-00>.
 
+
+
+
+
+Lucente & Gu            Expires 8 September 2023                [Page 7]
+
+Internet-Draft                   BMP TLV                      March 2023
+
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -385,14 +403,6 @@ Internet-Draft                   BMP TLV                      March 2023
               Border Gateway Protocol 4 (BGP-4)", RFC 4271,
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
-
-
-
-
-Lucente & Gu            Expires 8 September 2023                [Page 7]
-
-Internet-Draft                   BMP TLV                      March 2023
-
 
    [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
               Autonomous System (AS) Number Space", RFC 6793,
@@ -433,6 +443,13 @@ Acknowledgements
    their valuable input.  The authors would also like to thank Greg
    Skinner and Zongpeng Du for their review.
 
+
+
+Lucente & Gu            Expires 8 September 2023                [Page 8]
+
+Internet-Draft                   BMP TLV                      March 2023
+
+
 Authors' Addresses
 
    Paolo Lucente
@@ -443,13 +460,6 @@ Authors' Addresses
    Email: paolo@ntt.net
 
 
-
-
-Lucente & Gu            Expires 8 September 2023                [Page 8]
-
-Internet-Draft                   BMP TLV                      March 2023
-
-
    Yunan Gu
    Huawei
    Huawei Bld., No.156 Beiqing Rd.
@@ -457,16 +467,6 @@ Internet-Draft                   BMP TLV                      March 2023
    100095
    China
    Email: guyunan@huawei.com
-
-
-
-
-
-
-
-
-
-
 
 
 
