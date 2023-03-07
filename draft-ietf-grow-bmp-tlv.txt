@@ -6,7 +6,7 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: June 4, 2023                                   December 1, 2022
+Expires: 8 September 2023                                   7 March 2023
 
 
       TLV support for BMP Route Monitoring and Peer Down Messages
@@ -41,30 +41,31 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 4, 2023.
+   This Internet-Draft will expire on 8 September 2023.
 
 Copyright Notice
 
-   Copyright (c) 2022 IETF Trust and the persons identified as the
+   Copyright (c) 2023 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
-   This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents
 
 
 
-Lucente & Gu              Expires June 4, 2023                  [Page 1]
+
+
+Lucente & Gu            Expires 8 September 2023                [Page 1]
 
-Internet-Draft                   BMP TLV                   December 2022
+Internet-Draft                   BMP TLV                      March 2023
 
 
-   (https://trustee.ietf.org/license-info) in effect on the date of
-   publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
-   to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
 
 Table of Contents
 
@@ -93,30 +94,31 @@ Table of Contents
 
    The Route Monitoring message consists of:
 
-   o  Common Header
+   *  Common Header
 
-   o  Per-Peer Header
+   *  Per-Peer Header
 
-   o  BGP Update PDU
+   *  BGP Update PDU
 
    The Peer Down Notification message consists of:
 
-   o  Common Header
+   *  Common Header
 
-   o  Per-Peer Header
-
-   o  Reason
+   *  Per-Peer Header
 
 
 
-Lucente & Gu              Expires June 4, 2023                  [Page 2]
+
+Lucente & Gu            Expires 8 September 2023                [Page 2]
 
-Internet-Draft                   BMP TLV                   December 2022
+Internet-Draft                   BMP TLV                      March 2023
 
 
-   o  Data (only if Reason code is 1, 2 or 3)
+   *  Reason
 
-   o  TLV (only if Reason code is 6)
+   *  Data (only if Reason code is 1, 2 or 3)
+
+   *  TLV (only if Reason code is 6)
 
    This means that both Route Monitoring and Peer Down messages have a
    non-extensible format (except for the specific case of Peer Down
@@ -141,11 +143,11 @@ Internet-Draft                   BMP TLV                   December 2022
    The TLV data type is already defined in Section 4.4 of [RFC7854] for
    the Initiation and Peer Up message types.  A TLV consists of:
 
-   o  2 octets of TLV Type,
+   *  2 octets of TLV Type,
 
-   o  2 octets of TLV Length,
+   *  2 octets of TLV Length,
 
-   o  0 or more octets of TLV Value.
+   *  0 or more octets of TLV Value.
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -156,20 +158,21 @@ Internet-Draft                   BMP TLV                   December 2022
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
-                                 Figure 1
+                                  Figure 1
+
+
+
+
+
+
+Lucente & Gu            Expires 8 September 2023                [Page 3]
+
+Internet-Draft                   BMP TLV                      March 2023
+
 
    TLVs SHOULD be sorted by the sender by their code point.  Multiple
    TLVs of the same type can be repeated as part of the same message,
    and it is left to the specific use-cases whether all, any, the first
-
-
-
-
-Lucente & Gu              Expires June 4, 2023                  [Page 3]
-
-Internet-Draft                   BMP TLV                   December 2022
-
-
    or the last TLV should be considered as well as whether ordering
    matters.
 
@@ -195,7 +198,7 @@ Internet-Draft                   BMP TLV                   December 2022
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
-                                 Figure 2
+                                  Figure 2
 
    Of the BMP message types defined so far, indexed TLVs apply only to
    Route Monitoring messages and, for example, they do not apply to
@@ -210,20 +213,17 @@ Internet-Draft                   BMP TLV                   December 2022
    structure remains unaltered, the following two definitions are
    changed:
 
-   o  Version: Indicates the BMP version.  This is set to '4' for all
+   *  Version: Indicates the BMP version.  This is set to '4' for all
       messages.
 
-   o  Message Length: Total length of the message in bytes (including
+   *  Message Length: Total length of the message in bytes (including
       headers, encapsulated BGP message and optional data)
 
 
 
-
-
-
-Lucente & Gu              Expires June 4, 2023                  [Page 4]
+Lucente & Gu            Expires 8 September 2023                [Page 4]
 
-Internet-Draft                   BMP TLV                   December 2022
+Internet-Draft                   BMP TLV                      March 2023
 
 
 4.2.  TLV data in Route Monitoring
@@ -248,10 +248,10 @@ Internet-Draft                   BMP TLV                   December 2022
 
    The TLV MUST have an index set to zero.  The value MUST contain:
 
-   o  A 2 bytes index whose value MUST be greater than the amount of
+   *  A 2 bytes index whose value MUST be greater than the amount of
       NLRIs packed in the BGP Update PDU
 
-   o  One or more 2 bytes indexes whose values MUST be less or equal to
+   *  One or more 2 bytes indexes whose values MUST be less or equal to
       the amount of NLRIs packed in the BGP Update PDU
 
    The Group TLV code point is TBD2
@@ -270,23 +270,23 @@ Internet-Draft                   BMP TLV                   December 2022
    This document also defines the following new code points to help
    stateless parsing of BGP Update PDUs:
 
-   o  Type = TBD4: the BGP Update PDU is encoded with support for the
+   *  Type = TBD4: the BGP Update PDU is encoded with support for the
       4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
       and value MUST be 0 for false and 1 for true.
 
 
 
 
-Lucente & Gu              Expires June 4, 2023                  [Page 5]
+Lucente & Gu            Expires 8 September 2023                [Page 5]
 
-Internet-Draft                   BMP TLV                   December 2022
+Internet-Draft                   BMP TLV                      March 2023
 
 
-   o  Type = TBD5: the BGP Update PDU is encoded with the ADD-PATH
+   *  Type = TBD5: the BGP Update PDU is encoded with the ADD-PATH
       capability RFC 7911 [RFC7911], length MUST be 1 and value MUST be
       0 for false and 1 for true.
 
-   o  Type = TBD6: the BGP Update PDU is encoded with the Multiple
+   *  Type = TBD6: the BGP Update PDU is encoded with the Multiple
       Labels capability RFC 8277 [RFC8277], length MUST be 1 and value
       MUST be 0 for false and 1 for true.
 
@@ -333,9 +333,9 @@ Internet-Draft                   BMP TLV                   December 2022
 
 
 
-Lucente & Gu              Expires June 4, 2023                  [Page 6]
+Lucente & Gu            Expires 8 September 2023                [Page 6]
 
-Internet-Draft                   BMP TLV                   December 2022
+Internet-Draft                   BMP TLV                      March 2023
 
 
 8.  IANA Considerations
@@ -347,34 +347,34 @@ Internet-Draft                   BMP TLV                   December 2022
    Monitoring TLVs" registry, the following new TLV types are defined
    (Section 4.2):
 
-   o  Type = TBD1: Support for BGP Message TLV.  The value field is
+   *  Type = TBD1: Support for BGP Message TLV.  The value field is
       defined in Section 4.2
 
-   o  Type = TBD2: Support for grouping of TLVs.  The value field is
+   *  Type = TBD2: Support for grouping of TLVs.  The value field is
       defined in Section 4.2.1
 
-   o  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
+   *  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
       defined in Section 4.2.2
 
-   o  Type = TBD4: Support for the 4-octet AS number capability.  The
+   *  Type = TBD4: Support for the 4-octet AS number capability.  The
       value field is set to 1 if the BGP Update PDU enclosed in the
       Route Monitoring message was encoded according to the capability.
 
-   o  Type = TBD5: ADD-PATH capability.  The value field is set to 1 if
+   *  Type = TBD5: ADD-PATH capability.  The value field is set to 1 if
       the BGP Update PDU enclosed in the Route Monitoring message was
       encoded according to the capability.
 
-   o  Type = TBD6: Multiple Labels capability.  The value field is set
+   *  Type = TBD6: Multiple Labels capability.  The value field is set
       to 1 if the BGP Update PDU enclosed in the Route Monitoring
       message was encoded according to the capability.
 
 9.  Normative References
 
    [I-D.ietf-grow-bmp-peer-up]
-              Scudder, J., "BMP Peer Up Message Namespace", draft-ietf-
-              grow-bmp-peer-up-00 (work in progress), July 2019,
-              <https://www.ietf.org/archive/id/draft-ietf-grow-bmp-peer-
-              up-00.txt>.
+              Scudder, J., "BMP Peer Up Message Namespace", Work in
+              Progress, Internet-Draft, draft-ietf-grow-bmp-peer-up-00,
+              24 July 2019, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-grow-bmp-peer-up-00>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -389,9 +389,9 @@ Internet-Draft                   BMP TLV                   December 2022
 
 
 
-Lucente & Gu              Expires June 4, 2023                  [Page 7]
+Lucente & Gu            Expires 8 September 2023                [Page 7]
 
-Internet-Draft                   BMP TLV                   December 2022
+Internet-Draft                   BMP TLV                      March 2023
 
 
    [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
@@ -438,24 +438,24 @@ Authors' Addresses
    Paolo Lucente
    NTT
    Veemweg 23
-   Barneveld, MT  3771
-   NL
-
+   3771 Barneveld
+   Netherlands
    Email: paolo@ntt.net
 
 
 
-Lucente & Gu              Expires June 4, 2023                  [Page 8]
+
+Lucente & Gu            Expires 8 September 2023                [Page 8]
 
-Internet-Draft                   BMP TLV                   December 2022
+Internet-Draft                   BMP TLV                      March 2023
 
 
    Yunan Gu
    Huawei
    Huawei Bld., No.156 Beiqing Rd.
-   Beijing  100095
+   Beijing
+   100095
    China
-
    Email: guyunan@huawei.com
 
 
@@ -501,4 +501,4 @@ Internet-Draft                   BMP TLV                   December 2022
 
 
 
-Lucente & Gu              Expires June 4, 2023                  [Page 9]
+Lucente & Gu            Expires 8 September 2023                [Page 9]
