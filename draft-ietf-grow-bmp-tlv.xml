@@ -200,6 +200,11 @@
 	    </figure>
 
 	    <t>
+		In indexed TLVs, the reported length referts to the encoded value (ie.
+		it does exclude the length of the index field).
+	    </t>
+
+	    <t>
 	        Of the BMP message types defined so far, indexed TLVs apply only to
 		Route Monitoring messages and, for example, they do not apply to Route
 		Mirroring messages because the sender may not be aware of the payload
