@@ -271,6 +271,90 @@
 		<t>
 		    The Group TLV code point is &IANA_RM_CODE_GROUP;
 		</t>
+
+        <section title="Wireformat example" anchor="TLVexample">
+            <t>
+                The diagram in <xref target="BMP-RM-TLVs"/> shows an example of a
+                RouteMonitoring message carrying a BGP UPDATE containing 10
+                NLRIs. The TLVs are comprised of:
+                <list style="numbers">
+                    <t>
+                        a Group TLV with index 0x000b, pointing to NLRI 1, 2, 3
+                        and 10
+                    </t>
+                    <t>
+                        a Group TLV with index 0x000c, pointing to NLRI 4, 5 and
+                        6
+                    </t>
+                    <t>a TLV pertaining to NLRI 7</t>
+                    <t>
+                        a TLV pertaining to the NLRIs listed in the Group TLV
+                        defined in 1
+                    </t>
+                    <t>
+                        a TLV pertaining to the NLRIs listed in the Group TLV
+                        defined in 2
+                    </t>
+                </list>
+            </t>
+
+            <t>
+                <figure anchor="BMP-RM-TLVs" align="center">
+                    <artwork align="center">
+                        <![CDATA[
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |        Common Header + Per-Peer Header (6 + 48 bytes)         ~
+  ~                                                               |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |            type=TBD1            |         length=X            |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             index=0             |    value=$BGP_UPDATE_PDU{   ~
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
+  ~                                                               ~
+  ~                       NLRI_1 .. NLRI_10                       ~
+  ~                                                            }  |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |            type=TBD2            |         length=0x000a       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             index=0             |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                  value={0x0001,   0x0002,                     |
+  |                         0x0003,   0x000a}                     |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |            type=TBD2            |         length=0x0008       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             index=0             |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                  value={0x0004,   0x0005,                     |
+  |                         0x0006} |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |            type=SomeTlvX        |         length=0x0006       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             index=0x0007        |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                          value={4 bytes}                      |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |            type=SomeTlvY        |         length=0x000a       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             index=0x000b        |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                          value={8 bytes}                      ~
+  ~                                                               |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |            type=SomeTlvZ        |         length=0x0006       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             index=0x000c        |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                          value={4 bytes}                      |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                            ]]>
+                    </artwork>
+                </figure>
+            </t>
+        </section>
+
 	    </section>
 	    <section title="VRF/Table Name TLV" anchor="VrfTLVinRM">
 		<t>
