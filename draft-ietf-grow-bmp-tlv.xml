@@ -200,7 +200,7 @@
 	    </figure>
 
 	    <t>
-		In indexed TLVs, the reported length referts to the encoded value (ie.
+		In indexed TLVs, the reported length refers to the encoded value (ie.
 		it does exclude the length of the index field).
 	    </t>
 
@@ -265,17 +265,18 @@
 		    </list>
 		    A NLRI index can be listed as part of multiple Group TLVs within
 		    the same message. NLRI indexes within a Group TLV SHOULD be
-		    sorted by the sender. Finally, a Group Index MUST not recursively
-		    include another Group Index.
+		    sorted by the sender. A Group Index can not reference an NLRI
+		    index 0. Finally, a Group Index MUST not recursively include
+		    another Group Index.
 		</t>
 		<t>
 		    The Group TLV code point is &IANA_RM_CODE_GROUP;
 		</t>
 
-        <section title="Wireformat example" anchor="TLVexample">
+        <section title="Wire-format example" anchor="TLVexample">
             <t>
                 The diagram in <xref target="BMP-RM-TLVs"/> shows an example of a
-                RouteMonitoring message carrying a BGP UPDATE containing 10
+                Route Monitoring message carrying a BGP UPDATE containing 10
                 NLRIs. The TLVs are comprised of:
                 <list style="numbers">
                     <t>
@@ -316,34 +317,34 @@
   ~                       NLRI_1 .. NLRI_10                       ~
   ~                                                            }  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD2            |         length=0x000a       |
+  |            type=TBD2            |         length=0x0008       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             index=0             |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0001,   0x0002,                     |
   |                         0x0003,   0x000a}                     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD2            |         length=0x0008       |
+  |            type=TBD2            |         length=0x0006       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             index=0             |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0004,   0x0005,                     |
   |                         0x0006} |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=SomeTlvX        |         length=0x0006       |
+  |            type=SomeTlvX        |         length=0x0004       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             index=0x0007        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={4 bytes}                      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=SomeTlvY        |         length=0x000a       |
+  |            type=SomeTlvY        |         length=0x0008       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             index=0x000b        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={8 bytes}                      ~
   ~                                                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=SomeTlvZ        |         length=0x0006       |
+  |            type=SomeTlvZ        |         length=0x0004       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             index=0x000c        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
