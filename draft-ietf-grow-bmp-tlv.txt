@@ -528,7 +528,7 @@ Acknowledgements
    The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
    Graf, Pierre Francois, Ben Maddison, Tim Evens and Luuk Hendriks for
    their valuable input.  The authors would also like to thank Greg
-   Skinner and Zongpeng Du for their review.
+   Skinner, Zongpeng Du and Maxence Younsi for their review.
 
 Authors' Addresses
 
