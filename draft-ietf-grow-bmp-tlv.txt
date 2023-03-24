@@ -261,8 +261,9 @@ Internet-Draft                   BMP TLV                      March 2023
    A NLRI index can be listed as part of multiple Group TLVs within the
    same message.  NLRI indexes within a Group TLV SHOULD be sorted by
    the sender.  A Group Index can not reference an NLRI index 0.
-   Finally, a Group Index MUST not recursively include another Group
-   Index.
+   Finally, a Group TLV MUST NOT include its own or another Group Index.
+   Multiple TLVs can point to the same Group Index, i.e. a group can be
+   reused within the same Route Monitoring message.
 
    The Group TLV code point is TBD2
 
@@ -273,7 +274,6 @@ Internet-Draft                   BMP TLV                      March 2023
    comprised of:
 
    1.  a Group TLV with index 0x000b, pointing to NLRI 1, 2, 3 and 10
-
 
 
 
