@@ -6,6 +6,9 @@
         <!ENTITY IANA_RM_CODE_BGP_PDU "TBD1">
         <!ENTITY IANA_RM_CODE_GROUP "TBD2">
         <!ENTITY IANA_RM_CODE_VRF "TBD3">
+        <!ENTITY IANA_RM_CODE_4B_ASN "TBD4">
+        <!ENTITY IANA_RM_CODE_PATH_ID "TBD5">
+        <!ENTITY IANA_RM_CODE_MULTI_LABELS "TBD6">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -366,6 +369,17 @@
 		    The VRF/Table Name TLV code point is &IANA_RM_CODE_VRF;
 		</t>
 	    </section>
+	    <section title="Stateless parsing TLVs">
+		<t>
+		    This document also defines the following new code points to
+		    help stateless parsing of BGP Update PDUs:
+                    <list style="symbols">
+                        <t>Type = &IANA_RM_CODE_4B_ASN;: the BGP Update PDU is encoded with support for the 4-octet AS number capability <xref target="RFC6793">RFC 6793</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
+			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
+			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
+                    </list>
+		</t>
+	    </section>
 	    </section>
 	    <section title="TLV data in Peer Down" anchor="TLVinPD">
 		<t>
@@ -441,6 +455,21 @@
 			Type = &IANA_RM_CODE_VRF;: Support for VRF/Table Name TLV. The value
 			field is defined in <xref target="VrfTLVinRM"/>
 		    </t>
+		    <t>
+			Type = &IANA_RM_CODE_4B_ASN;: Support for the 4-octet AS number capability.
+			The value field is set to 1 if the BGP Update PDU enclosed in the Route
+			Monitoring message was encoded according to the capability.
+		    </t>
+		    <t>
+			Type = &IANA_RM_CODE_PATH_ID;: ADD-PATH capability. The value field is set
+			to 1 if the BGP Update PDU enclosed in the Route Monitoring message was
+			encoded according to the capability.
+		    </t>
+		    <t>
+			Type = &IANA_RM_CODE_MULTI_LABELS;: Multiple Labels capability. The value
+			field is set to 1 if the BGP Update PDU enclosed in the Route Monitoring
+			message was encoded according to the capability.
+		    </t>
 		</list>
             </t>
         </section>
@@ -455,6 +484,9 @@
 
 		<?rfc include="reference.RFC.4271.xml"?>
 		<?rfc include="reference.RFC.7854.xml"?>
+		<?rfc include="reference.RFC.6793.xml"?>
+		<?rfc include="reference.RFC.7911.xml"?>
+		<?rfc include="reference.RFC.8277.xml"?>
 		<?rfc include="reference.RFC.8654.xml"?>
 		<?rfc include="reference.RFC.9069.xml"?>
 

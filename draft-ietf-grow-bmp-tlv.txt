@@ -78,15 +78,16 @@ Table of Contents
        4.2.1.  Group TLV . . . . . . . . . . . . . . . . . . . . . .   5
          4.2.1.1.  Wire-format example . . . . . . . . . . . . . . .   5
        4.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   7
+       4.2.3.  Stateless parsing TLVs  . . . . . . . . . . . . . . .   7
      4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   7
-     4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   7
-   5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   7
+     4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   8
+   5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   8
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
    7.  Operational Considerations  . . . . . . . . . . . . . . . . .   8
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .   8
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .   9
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  10
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
 
@@ -105,7 +106,6 @@ Table of Contents
    *  Common Header
 
    *  Per-Peer Header
-
 
 
 
@@ -361,12 +361,38 @@ Internet-Draft                   BMP TLV                  September 2023
 
    The VRF/Table Name TLV code point is TBD3
 
+4.2.3.  Stateless parsing TLVs
+
+   This document also defines the following new code points to help
+   stateless parsing of BGP Update PDUs:
+
+   *  Type = TBD4: the BGP Update PDU is encoded with support for the
+      4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
+      and value MUST be 0 for false and 1 for true.
+
+   *  Type = TBD5: the BGP Update PDU is encoded with the ADD-PATH
+      capability RFC 7911 [RFC7911], length MUST be 1 and value MUST be
+      0 for false and 1 for true.
+
+   *  Type = TBD6: the BGP Update PDU is encoded with the Multiple
+      Labels capability RFC 8277 [RFC8277], length MUST be 1 and value
+      MUST be 0 for false and 1 for true.
+
 4.3.  TLV data in Peer Down
 
    The Peer Down Notification message type is defined in Section 4.9 of
    [RFC7854].  The consistency model selected to extend this message
    type with TLVs is with the Peer Up type where optional TLVs are
    placed at the end of the message.
+
+
+
+
+
+Lucente & Gu              Expires 21 March 2024                 [Page 7]
+
+Internet-Draft                   BMP TLV                  September 2023
+
 
    This means for Reason codes 1 or 3, a BGP Notification PDU follows;
    the PDU MAY be followed by TLV data.  For Reason code 2, a 2-byte
@@ -386,13 +412,6 @@ Internet-Draft                   BMP TLV                  September 2023
    It is worth nothing that RFC8654 [RFC8654] permits BGP Update and
    other messages to grow to a length of 65535 octets.  This may cause a
    BMP PDU that attempts to encapsulate such long messages to overflow.
-
-
-
-Lucente & Gu              Expires 21 March 2024                 [Page 7]
-
-Internet-Draft                   BMP TLV                  September 2023
-
 
 6.  Security Considerations
 
@@ -423,8 +442,28 @@ Internet-Draft                   BMP TLV                  September 2023
    *  Type = TBD2: Support for grouping of TLVs.  The value field is
       defined in Section 4.2.1
 
+
+
+
+Lucente & Gu              Expires 21 March 2024                 [Page 8]
+
+Internet-Draft                   BMP TLV                  September 2023
+
+
    *  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
       defined in Section 4.2.2
+
+   *  Type = TBD4: Support for the 4-octet AS number capability.  The
+      value field is set to 1 if the BGP Update PDU enclosed in the
+      Route Monitoring message was encoded according to the capability.
+
+   *  Type = TBD5: ADD-PATH capability.  The value field is set to 1 if
+      the BGP Update PDU enclosed in the Route Monitoring message was
+      encoded according to the capability.
+
+   *  Type = TBD6: Multiple Labels capability.  The value field is set
+      to 1 if the BGP Update PDU enclosed in the Route Monitoring
+      message was encoded according to the capability.
 
 9.  Normative References
 
@@ -440,29 +479,40 @@ Internet-Draft                   BMP TLV                  September 2023
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-
-
-Lucente & Gu              Expires 21 March 2024                 [Page 8]
-
-Internet-Draft                   BMP TLV                  September 2023
-
-
    [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
               Border Gateway Protocol 4 (BGP-4)", RFC 4271,
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
+
+   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
+              Autonomous System (AS) Number Space", RFC 6793,
+              DOI 10.17487/RFC6793, December 2012,
+              <https://www.rfc-editor.org/info/rfc6793>.
 
    [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
               Monitoring Protocol (BMP)", RFC 7854,
               DOI 10.17487/RFC7854, June 2016,
               <https://www.rfc-editor.org/info/rfc7854>.
 
+   [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
+              "Advertisement of Multiple Paths in BGP", RFC 7911,
+              DOI 10.17487/RFC7911, July 2016,
+              <https://www.rfc-editor.org/info/rfc7911>.
+
+
+
+Lucente & Gu              Expires 21 March 2024                 [Page 9]
+
+Internet-Draft                   BMP TLV                  September 2023
+
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
+              Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
+              <https://www.rfc-editor.org/info/rfc8277>.
 
    [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
               Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
@@ -501,4 +551,10 @@ Authors' Addresses
 
 
 
-Lucente & Gu              Expires 21 March 2024                 [Page 9]
+
+
+
+
+
+
+Lucente & Gu              Expires 21 March 2024                [Page 10]
