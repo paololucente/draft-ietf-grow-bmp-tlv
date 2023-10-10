@@ -79,7 +79,7 @@ Table of Contents
          4.2.1.1.  Wire-format example . . . . . . . . . . . . . . .   5
        4.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   7
        4.2.3.  Stateless parsing TLVs  . . . . . . . . . . . . . . .   7
-     4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   7
+     4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   8
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   8
    5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   8
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
@@ -363,6 +363,16 @@ Internet-Draft                   BMP TLV                    October 2023
 
 4.2.3.  Stateless parsing TLVs
 
+   Stateless parsing helps scaling the amount of Route Monitoring
+   messages that can be processed at collection time, avoiding to have
+   to correlate them to BGP capabilities received as part of the Peer Up
+   message, for example.
+
+   Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN RFC 6793
+   [RFC6793], and hence these can be part of the BMP Peer flags section
+   of a Route Monitoring message.  Those that are, instead, per AFI/SAFI
+   require finer granularity and hence the use of an indexed TLV.
+
    This document also defines the following new code points to help
    stateless parsing of BGP Update PDUs:
 
@@ -373,6 +383,16 @@ Internet-Draft                   BMP TLV                    October 2023
    *  Type = TBD5: the BGP Update PDU is encoded with the Multiple
       Labels capability RFC 8277 [RFC8277], length MUST be 1 and value
       MUST be 0 for false and 1 for true.
+
+
+
+
+
+
+Lucente & Gu              Expires 12 April 2024                 [Page 7]
+
+Internet-Draft                   BMP TLV                    October 2023
+
 
 4.3.  TLV data in Peer Down
 
@@ -386,13 +406,6 @@ Internet-Draft                   BMP TLV                    October 2023
    field to give additional FSM info follows; this field MAY be followed
    by TLV data.  For all other Reason codes, TLV data MAY follow the
    Reason field.
-
-
-
-Lucente & Gu              Expires 12 April 2024                 [Page 7]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
 4.4.  TLV data in other BMP messages
 
@@ -430,6 +443,13 @@ Internet-Draft                   BMP TLV                    October 2023
    Monitoring TLVs" registry, the following new TLV types are defined
    (Section 4.2):
 
+
+
+Lucente & Gu              Expires 12 April 2024                 [Page 8]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
    *  Type = TBD1: Support for BGP Message TLV.  The value field is
       defined in Section 4.2
 
@@ -442,13 +462,6 @@ Internet-Draft                   BMP TLV                    October 2023
    *  Type = TBD4: ADD-PATH capability.  The value field is set to 1 if
       the BGP Update PDU enclosed in the Route Monitoring message was
       encoded according to the capability.
-
-
-
-Lucente & Gu              Expires 12 April 2024                 [Page 8]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
    *  Type = TBD5: Multiple Labels capability.  The value field is set
       to 1 if the BGP Update PDU enclosed in the Route Monitoring
@@ -483,6 +496,16 @@ Internet-Draft                   BMP TLV                    October 2023
               DOI 10.17487/RFC7854, June 2016,
               <https://www.rfc-editor.org/info/rfc7854>.
 
+
+
+
+
+
+Lucente & Gu              Expires 12 April 2024                 [Page 9]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
    [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
               "Advertisement of Multiple Paths in BGP", RFC 7911,
               DOI 10.17487/RFC7911, July 2016,
@@ -495,16 +518,6 @@ Internet-Draft                   BMP TLV                    October 2023
    [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
               Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
               <https://www.rfc-editor.org/info/rfc8277>.
-
-
-
-
-
-
-Lucente & Gu              Expires 12 April 2024                 [Page 9]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
    [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
               Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
@@ -539,19 +552,6 @@ Authors' Addresses
    100095
    China
    Email: guyunan@huawei.com
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

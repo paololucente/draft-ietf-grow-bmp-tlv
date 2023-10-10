@@ -370,6 +370,19 @@
 	    </section>
 	    <section title="Stateless parsing TLVs">
 		<t>
+		    Stateless parsing helps scaling the amount of Route Monitoring
+		    messages that can be processed at collection time, avoiding to
+		    have to correlate them to BGP capabilities received as part of
+		    the Peer Up message, for example.
+		</t>
+		<t>
+		    Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN
+		    <xref target="RFC6793">RFC 6793</xref>, and hence these can be
+		    part of the BMP Peer flags section of a Route Monitoring message.
+		    Those that are, instead, per AFI/SAFI require finer granularity
+		    and hence the use of an indexed TLV.
+		</t>
+		<t>
 		    This document also defines the following new code points to
 		    help stateless parsing of BGP Update PDUs:
                     <list style="symbols">
