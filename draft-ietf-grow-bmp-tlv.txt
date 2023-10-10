@@ -6,7 +6,7 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: 21 March 2024                                 18 September 2023
+Expires: 12 April 2024                                   10 October 2023
 
 
       TLV support for BMP Route Monitoring and Peer Down Messages
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 March 2024.
+   This Internet-Draft will expire on 12 April 2024.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Lucente & Gu              Expires 21 March 2024                 [Page 1]
+Lucente & Gu              Expires 12 April 2024                 [Page 1]
 
-Internet-Draft                   BMP TLV                  September 2023
+Internet-Draft                   BMP TLV                    October 2023
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Lucente & Gu              Expires 21 March 2024                 [Page 2]
+Lucente & Gu              Expires 12 April 2024                 [Page 2]
 
-Internet-Draft                   BMP TLV                  September 2023
+Internet-Draft                   BMP TLV                    October 2023
 
 
    *  Reason
@@ -165,9 +165,9 @@ Internet-Draft                   BMP TLV                  September 2023
 
 
 
-Lucente & Gu              Expires 21 March 2024                 [Page 3]
+Lucente & Gu              Expires 12 April 2024                 [Page 3]
 
-Internet-Draft                   BMP TLV                  September 2023
+Internet-Draft                   BMP TLV                    October 2023
 
 
    TLVs SHOULD be sorted by the sender by their code point.  Multiple
@@ -221,9 +221,9 @@ Internet-Draft                   BMP TLV                  September 2023
 
 
 
-Lucente & Gu              Expires 21 March 2024                 [Page 4]
+Lucente & Gu              Expires 12 April 2024                 [Page 4]
 
-Internet-Draft                   BMP TLV                  September 2023
+Internet-Draft                   BMP TLV                    October 2023
 
 
    *  Message Length: Total length of the message in bytes (including
@@ -277,9 +277,9 @@ Internet-Draft                   BMP TLV                  September 2023
 
 
 
-Lucente & Gu              Expires 21 March 2024                 [Page 5]
+Lucente & Gu              Expires 12 April 2024                 [Page 5]
 
-Internet-Draft                   BMP TLV                  September 2023
+Internet-Draft                   BMP TLV                    October 2023
 
 
    2.  a Group TLV with index 0x000c, pointing to NLRI 4, 5 and 6
@@ -333,9 +333,9 @@ Internet-Draft                   BMP TLV                  September 2023
 
 
 
-Lucente & Gu              Expires 21 March 2024                 [Page 6]
+Lucente & Gu              Expires 12 April 2024                 [Page 6]
 
-Internet-Draft                   BMP TLV                  September 2023
+Internet-Draft                   BMP TLV                    October 2023
 
 
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -366,15 +366,11 @@ Internet-Draft                   BMP TLV                  September 2023
    This document also defines the following new code points to help
    stateless parsing of BGP Update PDUs:
 
-   *  Type = TBD4: the BGP Update PDU is encoded with support for the
-      4-octet AS number capability RFC 6793 [RFC6793], length MUST be 1
-      and value MUST be 0 for false and 1 for true.
-
-   *  Type = TBD5: the BGP Update PDU is encoded with the ADD-PATH
+   *  Type = TBD4: the BGP Update PDU is encoded with the ADD-PATH
       capability RFC 7911 [RFC7911], length MUST be 1 and value MUST be
       0 for false and 1 for true.
 
-   *  Type = TBD6: the BGP Update PDU is encoded with the Multiple
+   *  Type = TBD5: the BGP Update PDU is encoded with the Multiple
       Labels capability RFC 8277 [RFC8277], length MUST be 1 and value
       MUST be 0 for false and 1 for true.
 
@@ -385,20 +381,18 @@ Internet-Draft                   BMP TLV                  September 2023
    type with TLVs is with the Peer Up type where optional TLVs are
    placed at the end of the message.
 
-
-
-
-
-Lucente & Gu              Expires 21 March 2024                 [Page 7]
-
-Internet-Draft                   BMP TLV                  September 2023
-
-
    This means for Reason codes 1 or 3, a BGP Notification PDU follows;
    the PDU MAY be followed by TLV data.  For Reason code 2, a 2-byte
    field to give additional FSM info follows; this field MAY be followed
    by TLV data.  For all other Reason codes, TLV data MAY follow the
    Reason field.
+
+
+
+Lucente & Gu              Expires 12 April 2024                 [Page 7]
+
+Internet-Draft                   BMP TLV                    October 2023
+
 
 4.4.  TLV data in other BMP messages
 
@@ -442,26 +436,21 @@ Internet-Draft                   BMP TLV                  September 2023
    *  Type = TBD2: Support for grouping of TLVs.  The value field is
       defined in Section 4.2.1
 
-
-
-
-Lucente & Gu              Expires 21 March 2024                 [Page 8]
-
-Internet-Draft                   BMP TLV                  September 2023
-
-
    *  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
       defined in Section 4.2.2
 
-   *  Type = TBD4: Support for the 4-octet AS number capability.  The
-      value field is set to 1 if the BGP Update PDU enclosed in the
-      Route Monitoring message was encoded according to the capability.
-
-   *  Type = TBD5: ADD-PATH capability.  The value field is set to 1 if
+   *  Type = TBD4: ADD-PATH capability.  The value field is set to 1 if
       the BGP Update PDU enclosed in the Route Monitoring message was
       encoded according to the capability.
 
-   *  Type = TBD6: Multiple Labels capability.  The value field is set
+
+
+Lucente & Gu              Expires 12 April 2024                 [Page 8]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
+   *  Type = TBD5: Multiple Labels capability.  The value field is set
       to 1 if the BGP Update PDU enclosed in the Route Monitoring
       message was encoded according to the capability.
 
@@ -499,13 +488,6 @@ Internet-Draft                   BMP TLV                  September 2023
               DOI 10.17487/RFC7911, July 2016,
               <https://www.rfc-editor.org/info/rfc7911>.
 
-
-
-Lucente & Gu              Expires 21 March 2024                 [Page 9]
-
-Internet-Draft                   BMP TLV                  September 2023
-
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -513,6 +495,16 @@ Internet-Draft                   BMP TLV                  September 2023
    [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
               Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
               <https://www.rfc-editor.org/info/rfc8277>.
+
+
+
+
+
+
+Lucente & Gu              Expires 12 April 2024                 [Page 9]
+
+Internet-Draft                   BMP TLV                    October 2023
+
 
    [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
               Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
@@ -557,4 +549,12 @@ Authors' Addresses
 
 
 
-Lucente & Gu              Expires 21 March 2024                [Page 10]
+
+
+
+
+
+
+
+
+Lucente & Gu              Expires 12 April 2024                [Page 10]
