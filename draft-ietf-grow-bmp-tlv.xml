@@ -390,6 +390,11 @@
 			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
                     </list>
 		</t>
+		<t>
+		    It is recommended that any Stateless Parsing TLVs are encoded 
+		    preceeding the BGP Message TLV in order to ease parsing of the
+		    Route Monitoring message at the BMP station side.
+		</t>
 	    </section>
 	    </section>
 	    <section title="TLV data in Peer Down" anchor="TLVinPD">

@@ -84,7 +84,7 @@ Table of Contents
    5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   8
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
    7.  Operational Considerations  . . . . . . . . . . . . . . . . .   8
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .   9
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  10
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
@@ -394,6 +394,10 @@ Lucente & Gu              Expires 13 April 2024                 [Page 7]
 Internet-Draft                   BMP TLV                    October 2023
 
 
+   It is recommended that any Stateless Parsing TLVs are encoded
+   preceeding the BGP Message TLV in order to ease parsing of the Route
+   Monitoring message at the BMP station side.
+
 4.3.  TLV data in Peer Down
 
    The Peer Down Notification message type is defined in Section 4.9 of
@@ -434,6 +438,18 @@ Internet-Draft                   BMP TLV                    October 2023
    that it should always be possible to disable such features to
    mitigate their impact.
 
+
+
+
+
+
+
+
+Lucente & Gu              Expires 13 April 2024                 [Page 8]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
 8.  IANA Considerations
 
    This document requests the renaming of the "Peer Up TLVs" registry
@@ -442,13 +458,6 @@ Internet-Draft                   BMP TLV                    October 2023
    registry "BMP Route Monitoring TLVs".  As part of the "BMP Route
    Monitoring TLVs" registry, the following new TLV types are defined
    (Section 4.2):
-
-
-
-Lucente & Gu              Expires 13 April 2024                 [Page 8]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
    *  Type = TBD1: Support for BGP Message TLV.  The value field is
       defined in Section 4.2
@@ -486,15 +495,6 @@ Internet-Draft                   BMP TLV                    October 2023
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
 
-   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
-              Autonomous System (AS) Number Space", RFC 6793,
-              DOI 10.17487/RFC6793, December 2012,
-              <https://www.rfc-editor.org/info/rfc6793>.
-
-   [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
-              Monitoring Protocol (BMP)", RFC 7854,
-              DOI 10.17487/RFC7854, June 2016,
-              <https://www.rfc-editor.org/info/rfc7854>.
 
 
 
@@ -505,6 +505,16 @@ Lucente & Gu              Expires 13 April 2024                 [Page 9]
 
 Internet-Draft                   BMP TLV                    October 2023
 
+
+   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
+              Autonomous System (AS) Number Space", RFC 6793,
+              DOI 10.17487/RFC6793, December 2012,
+              <https://www.rfc-editor.org/info/rfc6793>.
+
+   [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
+              Monitoring Protocol (BMP)", RFC 7854,
+              DOI 10.17487/RFC7854, June 2016,
+              <https://www.rfc-editor.org/info/rfc7854>.
 
    [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
               "Advertisement of Multiple Paths in BGP", RFC 7911,
@@ -545,6 +555,13 @@ Authors' Addresses
    Email: paolo@ntt.net
 
 
+
+
+Lucente & Gu              Expires 13 April 2024                [Page 10]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
    Yunan Gu
    Huawei
    Huawei Bld., No.156 Beiqing Rd.
@@ -557,4 +574,43 @@ Authors' Addresses
 
 
 
-Lucente & Gu              Expires 13 April 2024                [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lucente & Gu              Expires 13 April 2024                [Page 11]
