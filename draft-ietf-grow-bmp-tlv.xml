@@ -25,7 +25,7 @@
 
     <front>
         <title abbrev="BMP TLV">
-	    TLV support for BMP Route Monitoring and Peer Down Messages
+	    BMP v4: TLV support for BMP Route Monitoring and Peer Down Messages
 	</title>
 
         <author fullname="Paolo Lucente" initials="P" surname="Lucente">
@@ -114,9 +114,12 @@
 		characteristics of transported NLRIs (e.g. to help with stateless
 		parsing) or of vendor-specific data. In the Peer Down case, this
 		prevents matching with TLVs previously sent with the Peer Up
-		message. The proposal of this document is to bump the BMP version,
-		for backward compatibility, and allow all defined BMP message types
-		to make provision for TLV data.
+		message. The proposal of this document is to:
+		<list style="symbols">
+			<t>Bump the BMP version, for backward compatibility</t>
+			<t>Allow all defined BMP message types to make provision for TLV data</t>
+			<t>Change the structure of Route Monitoring so that the BGPU PDU is enclosed in a TLV</t>
+		</list>
             </t>
         </section>
 
@@ -243,7 +246,12 @@
 		    is encoded itself as part of a BGP Message TLV with code point
 		    &IANA_RM_CODE_BGP_PDU; and index set to zero. A Route Monitoring
 		    message MUST contain one BGP Message TLV which may be preceeded
-		    and followed by other optional TLV data.
+		    and/or followed by other optional TLV data.
+		</t>
+		<t>
+		    Corollary, in BMPv4 the BGP Update PDU is not just encoded as part
+		    of the message as it was the case for BMPv3 but it is rather enclosed
+		    in a TLV. 
 		</t>
 	    <section title="Group TLV" anchor="GroupTLVinRM">
 		<t>

@@ -6,10 +6,10 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: 13 April 2024                                   11 October 2023
+Expires: 14 April 2024                                   12 October 2023
 
 
-      TLV support for BMP Route Monitoring and Peer Down Messages
+  BMP v4: TLV support for BMP Route Monitoring and Peer Down Messages
                        draft-ietf-grow-bmp-tlv-13
 
 Abstract
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 April 2024.
+   This Internet-Draft will expire on 14 April 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Lucente & Gu              Expires 13 April 2024                 [Page 1]
+Lucente & Gu              Expires 14 April 2024                 [Page 1]
 
 Internet-Draft                   BMP TLV                    October 2023
 
@@ -72,22 +72,22 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  TLV encoding  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  BMP Message Format  . . . . . . . . . . . . . . . . . . . . .   4
-     4.1.  Common Header . . . . . . . . . . . . . . . . . . . . . .   4
+   4.  BMP Message Format  . . . . . . . . . . . . . . . . . . . . .   5
+     4.1.  Common Header . . . . . . . . . . . . . . . . . . . . . .   5
      4.2.  TLV data in Route Monitoring  . . . . . . . . . . . . . .   5
        4.2.1.  Group TLV . . . . . . . . . . . . . . . . . . . . . .   5
-         4.2.1.1.  Wire-format example . . . . . . . . . . . . . . .   5
+         4.2.1.1.  Wire-format example . . . . . . . . . . . . . . .   6
        4.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   7
        4.2.3.  Stateless parsing TLVs  . . . . . . . . . . . . . . .   7
      4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   8
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   8
    5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   8
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
-   7.  Operational Considerations  . . . . . . . . . . . . . . . . .   8
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
+   7.  Operational Considerations  . . . . . . . . . . . . . . . . .   9
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .   9
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  10
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Lucente & Gu              Expires 13 April 2024                 [Page 2]
+Lucente & Gu              Expires 14 April 2024                 [Page 2]
 
 Internet-Draft                   BMP TLV                    October 2023
 
@@ -127,8 +127,14 @@ Internet-Draft                   BMP TLV                    October 2023
    transported NLRIs (e.g. to help with stateless parsing) or of vendor-
    specific data.  In the Peer Down case, this prevents matching with
    TLVs previously sent with the Peer Up message.  The proposal of this
-   document is to bump the BMP version, for backward compatibility, and
-   allow all defined BMP message types to make provision for TLV data.
+   document is to:
+
+   *  Bump the BMP version, for backward compatibility
+
+   *  Allow all defined BMP message types to make provision for TLV data
+
+   *  Change the structure of Route Monitoring so that the BGPU PDU is
+      enclosed in a TLV
 
 2.  Terminology
 
@@ -150,6 +156,20 @@ Internet-Draft                   BMP TLV                    October 2023
    *  0 or more octets of TLV Value.
 
 
+
+
+
+
+
+
+
+
+
+Lucente & Gu              Expires 14 April 2024                 [Page 3]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |        Type (2 octets)        |     Length (2 octets)         |
@@ -159,16 +179,6 @@ Internet-Draft                   BMP TLV                    October 2023
 
 
                                   Figure 1
-
-
-
-
-
-
-Lucente & Gu              Expires 13 April 2024                 [Page 3]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
    TLVs SHOULD be sorted by the sender by their code point.  Multiple
    TLVs of the same type can be repeated as part of the same message,
@@ -208,6 +218,14 @@ Internet-Draft                   BMP TLV                    October 2023
    Route Mirroring messages because the sender may not be aware of the
    payload of the transported BGP Update message.
 
+
+
+
+Lucente & Gu              Expires 14 April 2024                 [Page 4]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
 4.  BMP Message Format
 
 4.1.  Common Header
@@ -218,13 +236,6 @@ Internet-Draft                   BMP TLV                    October 2023
 
    *  Version: Indicates the BMP version.  This is set to '4' for all
       messages.
-
-
-
-Lucente & Gu              Expires 13 April 2024                 [Page 4]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
    *  Message Length: Total length of the message in bytes (including
       headers, encapsulated BGP message and optional data)
@@ -239,7 +250,11 @@ Internet-Draft                   BMP TLV                    October 2023
    The BGP Update PDU Section 4.3 of [RFC4271] is encoded itself as part
    of a BGP Message TLV with code point TBD1 and index set to zero.  A
    Route Monitoring message MUST contain one BGP Message TLV which may
-   be preceeded and followed by other optional TLV data.
+   be preceeded and/or followed by other optional TLV data.
+
+   Corollary, in BMPv4 the BGP Update PDU is not just encoded as part of
+   the message as it was the case for BMPv3 but it is rather enclosed in
+   a TLV.
 
 4.2.1.  Group TLV
 
@@ -258,6 +273,15 @@ Internet-Draft                   BMP TLV                    October 2023
    *  One or more 2 bytes indexes whose values MUST be less or equal to
       the amount of NLRIs packed in the BGP Update PDU.
 
+
+
+
+
+Lucente & Gu              Expires 14 April 2024                 [Page 5]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
    A NLRI index can be listed as part of multiple Group TLVs within the
    same message.  NLRI indexes within a Group TLV SHOULD be sorted by
    the sender.  A Group Index can not reference an NLRI index 0.
@@ -274,13 +298,6 @@ Internet-Draft                   BMP TLV                    October 2023
    comprised of:
 
    1.  a Group TLV with index 0x000b, pointing to NLRI 1, 2, 3 and 10
-
-
-
-Lucente & Gu              Expires 13 April 2024                 [Page 5]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
    2.  a Group TLV with index 0x000c, pointing to NLRI 4, 5 and 6
 
@@ -313,6 +330,14 @@ Internet-Draft                   BMP TLV                    October 2023
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                  value={0x0001,   0x0002,                     |
       |                         0x0003,   0x000a}                     |
+
+
+
+Lucente & Gu              Expires 14 April 2024                 [Page 6]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=TBD2            |         length=0x000a       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -330,14 +355,6 @@ Internet-Draft                   BMP TLV                    October 2023
       |            type=SomeTlvY        |         length=0x000a       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |             index=0x000b        |
-
-
-
-Lucente & Gu              Expires 13 April 2024                 [Page 6]
-
-Internet-Draft                   BMP TLV                    October 2023
-
-
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={8 bytes}                      ~
       ~                                                               |
@@ -368,6 +385,15 @@ Internet-Draft                   BMP TLV                    October 2023
    to correlate them to BGP capabilities received as part of the Peer Up
    message, for example.
 
+
+
+
+
+Lucente & Gu              Expires 14 April 2024                 [Page 7]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
    Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN RFC 6793
    [RFC6793], and hence these can be part of the BMP Peer flags section
    of a Route Monitoring message.  Those that are, instead, per AFI/SAFI
@@ -383,16 +409,6 @@ Internet-Draft                   BMP TLV                    October 2023
    *  Type = TBD5: the BGP Update PDU is encoded with the Multiple
       Labels capability RFC 8277 [RFC8277], length MUST be 1 and value
       MUST be 0 for false and 1 for true.
-
-
-
-
-
-
-Lucente & Gu              Expires 13 April 2024                 [Page 7]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
    It is recommended that any Stateless Parsing TLVs are encoded
    preceeding the BGP Message TLV in order to ease parsing of the Route
@@ -424,6 +440,16 @@ Internet-Draft                   BMP TLV                    October 2023
    other messages to grow to a length of 65535 octets.  This may cause a
    BMP PDU that attempts to encapsulate such long messages to overflow.
 
+
+
+
+
+
+Lucente & Gu              Expires 14 April 2024                 [Page 8]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
 6.  Security Considerations
 
    It is not believed that this document adds any additional security
@@ -437,18 +463,6 @@ Internet-Draft                   BMP TLV                    October 2023
    on the memory and CPU used in a BMP implementation.  As a result of
    that it should always be possible to disable such features to
    mitigate their impact.
-
-
-
-
-
-
-
-
-Lucente & Gu              Expires 13 April 2024                 [Page 8]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
 8.  IANA Considerations
 
@@ -485,6 +499,13 @@ Internet-Draft                   BMP TLV                    October 2023
               <https://datatracker.ietf.org/doc/html/draft-ietf-grow-
               bmp-peer-up-01>.
 
+
+
+Lucente & Gu              Expires 14 April 2024                 [Page 9]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -494,17 +515,6 @@ Internet-Draft                   BMP TLV                    October 2023
               Border Gateway Protocol 4 (BGP-4)", RFC 4271,
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
-
-
-
-
-
-
-
-Lucente & Gu              Expires 13 April 2024                 [Page 9]
-
-Internet-Draft                   BMP TLV                    October 2023
-
 
    [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
               Autonomous System (AS) Number Space", RFC 6793,
@@ -545,6 +555,13 @@ Acknowledgements
    Maxence Younsi for their valuable input.  The authors would also like
    to thank Greg Skinner and Zongpeng Du for their review.
 
+
+
+Lucente & Gu              Expires 14 April 2024                [Page 10]
+
+Internet-Draft                   BMP TLV                    October 2023
+
+
 Authors' Addresses
 
    Paolo Lucente
@@ -553,13 +570,6 @@ Authors' Addresses
    3771 Barneveld
    Netherlands
    Email: paolo@ntt.net
-
-
-
-
-Lucente & Gu              Expires 13 April 2024                [Page 10]
-
-Internet-Draft                   BMP TLV                    October 2023
 
 
    Yunan Gu
@@ -603,14 +613,4 @@ Internet-Draft                   BMP TLV                    October 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-Lucente & Gu              Expires 13 April 2024                [Page 11]
+Lucente & Gu              Expires 14 April 2024                [Page 11]
