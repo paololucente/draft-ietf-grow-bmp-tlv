@@ -86,7 +86,7 @@ Table of Contents
    7.  Operational Considerations  . . . . . . . . . . . . . . . . .   9
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .   9
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  10
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  11
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
@@ -548,12 +548,12 @@ Internet-Draft                   BMP TLV                    October 2023
               (BMP)", RFC 9069, DOI 10.17487/RFC9069, February 2022,
               <https://www.rfc-editor.org/info/rfc9069>.
 
-Acknowledgements
 
-   The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
-   Graf, Pierre Francois, Ben Maddison, Tim Evens, Luuk Hendriks and
-   Maxence Younsi for their valuable input.  The authors would also like
-   to thank Greg Skinner and Zongpeng Du for their review.
+
+
+
+
+
 
 
 
@@ -561,6 +561,14 @@ Lucente & Gu              Expires 14 April 2024                [Page 10]
 
 Internet-Draft                   BMP TLV                    October 2023
 
+
+Acknowledgements
+
+   The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
+   Graf, Pierre Francois, Ben Maddison, Tim Evens, Luuk Hendriks,
+   Maxence Younsi and Ahmed Elhassany for their valuable input.  The
+   authors would also like to thank Greg Skinner and Zongpeng Du for
+   their review.
 
 Authors' Addresses
 
@@ -579,14 +587,6 @@ Authors' Addresses
    100095
    China
    Email: guyunan@huawei.com
-
-
-
-
-
-
-
-
 
 
 
