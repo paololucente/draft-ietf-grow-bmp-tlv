@@ -81,7 +81,7 @@ Table of Contents
        4.2.3.  Stateless parsing TLVs  . . . . . . . . . . . . . . .   7
      4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   8
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   8
-   5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   8
+   5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   9
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    7.  Operational Considerations  . . . . . . . . . . . . . . . . .   9
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
@@ -133,8 +133,8 @@ Internet-Draft                   BMP TLV                    October 2023
 
    *  Allow all defined BMP message types to make provision for TLV data
 
-   *  Change the structure of Route Monitoring so that the BGPU PDU is
-      enclosed in a TLV
+   *  Change the structure of Route Monitoring so that the BGP Update
+      PDU is enclosed in a TLV
 
 2.  Terminology
 
@@ -410,6 +410,11 @@ Internet-Draft                   BMP TLV                    October 2023
       Labels capability RFC 8277 [RFC8277], length MUST be 1 and value
       MUST be 0 for false and 1 for true.
 
+   If a certain Stateless parsing TLV is not present, the receiver MUST
+   fall back to use capabilities present in the BGP Open PDU contained
+   in the relevant BMP Peer Up message in order to properly parse BGP
+   Update PDUs.
+
    It is recommended that any Stateless Parsing TLVs are encoded
    preceeding the BGP Message TLV in order to ease parsing of the Route
    Monitoring message at the BMP station side.
@@ -434,11 +439,6 @@ Internet-Draft                   BMP TLV                    October 2023
    message types will also provide for TLV data following a consistency
    model with existing message types.
 
-5.  Error handling
-
-   It is worth nothing that RFC8654 [RFC8654] permits BGP Update and
-   other messages to grow to a length of 65535 octets.  This may cause a
-   BMP PDU that attempts to encapsulate such long messages to overflow.
 
 
 
@@ -449,6 +449,12 @@ Lucente & Gu              Expires 28 April 2024                 [Page 8]
 
 Internet-Draft                   BMP TLV                    October 2023
 
+
+5.  Error handling
+
+   It is worth nothing that RFC8654 [RFC8654] permits BGP Update and
+   other messages to grow to a length of 65535 octets.  This may cause a
+   BMP PDU that attempts to encapsulate such long messages to overflow.
 
 6.  Security Considerations
 
@@ -492,12 +498,6 @@ Internet-Draft                   BMP TLV                    October 2023
 
 9.  Normative References
 
-   [I-D.ietf-grow-bmp-peer-up]
-              Scudder, J. and P. Lucente, "BMP Peer Up Message
-              Namespace", Work in Progress, Internet-Draft, draft-ietf-
-              grow-bmp-peer-up-02, 23 October 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-grow-
-              bmp-peer-up-02>.
 
 
 
@@ -505,6 +505,13 @@ Lucente & Gu              Expires 28 April 2024                 [Page 9]
 
 Internet-Draft                   BMP TLV                    October 2023
 
+
+   [I-D.ietf-grow-bmp-peer-up]
+              Scudder, J. and P. Lucente, "BMP Peer Up Message
+              Namespace", Work in Progress, Internet-Draft, draft-ietf-
+              grow-bmp-peer-up-02, 23 October 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-grow-
+              bmp-peer-up-02>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -547,13 +554,6 @@ Internet-Draft                   BMP TLV                    October 2023
               "Support for Local RIB in the BGP Monitoring Protocol
               (BMP)", RFC 9069, DOI 10.17487/RFC9069, February 2022,
               <https://www.rfc-editor.org/info/rfc9069>.
-
-
-
-
-
-
-
 
 
 

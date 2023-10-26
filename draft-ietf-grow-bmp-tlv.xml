@@ -118,7 +118,7 @@
 		<list style="symbols">
 			<t>Bump the BMP version, for backward compatibility</t>
 			<t>Allow all defined BMP message types to make provision for TLV data</t>
-			<t>Change the structure of Route Monitoring so that the BGPU PDU is enclosed in a TLV</t>
+			<t>Change the structure of Route Monitoring so that the BGP Update PDU is enclosed in a TLV</t>
 		</list>
             </t>
         </section>
@@ -397,6 +397,12 @@
 			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
 			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
                     </list>
+		</t>
+		<t>
+		    If a certain Stateless parsing TLV is not present, the receiver
+		    MUST fall back to use capabilities present in the BGP Open PDU
+		    contained in the relevant BMP Peer Up message in order to properly
+		    parse BGP Update PDUs.
 		</t>
 		<t>
 		    It is recommended that any Stateless Parsing TLVs are encoded 
