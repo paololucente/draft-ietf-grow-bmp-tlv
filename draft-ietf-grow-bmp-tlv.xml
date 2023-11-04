@@ -202,8 +202,10 @@
 	    </figure>
 
 	    <t>
-		In indexed TLVs, the reported length refers to the total encoded TLV
-		value (ie. it does exclude the length of the index field).
+		Indexed TLVs SHOULD be sorted by the sender by their code point and
+		index value. Also in indexed TLVs, the reported length refers to the
+		total encoded TLV value (ie. it does exclude the length of the index
+		field).
 	    </t>
 
 	    <t>
