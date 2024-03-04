@@ -55,7 +55,7 @@
             </address>
         </author>
 
-        <date year="2023"/>
+        <date year="2024"/>
 
         <area>General</area>
 
@@ -523,9 +523,10 @@
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
             <t>
 		The authors would like to thank Jeff Haas, Camilo Cardona, Thomas Graf,
-		Pierre Francois, Ben Maddison, Tim Evens, Luuk Hendriks, Maxence Younsi
-		and Ahmed Elhassany for their valuable input. The authors would also
-		like to thank Greg Skinner and Zongpeng Du for their review.
+		Pierre Francois, Ben Maddison, Tim Evens, Luuk Hendriks, Maxence Younsi,
+		Ahmed Elhassany, Colin Petrie, Dhananjay Pakti and Shunwan Zhuang for
+		their valuable input. The authors would also like to thank Greg Skinner
+		and Zongpeng Du for their review.
             </t>
         </section>
 
