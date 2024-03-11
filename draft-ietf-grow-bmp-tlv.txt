@@ -6,7 +6,7 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: 6 September 2024                                   5 March 2024
+Expires: 12 September 2024                                 11 March 2024
 
 
   BMP v4: TLV support for BMP Route Monitoring and Peer Down Messages
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 September 2024.
+   This Internet-Draft will expire on 12 September 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Lucente & Gu            Expires 6 September 2024                [Page 1]
+Lucente & Gu            Expires 12 September 2024               [Page 1]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Lucente & Gu            Expires 6 September 2024                [Page 2]
+Lucente & Gu            Expires 12 September 2024               [Page 2]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -165,7 +165,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 6 September 2024                [Page 3]
+Lucente & Gu            Expires 12 September 2024               [Page 3]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -192,17 +192,19 @@ Internet-Draft                   BMP TLV                      March 2024
    specific NLRI.  For this purpose specifically, TLVs in Route
    Monitoring messages MUST be indexed, with the index starting at one
    (1) to refer to the first NLRI.  Index zero (0) specifies that a TLV
-   does apply to all NLRIs contained in the BGP Update message.
-   Multiple TLVs of the same type and with the same index can be
-   repeated as part of the same message.  Indexed TLVs are encoded as in
-   the following figure:
+   does apply to all NLRIs contained in the BGP Update message.  The
+   Index field is 2 bytes long of which the top-most bit of the Index
+   field, G-bit, is reserved to flag a Group Index (more in
+   Section 4.2.1).  Multiple TLVs of the same type and with the same
+   index can be repeated as part of the same message.  Indexed TLVs are
+   encoded as in the following figure:
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |        Type (2 octets)        |     Length (2 octets)         |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        Index (2 octets)       |
+      |G|      Index (15 bits)        |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       ~                      Value (variable)                         ~
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -219,9 +221,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-
-
-Lucente & Gu            Expires 6 September 2024                [Page 4]
+Lucente & Gu            Expires 12 September 2024               [Page 4]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -269,20 +269,20 @@ Internet-Draft                   BMP TLV                      March 2024
    instead require a form of grouping and hence this document defines a
    Group TLV to achieve this.
 
-   The TLV MUST have an index set to zero.  The value MUST contain:
+   The TLV MUST contain:
 
-   *  A 2 bytes Group Index whose value MUST be greater than the amount
-      of NLRIs packed in the BGP Update PDU and MUST be unique to the
-      message
+   *  A 2 bytes Group Index where the top-most bit, G-bit or Group Bit
+      MUST be set to one (1).  The full 2 bytes value, that is including
+      the G-bit, MUST be unique to the message
 
 
 
-Lucente & Gu            Expires 6 September 2024                [Page 5]
+Lucente & Gu            Expires 12 September 2024               [Page 5]
 
 Internet-Draft                   BMP TLV                      March 2024
 
 
-   *  One or more 2 bytes indexes whose values MUST be less or equal to
+   *  Two or more 2 bytes indexes whose values MUST be less or equal to
       the amount of NLRIs packed in the BGP Update PDU.
 
    A NLRI index can be listed as part of multiple Group TLVs within the
@@ -321,19 +321,19 @@ Internet-Draft                   BMP TLV                      March 2024
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=TBD1            |         length=X            |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |             index=0             |    value=$BGP_UPDATE_PDU{   ~
+      |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
       ~                                                               ~
       ~                       NLRI_1 .. NLRI_10                       ~
       ~                                                            }  |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |            type=TBD2            |         length=0x000a       |
+      |            type=TBD2            |         length=0x0008       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |             index=0             |      group_index=0x000b     |
+      |1|           index=0x000b        |
 
 
 
-Lucente & Gu            Expires 6 September 2024                [Page 6]
+Lucente & Gu            Expires 12 September 2024               [Page 6]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -342,29 +342,29 @@ Internet-Draft                   BMP TLV                      March 2024
       |                  value={0x0001,   0x0002,                     |
       |                         0x0003,   0x000a}                     |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |            type=TBD2            |         length=0x0008       |
+      |            type=TBD2            |         length=0x0006       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |             index=0             |      group_index=0x000c     |
+      |1|           index=0x000c        |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                  value={0x0004,   0x0005,                     |
       |                         0x0006} |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=SomeTlvX        |         length=0x0004       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |             index=0x0007        |
+      |0|           index=0x0007        |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={4 bytes}                      |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=SomeTlvY        |         length=0x0008       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |             index=0x000b        |
+      |0|           index=0x000b        |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={8 bytes}                      ~
       ~                                                               |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=SomeTlvZ        |         length=0x0004       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |             index=0x000c        |
+      |0|           index=0x000c        |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={4 bytes}                      |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -389,7 +389,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 6 September 2024                [Page 7]
+Lucente & Gu            Expires 12 September 2024               [Page 7]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -445,7 +445,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 6 September 2024                [Page 8]
+Lucente & Gu            Expires 12 September 2024               [Page 8]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -501,7 +501,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 6 September 2024                [Page 9]
+Lucente & Gu            Expires 12 September 2024               [Page 9]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -557,7 +557,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 6 September 2024               [Page 10]
+Lucente & Gu            Expires 12 September 2024              [Page 10]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -613,4 +613,4 @@ Authors' Addresses
 
 
 
-Lucente & Gu            Expires 6 September 2024               [Page 11]
+Lucente & Gu            Expires 12 September 2024              [Page 11]

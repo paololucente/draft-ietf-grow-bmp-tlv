@@ -181,9 +181,12 @@
 		this purpose specifically, TLVs in Route Monitoring messages MUST be
 		indexed, with the index starting at one (1) to refer to the first NLRI.
 		Index zero (0) specifies that a TLV does apply to all NLRIs contained in
-		the BGP Update message. Multiple TLVs of the same type and with the same
-		index can be repeated as part of the same message. Indexed TLVs are
-		encoded as in the following figure:
+		the BGP Update message. The Index field is 2 bytes long of which the
+		top-most bit of the Index field, G-bit, is reserved to flag a Group
+		Index (more in <xref target="GroupTLVinRM"/>).
+		Multiple TLVs of the same type and with the same index can be repeated
+		as part of the same message. Indexed TLVs are encoded as in the following
+		figure:
 	    </t>
 
 	    <figure anchor="BMP-indexed-TLV-header" align="center">
@@ -193,7 +196,7 @@
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |        Type (2 octets)        |     Length (2 octets)         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |        Index (2 octets)       |
+  |G|      Index (15 bits)        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   ~                      Value (variable)                         ~
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -264,12 +267,12 @@
 		    defines a Group TLV to achieve this.
 		</t>
 		<t>
-		    The TLV MUST have an index set to zero. The value MUST contain:
+		    The TLV MUST contain:
 		    <list style="symbols">
-		    <t>A 2 bytes Group Index whose value MUST be greater than the
-		    amount of NLRIs packed in the BGP Update PDU and MUST be unique
-		    to the message</t>
-		    <t>One or more 2 bytes indexes whose values MUST be less or
+		    <t>A 2 bytes Group Index where the top-most bit, G-bit or Group
+		    Bit MUST be set to one (1). The full 2 bytes value, that is
+		    including the G-bit, MUST be unique to the message</t>
+		    <t>Two or more 2 bytes indexes whose values MUST be less or
 		    equal to the amount of NLRIs packed in the BGP Update PDU.</t>
 		    </list>
 		    A NLRI index can be listed as part of multiple Group TLVs within
@@ -321,42 +324,42 @@
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=TBD1            |         length=X            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |             index=0             |    value=$BGP_UPDATE_PDU{   ~
+  |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
   ~                                                               ~
   ~                       NLRI_1 .. NLRI_10                       ~
   ~                                                            }  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD2            |         length=0x000a       |
+  |            type=TBD2            |         length=0x0008       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |             index=0             |      group_index=0x000b     |
+  |1|           index=0x000b        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0001,   0x0002,                     |
   |                         0x0003,   0x000a}                     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD2            |         length=0x0008       |
+  |            type=TBD2            |         length=0x0006       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |             index=0             |      group_index=0x000c	  |
+  |1|           index=0x000c        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0004,   0x0005,                     |
   |                         0x0006} |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=SomeTlvX        |         length=0x0004       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |             index=0x0007        |
+  |0|           index=0x0007        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={4 bytes}                      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=SomeTlvY        |         length=0x0008       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |             index=0x000b        |
+  |0|           index=0x000b        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={8 bytes}                      ~
   ~                                                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=SomeTlvZ        |         length=0x0004       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |             index=0x000c        |
+  |0|           index=0x000c        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={4 bytes}                      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
