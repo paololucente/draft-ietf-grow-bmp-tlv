@@ -6,7 +6,7 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: 12 September 2024                                 11 March 2024
+Expires: 14 September 2024                                 13 March 2024
 
 
   BMP v4: TLV support for BMP Route Monitoring and Peer Down Messages
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 September 2024.
+   This Internet-Draft will expire on 14 September 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Lucente & Gu            Expires 12 September 2024               [Page 1]
+Lucente & Gu            Expires 14 September 2024               [Page 1]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -77,7 +77,7 @@ Table of Contents
      4.2.  TLV data in Route Monitoring  . . . . . . . . . . . . . .   5
        4.2.1.  Group TLV . . . . . . . . . . . . . . . . . . . . . .   5
          4.2.1.1.  Wire-format example . . . . . . . . . . . . . . .   6
-       4.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   7
+       4.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   8
        4.2.3.  Stateless parsing TLVs  . . . . . . . . . . . . . . .   8
      4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   8
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   9
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Lucente & Gu            Expires 12 September 2024               [Page 2]
+Lucente & Gu            Expires 14 September 2024               [Page 2]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -165,7 +165,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 12 September 2024               [Page 3]
+Lucente & Gu            Expires 14 September 2024               [Page 3]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -221,7 +221,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 12 September 2024               [Page 4]
+Lucente & Gu            Expires 14 September 2024               [Page 4]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -277,7 +277,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 12 September 2024               [Page 5]
+Lucente & Gu            Expires 14 September 2024               [Page 5]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -313,6 +313,31 @@ Internet-Draft                   BMP TLV                      March 2024
        2
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lucente & Gu            Expires 14 September 2024               [Page 6]
+
+Internet-Draft                   BMP TLV                      March 2024
+
+
        0                   1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -330,14 +355,6 @@ Internet-Draft                   BMP TLV                      March 2024
       |            type=TBD2            |         length=0x0008       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |1|           index=0x000b        |
-
-
-
-Lucente & Gu            Expires 12 September 2024               [Page 6]
-
-Internet-Draft                   BMP TLV                      March 2024
-
-
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                  value={0x0001,   0x0002,                     |
       |                         0x0003,   0x000a}                     |
@@ -351,26 +368,31 @@ Internet-Draft                   BMP TLV                      March 2024
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=SomeTlvX        |         length=0x0004       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |0|           index=0x0007        |
+      |0|           index=0x000b        |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={4 bytes}                      |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=SomeTlvY        |         length=0x0008       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |0|           index=0x000b        |
+      |0|           index=0x000c        |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={8 bytes}                      ~
       ~                                                               |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |            type=SomeTlvZ        |         length=0x0004       |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |0|           index=0x000c        |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                          value={4 bytes}                      |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
                                   Figure 3
+
+
+
+
+
+
+
+Lucente & Gu            Expires 14 September 2024               [Page 7]
+
+Internet-Draft                   BMP TLV                      March 2024
+
 
 4.2.2.  VRF/Table Name TLV
 
@@ -380,19 +402,6 @@ Internet-Draft                   BMP TLV                      March 2024
    bytes.
 
    The VRF/Table Name TLV code point is TBD3
-
-
-
-
-
-
-
-
-
-Lucente & Gu            Expires 12 September 2024               [Page 7]
-
-Internet-Draft                   BMP TLV                      March 2024
-
 
 4.2.3.  Stateless parsing TLVs
 
@@ -433,22 +442,19 @@ Internet-Draft                   BMP TLV                      March 2024
    type with TLVs is with the Peer Up type where optional TLVs are
    placed at the end of the message.
 
+
+
+
+Lucente & Gu            Expires 14 September 2024               [Page 8]
+
+Internet-Draft                   BMP TLV                      March 2024
+
+
    This means for Reason codes 1 or 3, a BGP Notification PDU follows;
    the PDU MAY be followed by TLV data.  For Reason code 2, a 2-byte
    field to give additional FSM info follows; this field MAY be followed
    by TLV data.  For all other Reason codes, TLV data MAY follow the
    Reason field.
-
-
-
-
-
-
-
-Lucente & Gu            Expires 12 September 2024               [Page 8]
-
-Internet-Draft                   BMP TLV                      March 2024
-
 
 4.4.  TLV data in other BMP messages
 
@@ -492,19 +498,20 @@ Internet-Draft                   BMP TLV                      March 2024
    *  Type = TBD2: Support for grouping of TLVs.  The value field is
       defined in Section 4.2.1
 
+
+
+
+Lucente & Gu            Expires 14 September 2024               [Page 9]
+
+Internet-Draft                   BMP TLV                      March 2024
+
+
    *  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
       defined in Section 4.2.2
 
    *  Type = TBD4: ADD-PATH capability.  The value field is set to 1 if
       the BGP Update PDU enclosed in the Route Monitoring message was
       encoded according to the capability.
-
-
-
-Lucente & Gu            Expires 12 September 2024               [Page 9]
-
-Internet-Draft                   BMP TLV                      March 2024
-
 
    *  Type = TBD5: Multiple Labels capability.  The value field is set
       to 1 if the BGP Update PDU enclosed in the Route Monitoring
@@ -548,19 +555,16 @@ Internet-Draft                   BMP TLV                      March 2024
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-   [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
-              Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
-              <https://www.rfc-editor.org/info/rfc8277>.
 
 
-
-
-
-
-Lucente & Gu            Expires 12 September 2024              [Page 10]
+Lucente & Gu            Expires 14 September 2024              [Page 10]
 
 Internet-Draft                   BMP TLV                      March 2024
 
+
+   [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
+              Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
+              <https://www.rfc-editor.org/info/rfc8277>.
 
    [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
               Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
@@ -609,8 +613,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-Lucente & Gu            Expires 12 September 2024              [Page 11]
+Lucente & Gu            Expires 14 September 2024              [Page 11]
