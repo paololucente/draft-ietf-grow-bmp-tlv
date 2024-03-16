@@ -6,7 +6,7 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: 14 September 2024                                 13 March 2024
+Expires: 17 September 2024                                 16 March 2024
 
 
   BMP v4: TLV support for BMP Route Monitoring and Peer Down Messages
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 September 2024.
+   This Internet-Draft will expire on 17 September 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Lucente & Gu            Expires 14 September 2024               [Page 1]
+Lucente & Gu            Expires 17 September 2024               [Page 1]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -76,10 +76,10 @@ Table of Contents
      4.1.  Common Header . . . . . . . . . . . . . . . . . . . . . .   5
      4.2.  TLV data in Route Monitoring  . . . . . . . . . . . . . .   5
        4.2.1.  Group TLV . . . . . . . . . . . . . . . . . . . . . .   5
-         4.2.1.1.  Wire-format example . . . . . . . . . . . . . . .   6
-       4.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   8
-       4.2.3.  Stateless parsing TLVs  . . . . . . . . . . . . . . .   8
-     4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   8
+       4.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   6
+       4.2.3.  Stateless parsing TLV . . . . . . . . . . . . . . . .   6
+       4.2.4.  Wire-format example . . . . . . . . . . . . . . . . .   7
+     4.3.  TLV data in Peer Down . . . . . . . . . . . . . . . . . .   9
      4.4.  TLV data in other BMP messages  . . . . . . . . . . . . .   9
    5.  Error handling  . . . . . . . . . . . . . . . . . . . . . . .   9
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Lucente & Gu            Expires 14 September 2024               [Page 2]
+Lucente & Gu            Expires 17 September 2024               [Page 2]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -165,7 +165,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 14 September 2024               [Page 3]
+Lucente & Gu            Expires 17 September 2024               [Page 3]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -221,7 +221,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 14 September 2024               [Page 4]
+Lucente & Gu            Expires 17 September 2024               [Page 4]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -277,7 +277,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 14 September 2024               [Page 5]
+Lucente & Gu            Expires 17 September 2024               [Page 5]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -294,7 +294,60 @@ Internet-Draft                   BMP TLV                      March 2024
 
    The Group TLV code point is TBD2
 
-4.2.1.1.  Wire-format example
+4.2.2.  VRF/Table Name TLV
+
+   The Information field contains a UTF-8 string whose value MUST be
+   equal to the value of the VRF or table name (ie.  RD instance name)
+   being conveyed.  The string size MUST be within the range of 1 to 255
+   bytes.
+
+   The VRF/Table Name TLV code point is TBD3
+
+4.2.3.  Stateless parsing TLV
+
+   Stateless parsing helps scaling the amount of Route Monitoring
+   messages that can be processed at collection time, avoiding to have
+   to correlate them to BGP capabilities received as part of the Peer Up
+   message, for example.
+
+   Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN RFC 6793
+   [RFC6793], and hence these can be part of the BMP Peer flags section
+   of a Route Monitoring message.  Those that are, instead, per AFI/SAFI
+   require finer granularity and hence the use of an indexed TLV.
+
+   The Stateless Parsing TLV code point is TBD4 and is organized as a
+   2-bytes registry.  The following code points are defined for the
+   Stateless Parsing registry:
+
+   *  Type = TBD5: the BGP Update PDU is encoded with the ADD-PATH
+      capability RFC 7911 [RFC7911], value MUST be 0 for false and 1 for
+      true.
+
+   *  Type = TBD6: the BGP Update PDU is encoded with the Multiple
+      Labels capability RFC 8277 [RFC8277], value MUST be 0 for false
+      and 1 for true.
+
+
+
+
+
+
+
+Lucente & Gu            Expires 17 September 2024               [Page 6]
+
+Internet-Draft                   BMP TLV                      March 2024
+
+
+   If a Stateless parsing TLV is not present in a Route Monitoring
+   message, the receiver MUST fall back to use capabilities present in
+   the BGP Open PDU contained in the relevant BMP Peer Up message in
+   order to properly parse BGP Update PDUs.
+
+   It is recommended that the Stateless Parsing TLV is encoded
+   preceeding the BGP Message TLV in order to ease parsing of the Route
+   Monitoring message at the BMP station side.
+
+4.2.4.  Wire-format example
 
    The diagram in Figure 3 shows an example of a Route Monitoring
    message carrying a BGP UPDATE containing 10 NLRIs.  The TLVs are
@@ -304,12 +357,15 @@ Internet-Draft                   BMP TLV                      March 2024
 
    2.  a Group TLV with index 0x000c, pointing to NLRI 4, 5 and 6
 
-   3.  a TLV pertaining to NLRI 7
+   3.  a Stateless Parsing TLV with Index 0x800b (Group TLV bit set to
+       1, Index 0x000b)
 
-   4.  a TLV pertaining to the NLRIs listed in the Group TLV defined in
-       1
+   4.  a TLV pertaining to NLRI 7
 
    5.  a TLV pertaining to the NLRIs listed in the Group TLV defined in
+       1
+
+   6.  a TLV pertaining to the NLRIs listed in the Group TLV defined in
        2
 
 
@@ -333,7 +389,7 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-Lucente & Gu            Expires 14 September 2024               [Page 6]
+Lucente & Gu            Expires 17 September 2024               [Page 7]
 
 Internet-Draft                   BMP TLV                      March 2024
 
@@ -366,6 +422,10 @@ Internet-Draft                   BMP TLV                      March 2024
       |                  value={0x0004,   0x0005,                     |
       |                         0x0006} |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |            type=TBD4            |         length=0x0002       |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |1|           index=0x000b        |1|0|                         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=SomeTlvX        |         length=0x0004       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|           index=0x000b        |
@@ -385,55 +445,10 @@ Internet-Draft                   BMP TLV                      March 2024
 
 
 
-
-
-
-
-Lucente & Gu            Expires 14 September 2024               [Page 7]
+Lucente & Gu            Expires 17 September 2024               [Page 8]
 
 Internet-Draft                   BMP TLV                      March 2024
 
-
-4.2.2.  VRF/Table Name TLV
-
-   The Information field contains a UTF-8 string whose value MUST be
-   equal to the value of the VRF or table name (ie.  RD instance name)
-   being conveyed.  The string size MUST be within the range of 1 to 255
-   bytes.
-
-   The VRF/Table Name TLV code point is TBD3
-
-4.2.3.  Stateless parsing TLVs
-
-   Stateless parsing helps scaling the amount of Route Monitoring
-   messages that can be processed at collection time, avoiding to have
-   to correlate them to BGP capabilities received as part of the Peer Up
-   message, for example.
-
-   Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN RFC 6793
-   [RFC6793], and hence these can be part of the BMP Peer flags section
-   of a Route Monitoring message.  Those that are, instead, per AFI/SAFI
-   require finer granularity and hence the use of an indexed TLV.
-
-   This document also defines the following new code points to help
-   stateless parsing of BGP Update PDUs:
-
-   *  Type = TBD4: the BGP Update PDU is encoded with the ADD-PATH
-      capability RFC 7911 [RFC7911], length MUST be 1 and value MUST be
-      0 for false and 1 for true.
-
-   *  Type = TBD5: the BGP Update PDU is encoded with the Multiple
-      Labels capability RFC 8277 [RFC8277], length MUST be 1 and value
-      MUST be 0 for false and 1 for true.
-
-   If a certain Stateless parsing TLV is not present, the receiver MUST
-   fall back to use capabilities present in the BGP Open PDU contained
-   in the relevant BMP Peer Up message in order to properly parse BGP
-   Update PDUs.
-
-   It is recommended that any Stateless Parsing TLVs are encoded
-   preceeding the BGP Message TLV in order to ease parsing of the Route
-   Monitoring message at the BMP station side.
 
 4.3.  TLV data in Peer Down
 
@@ -441,14 +456,6 @@ Internet-Draft                   BMP TLV                      March 2024
    [RFC7854].  The consistency model selected to extend this message
    type with TLVs is with the Peer Up type where optional TLVs are
    placed at the end of the message.
-
-
-
-
-Lucente & Gu            Expires 14 September 2024               [Page 8]
-
-Internet-Draft                   BMP TLV                      March 2024
-
 
    This means for Reason codes 1 or 3, a BGP Notification PDU follows;
    the PDU MAY be followed by TLV data.  For Reason code 2, a 2-byte
@@ -492,30 +499,36 @@ Internet-Draft                   BMP TLV                      March 2024
    Monitoring TLVs" registry, the following new TLV types are defined
    (Section 4.2):
 
+
+
+Lucente & Gu            Expires 17 September 2024               [Page 9]
+
+Internet-Draft                   BMP TLV                      March 2024
+
+
    *  Type = TBD1: Support for BGP Message TLV.  The value field is
       defined in Section 4.2
 
    *  Type = TBD2: Support for grouping of TLVs.  The value field is
       defined in Section 4.2.1
 
-
-
-
-Lucente & Gu            Expires 14 September 2024               [Page 9]
-
-Internet-Draft                   BMP TLV                      March 2024
-
-
    *  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
       defined in Section 4.2.2
 
-   *  Type = TBD4: ADD-PATH capability.  The value field is set to 1 if
-      the BGP Update PDU enclosed in the Route Monitoring message was
-      encoded according to the capability.
+   *  Type = TBD4: Support for Stateless Parsing TLV.  The value field
+      is defined in Section 4.2.3
 
-   *  Type = TBD5: Multiple Labels capability.  The value field is set
-      to 1 if the BGP Update PDU enclosed in the Route Monitoring
-      message was encoded according to the capability.
+   This document also requests the definition of a "Stateless Parsing
+   TLV" registry seeded as follows:
+
+   *  Type = TBD5: ADD-PATH capability flag.  Set to 1 if the BGP Update
+      PDU enclosed in the Route Monitoring message was encoded according
+      to the capability.  The recommended value for this flag is 0.
+
+   *  Type = TBD6: Multiple Labels capability flag.  The Set to 1 if the
+      BGP Update PDU enclosed in the Route Monitoring message was
+      encoded according to the capability.  The recommended value for
+      this flag is 1.
 
 9.  Normative References
 
@@ -541,6 +554,14 @@ Internet-Draft                   BMP TLV                      March 2024
               DOI 10.17487/RFC6793, December 2012,
               <https://www.rfc-editor.org/info/rfc6793>.
 
+
+
+
+Lucente & Gu            Expires 17 September 2024              [Page 10]
+
+Internet-Draft                   BMP TLV                      March 2024
+
+
    [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
               Monitoring Protocol (BMP)", RFC 7854,
               DOI 10.17487/RFC7854, June 2016,
@@ -554,13 +575,6 @@ Internet-Draft                   BMP TLV                      March 2024
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-Lucente & Gu            Expires 14 September 2024              [Page 10]
-
-Internet-Draft                   BMP TLV                      March 2024
-
 
    [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
               Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
@@ -596,6 +610,14 @@ Authors' Addresses
    Yunan Gu
    Huawei
    Huawei Bld., No.156 Beiqing Rd.
+
+
+
+Lucente & Gu            Expires 17 September 2024              [Page 11]
+
+Internet-Draft                   BMP TLV                      March 2024
+
+
    Beijing
    100095
    China
@@ -613,4 +635,38 @@ Authors' Addresses
 
 
 
-Lucente & Gu            Expires 14 September 2024              [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lucente & Gu            Expires 17 September 2024              [Page 12]

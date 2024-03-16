@@ -6,8 +6,9 @@
         <!ENTITY IANA_RM_CODE_BGP_PDU "TBD1">
         <!ENTITY IANA_RM_CODE_GROUP "TBD2">
         <!ENTITY IANA_RM_CODE_VRF "TBD3">
-        <!ENTITY IANA_RM_CODE_PATH_ID "TBD4">
-        <!ENTITY IANA_RM_CODE_MULTI_LABELS "TBD5">
+        <!ENTITY IANA_RM_CODE_SP "TBD4">
+        <!ENTITY IANA_RM_SPREG_CODE_PATH_ID "TBD5">
+        <!ENTITY IANA_RM_SPREG_CODE_MULTI_LABELS "TBD6">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -285,7 +286,53 @@
 		<t>
 		    The Group TLV code point is &IANA_RM_CODE_GROUP;
 		</t>
-
+	    </section>
+	    <section title="VRF/Table Name TLV" anchor="VrfTLVinRM">
+		<t>
+		    The Information field contains a UTF-8 string whose value MUST
+		    be equal to the value of the VRF or table name (ie. RD instance
+		    name) being conveyed.  The string size MUST be within the range
+		    of 1 to 255 bytes.
+		</t>
+		<t>
+		    The VRF/Table Name TLV code point is &IANA_RM_CODE_VRF;
+		</t>
+	    </section>
+	    <section title="Stateless parsing TLV" anchor="SpTLVinRM">
+		<t>
+		    Stateless parsing helps scaling the amount of Route Monitoring
+		    messages that can be processed at collection time, avoiding to
+		    have to correlate them to BGP capabilities received as part of
+		    the Peer Up message, for example.
+		</t>
+		<t>
+		    Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN
+		    <xref target="RFC6793">RFC 6793</xref>, and hence these can be
+		    part of the BMP Peer flags section of a Route Monitoring message.
+		    Those that are, instead, per AFI/SAFI require finer granularity
+		    and hence the use of an indexed TLV.
+		</t>
+		<t>
+		    The Stateless Parsing TLV code point is &IANA_RM_CODE_SP; and
+		    is organized as a 2-bytes registry. The following code points
+		    are defined for the Stateless Parsing registry:
+                    <list style="symbols">
+			<t>Type = &IANA_RM_SPREG_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, value MUST be 0 for false and 1 for true.</t>
+			<t>Type = &IANA_RM_SPREG_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, value MUST be 0 for false and 1 for true.</t>
+                    </list>
+		</t>
+		<t>
+		    If a Stateless parsing TLV is not present in a Route Monitoring
+		    message, the receiver MUST fall back to use capabilities present
+		    in the BGP Open PDU contained in the relevant BMP Peer Up message
+		    in order to properly parse BGP Update PDUs.
+		</t>
+		<t>
+		    It is recommended that the Stateless Parsing TLV is encoded
+		    preceeding the BGP Message TLV in order to ease parsing of the
+		    Route Monitoring message at the BMP station side.
+		</t>
+	    </section>
         <section title="Wire-format example" anchor="TLVexample">
             <t>
                 The diagram in <xref target="BMP-RM-TLVs"/> shows an example of a
@@ -300,7 +347,13 @@
                         a Group TLV with index 0x000c, pointing to NLRI 4, 5 and
                         6
                     </t>
-                    <t>a TLV pertaining to NLRI 7</t>
+		    <t>
+			a Stateless Parsing TLV with Index 0x800b (Group TLV bit
+			set to 1, Index 0x000b)
+		    </t>
+                    <t>
+			a TLV pertaining to NLRI 7
+		    </t>
                     <t>
                         a TLV pertaining to the NLRIs listed in the Group TLV
                         defined in 1
@@ -344,6 +397,10 @@
   |                  value={0x0004,   0x0005,                     |
   |                         0x0006} |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |            type=TBD4            |         length=0x0002       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |1|           index=0x000b        |1|0|                         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=SomeTlvX        |         length=0x0004       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|           index=0x000b        |
@@ -362,54 +419,7 @@
                 </figure>
             </t>
         </section>
-
-	    </section>
-	    <section title="VRF/Table Name TLV" anchor="VrfTLVinRM">
-		<t>
-		    The Information field contains a UTF-8 string whose value MUST
-		    be equal to the value of the VRF or table name (ie. RD instance
-		    name) being conveyed.  The string size MUST be within the range
-		    of 1 to 255 bytes.
-		</t>
-		<t>
-		    The VRF/Table Name TLV code point is &IANA_RM_CODE_VRF;
-		</t>
-	    </section>
-	    <section title="Stateless parsing TLVs">
-		<t>
-		    Stateless parsing helps scaling the amount of Route Monitoring
-		    messages that can be processed at collection time, avoiding to
-		    have to correlate them to BGP capabilities received as part of
-		    the Peer Up message, for example.
-		</t>
-		<t>
-		    Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN
-		    <xref target="RFC6793">RFC 6793</xref>, and hence these can be
-		    part of the BMP Peer flags section of a Route Monitoring message.
-		    Those that are, instead, per AFI/SAFI require finer granularity
-		    and hence the use of an indexed TLV.
-		</t>
-		<t>
-		    This document also defines the following new code points to
-		    help stateless parsing of BGP Update PDUs:
-                    <list style="symbols">
-			<t>Type = &IANA_RM_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
-			<t>Type = &IANA_RM_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, length MUST be 1 and value MUST be 0 for false and 1 for true.</t>
-                    </list>
-		</t>
-		<t>
-		    If a certain Stateless parsing TLV is not present, the receiver
-		    MUST fall back to use capabilities present in the BGP Open PDU
-		    contained in the relevant BMP Peer Up message in order to properly
-		    parse BGP Update PDUs.
-		</t>
-		<t>
-		    It is recommended that any Stateless Parsing TLVs are encoded 
-		    preceeding the BGP Message TLV in order to ease parsing of the
-		    Route Monitoring message at the BMP station side.
-		</t>
-	    </section>
-	    </section>
+        </section>
 	    <section title="TLV data in Peer Down" anchor="TLVinPD">
 		<t>
 		    The Peer Down Notification message type is defined in <xref target="RFC7854">Section 4.9 of</xref>.
@@ -485,14 +495,25 @@
 			field is defined in <xref target="VrfTLVinRM"/>
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_PATH_ID;: ADD-PATH capability. The value field is set
-			to 1 if the BGP Update PDU enclosed in the Route Monitoring message was
-			encoded according to the capability.
+			Type = &IANA_RM_CODE_SP;: Support for Stateless Parsing TLV. The value
+			field is defined in <xref target="SpTLVinRM"/>
+		    </t>
+		</list>
+            </t>
+            <t>
+		This document also requests the definition of a "Stateless Parsing TLV" registry
+		seeded as follows:
+		<list style="symbols">
+		    <t>
+			Type = &IANA_RM_SPREG_CODE_PATH_ID;: ADD-PATH capability flag. Set to 1
+			if the BGP Update PDU enclosed in the Route Monitoring message was encoded
+			according to the capability. The recommended value for this flag is 0.
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_MULTI_LABELS;: Multiple Labels capability. The value
-			field is set to 1 if the BGP Update PDU enclosed in the Route Monitoring
-			message was encoded according to the capability.
+			Type = &IANA_RM_SPREG_CODE_MULTI_LABELS;: Multiple Labels capability flag.
+			The Set to 1 if the BGP Update PDU enclosed in the Route Monitoring message
+			was encoded according to the capability. The recommended value for this
+			flag is 1.
 		    </t>
 		</list>
             </t>
