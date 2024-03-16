@@ -284,7 +284,9 @@
 		    group can be reused within the same Route Monitoring message.
 		</t>
 		<t>
-		    The Group TLV code point is &IANA_RM_CODE_GROUP;
+		    The Group TLV code point is &IANA_RM_CODE_GROUP;. It is recommended
+		    that this TLV is encoded first in order to ease parsing of the
+                    Route Monitoring message at the BMP station side.
 		</t>
 	    </section>
 	    <section title="VRF/Table Name TLV" anchor="VrfTLVinRM">
@@ -364,7 +366,6 @@
                     </t>
                 </list>
             </t>
-
             <t>
                 <figure anchor="BMP-RM-TLVs" align="center">
                     <artwork align="center">
@@ -374,14 +375,6 @@
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |        Common Header + Per-Peer Header (6 + 48 bytes)         ~
   ~                                                               |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD1            |         length=X            |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
-  ~                                                               ~
-  ~                       NLRI_1 .. NLRI_10                       ~
-  ~                                                            }  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=TBD2            |         length=0x0008       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -400,6 +393,14 @@
   |            type=TBD4            |         length=0x0002       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |1|           index=0x000b        |1|0|                         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |            type=TBD1            |         length=X            |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
+  ~                                                               ~
+  ~                       NLRI_1 .. NLRI_10                       ~
+  ~                                                            }  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=SomeTlvX        |         length=0x0004       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -488,7 +489,8 @@
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
-			field is defined in <xref target="GroupTLVinRM"/>
+			field is defined in <xref target="GroupTLVinRM"/>. The recommended
+			value for this TLV is 0.
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_VRF;: Support for VRF/Table Name TLV. The value
@@ -496,7 +498,8 @@
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_SP;: Support for Stateless Parsing TLV. The value
-			field is defined in <xref target="SpTLVinRM"/>
+			field is defined in <xref target="SpTLVinRM"/>. The recommended value
+			for this TLV is 1.
 		    </t>
 		</list>
             </t>
@@ -507,13 +510,14 @@
 		    <t>
 			Type = &IANA_RM_SPREG_CODE_PATH_ID;: ADD-PATH capability flag. Set to 1
 			if the BGP Update PDU enclosed in the Route Monitoring message was encoded
-			according to the capability. The recommended value for this flag is 0.
+			according to the capability. The flag is defined in <xref target="SpTLVinRM"/>.
+			The recommended value for this flag is 0.
 		    </t>
 		    <t>
 			Type = &IANA_RM_SPREG_CODE_MULTI_LABELS;: Multiple Labels capability flag.
 			The Set to 1 if the BGP Update PDU enclosed in the Route Monitoring message
-			was encoded according to the capability. The recommended value for this
-			flag is 1.
+			was encoded according to the capability. The flag is defined in <xref
+			target="SpTLVinRM"/>. The recommended value for this flag is 1.
 		    </t>
 		</list>
             </t>

@@ -292,7 +292,9 @@ Internet-Draft                   BMP TLV                      March 2024
    Multiple TLVs can point to the same Group Index, i.e. a group can be
    reused within the same Route Monitoring message.
 
-   The Group TLV code point is TBD2
+   The Group TLV code point is TBD2.  It is recommended that this TLV is
+   encoded first in order to ease parsing of the Route Monitoring
+   message at the BMP station side.
 
 4.2.2.  VRF/Table Name TLV
 
@@ -326,8 +328,6 @@ Internet-Draft                   BMP TLV                      March 2024
    *  Type = TBD6: the BGP Update PDU is encoded with the Multiple
       Labels capability RFC 8277 [RFC8277], value MUST be 0 for false
       and 1 for true.
-
-
 
 
 
@@ -400,14 +400,6 @@ Internet-Draft                   BMP TLV                      March 2024
       |        Common Header + Per-Peer Header (6 + 48 bytes)         ~
       ~                                                               |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |            type=TBD1            |         length=X            |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
-      ~                                                               ~
-      ~                       NLRI_1 .. NLRI_10                       ~
-      ~                                                            }  |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=TBD2            |         length=0x0008       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |1|           index=0x000b        |
@@ -425,6 +417,14 @@ Internet-Draft                   BMP TLV                      March 2024
       |            type=TBD4            |         length=0x0002       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |1|           index=0x000b        |1|0|                         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |            type=TBD1            |         length=X            |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
+      ~                                                               ~
+      ~                       NLRI_1 .. NLRI_10                       ~
+      ~                                                            }  |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=SomeTlvX        |         length=0x0004       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -510,25 +510,28 @@ Internet-Draft                   BMP TLV                      March 2024
       defined in Section 4.2
 
    *  Type = TBD2: Support for grouping of TLVs.  The value field is
-      defined in Section 4.2.1
+      defined in Section 4.2.1.  The recommended value for this TLV is
+      0.
 
    *  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
       defined in Section 4.2.2
 
    *  Type = TBD4: Support for Stateless Parsing TLV.  The value field
-      is defined in Section 4.2.3
+      is defined in Section 4.2.3.  The recommended value for this TLV
+      is 1.
 
    This document also requests the definition of a "Stateless Parsing
    TLV" registry seeded as follows:
 
    *  Type = TBD5: ADD-PATH capability flag.  Set to 1 if the BGP Update
       PDU enclosed in the Route Monitoring message was encoded according
-      to the capability.  The recommended value for this flag is 0.
+      to the capability.  The flag is defined in Section 4.2.3.  The
+      recommended value for this flag is 0.
 
    *  Type = TBD6: Multiple Labels capability flag.  The Set to 1 if the
       BGP Update PDU enclosed in the Route Monitoring message was
-      encoded according to the capability.  The recommended value for
-      this flag is 1.
+      encoded according to the capability.  The flag is defined in
+      Section 4.2.3.  The recommended value for this flag is 1.
 
 9.  Normative References
 
@@ -549,10 +552,7 @@ Internet-Draft                   BMP TLV                      March 2024
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
 
-   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
-              Autonomous System (AS) Number Space", RFC 6793,
-              DOI 10.17487/RFC6793, December 2012,
-              <https://www.rfc-editor.org/info/rfc6793>.
+
 
 
 
@@ -561,6 +561,11 @@ Lucente & Gu            Expires 17 September 2024              [Page 10]
 
 Internet-Draft                   BMP TLV                      March 2024
 
+
+   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
+              Autonomous System (AS) Number Space", RFC 6793,
+              DOI 10.17487/RFC6793, December 2012,
+              <https://www.rfc-editor.org/info/rfc6793>.
 
    [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
               Monitoring Protocol (BMP)", RFC 7854,
@@ -607,24 +612,19 @@ Authors' Addresses
    Email: paolo@ntt.net
 
 
-   Yunan Gu
-   Huawei
-   Huawei Bld., No.156 Beiqing Rd.
-
-
 
 Lucente & Gu            Expires 17 September 2024              [Page 11]
 
 Internet-Draft                   BMP TLV                      March 2024
 
 
+   Yunan Gu
+   Huawei
+   Huawei Bld., No.156 Beiqing Rd.
    Beijing
    100095
    China
    Email: guyunan@huawei.com
-
-
-
 
 
 
