@@ -321,11 +321,13 @@
 		</t>
 		<t>
 		    The Stateless Parsing TLV code point is &IANA_RM_CODE_SP; and
-		    is organized as a 2-bytes registry. The following code points
-		    are defined for the Stateless Parsing registry:
+		    is organized as a 2-bytes registry, one byte for the type, one
+		    for the value. The type field encodes a code point from the
+		    Stateless Parsing registry. The following code points are
+		    defined for this registry:
                     <list style="symbols">
-			<t>Type = &IANA_RM_SPREG_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, value MUST be 0 for false and 1 for true.</t>
-			<t>Type = &IANA_RM_SPREG_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, value MUST be 0 for false and 1 for true.</t>
+			<t>Type = &IANA_RM_SPREG_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, the value field MUST be 0 for false and 1 for true.</t>
+			<t>Type = &IANA_RM_SPREG_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, the value field MUST match the Count for the relevant AFI/SAFI as it was encoded in the BGP Open PDU.</t>
                     </list>
 		</t>
 		<t>
