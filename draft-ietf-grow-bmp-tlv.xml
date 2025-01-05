@@ -186,8 +186,8 @@
 		indexed, with the index starting at one (1) to refer to the first NLRI.
 		Index zero (0) specifies that a TLV does apply to all NLRIs contained in
 		the BGP Update message. The Index field is 2 bytes long of which the
-		top-most bit of the Index field, G-bit, is reserved to flag a Group
-		Index (more in <xref target="GroupTLVinRM"/>).
+		top-most bit, G-bit, is reserved to flag a Group Index (more in <xref
+		target="GroupTLVinRM"/>).
 		Multiple TLVs of the same type and with the same index can be repeated
 		as part of the same message. Indexed TLVs are encoded as in the following
 		figure:
@@ -213,6 +213,13 @@
 		index value. Also in indexed TLVs, the reported length refers to the
 		total encoded TLV value (ie. it does exclude the length of the index
 		field).
+	    </t>
+
+	    <t>
+		A decoder can properly match indexed TLVs to the corresponding NLRI
+		only if - or as long as - NLRIs are decoded successfully. In case of
+		any parsing or error condition that prevents full decoding of the BGP
+		PDU, the decoder MUST stop matching indexed TLVs to NLRIs.
 	    </t>
 
 	    <t>

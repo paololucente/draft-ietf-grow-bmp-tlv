@@ -193,11 +193,11 @@ Internet-Draft                   BMP TLV                    January 2025
    Monitoring messages MUST be indexed, with the index starting at one
    (1) to refer to the first NLRI.  Index zero (0) specifies that a TLV
    does apply to all NLRIs contained in the BGP Update message.  The
-   Index field is 2 bytes long of which the top-most bit of the Index
-   field, G-bit, is reserved to flag a Group Index (more in
-   Section 4.2.1).  Multiple TLVs of the same type and with the same
-   index can be repeated as part of the same message.  Indexed TLVs are
-   encoded as in the following figure:
+   Index field is 2 bytes long of which the top-most bit, G-bit, is
+   reserved to flag a Group Index (more in Section 4.2.1).  Multiple
+   TLVs of the same type and with the same index can be repeated as part
+   of the same message.  Indexed TLVs are encoded as in the following
+   figure:
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -225,6 +225,11 @@ Lucente & Gu               Expires 9 July 2025                  [Page 4]
 
 Internet-Draft                   BMP TLV                    January 2025
 
+
+   A decoder can properly match indexed TLVs to the corresponding NLRI
+   only if - or as long as - NLRIs are decoded successfully.  In case of
+   any parsing or error condition that prevents full decoding of the BGP
+   PDU, the decoder MUST stop matching indexed TLVs to NLRIs.
 
    Of the BMP message types defined so far, indexed TLVs apply only to
    Route Monitoring messages and, for example, they do not apply to
@@ -270,17 +275,14 @@ Internet-Draft                   BMP TLV                    January 2025
    instead require a form of grouping and hence this document defines a
    Group TLV to achieve this.
 
-   The TLV value MUST contain:
-
-
-
-
 
 
 Lucente & Gu               Expires 9 July 2025                  [Page 5]
 
 Internet-Draft                   BMP TLV                    January 2025
 
+
+   The TLV value MUST contain:
 
    *  A 2 bytes Group Index where the top-most bit, G-bit or Group Bit
       MUST be set to one (1).  The full 2 bytes value, that is including
@@ -326,9 +328,7 @@ Internet-Draft                   BMP TLV                    January 2025
    field encodes a code point from the Stateless Parsing registry.  The
    following code points are defined for this registry:
 
-   *  Type = TBD5: the BGP Update PDU is encoded with the ADD-PATH
-      capability RFC 7911 [RFC7911], the value field MUST be 0 for false
-      and 1 for true.
+
 
 
 
@@ -337,6 +337,10 @@ Lucente & Gu               Expires 9 July 2025                  [Page 6]
 
 Internet-Draft                   BMP TLV                    January 2025
 
+
+   *  Type = TBD5: the BGP Update PDU is encoded with the ADD-PATH
+      capability RFC 7911 [RFC7911], the value field MUST be 0 for false
+      and 1 for true.
 
    *  Type = TBD6: the BGP Update PDU is encoded with the Multiple
       Labels capability RFC 8277 [RFC8277], the value field MUST match
@@ -372,10 +376,6 @@ Internet-Draft                   BMP TLV                    January 2025
 
    6.  a TLV pertaining to the NLRIs listed in the Group TLV defined in
        2
-
-
-
-
 
 
 
