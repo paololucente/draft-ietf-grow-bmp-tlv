@@ -175,7 +175,7 @@
 		TLVs of the same type can be repeated as part of the same message,
 		and it is left to the specific use-cases whether all, any, the
 		first or the last TLV should be considered as well as whether
-		ordering matters.
+		ordering matters and repeating is allowed.
 	    </t>
 
 	    <t>
@@ -188,9 +188,9 @@
 		the BGP Update message. The Index field is 2 bytes long of which the
 		top-most bit, G-bit, is reserved to flag a Group Index (more in <xref
 		target="GroupTLVinRM"/>).
-		Multiple TLVs of the same type and with the same index can be repeated
-		as part of the same message. Indexed TLVs are encoded as in the following
-		figure:
+		In general TLVs of the same type and with the same index can be repeated
+		as part of the same message, unless specified otherwise by the definition
+		of the specific TLV. Indexed TLVs are encoded as in the following figure:
 	    </t>
 
 	    <figure anchor="BMP-indexed-TLV-header" align="center">
@@ -328,9 +328,10 @@
 		</t>
 		<t>
 		    The Stateless Parsing TLV code point is &IANA_RM_CODE_SP; and
-		    is organized as a 2-bytes registry, one byte for the type, one
-		    for the value. The type field encodes a code point from the
-		    Stateless Parsing registry. The following code points are
+		    is organized as a 5-bytes registry, one byte for the type,
+		    followed by AFI (2 bytes) and SAFI (1 byte) and finally one
+		    byte for the value. The type field encodes a code point from
+		    the Stateless Parsing registry. The following code points are
 		    defined for this registry:
                     <list style="symbols">
 			<t>Type = &IANA_RM_SPREG_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, the value field MUST be 0 for false and 1 for true.</t>
@@ -338,7 +339,12 @@
                     </list>
 		</t>
 		<t>
-		    If a Stateless parsing TLV is not present in a Route Monitoring
+		    Only a single Stateless Parsing TLV is allowed in a message, this
+		    TLV cannot be repeated. Also the index of the TLV MUST be set to
+		    zero. 
+		</t>
+		<t>
+		    If the Stateless Parsing TLV is not present in a Route Monitoring
 		    message, the receiver MUST fall back to use capabilities present
 		    in the BGP Open PDU contained in the relevant BMP Peer Up message
 		    in order to properly parse BGP Update PDUs.
