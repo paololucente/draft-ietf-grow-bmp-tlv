@@ -258,7 +258,7 @@
 			sectionFormat="of" target="RFC7854"/>. The consistency model
 			selected by this document to extend encoding of such message type
 			with TLVs is with the Route Mirroring type defined in <xref
-			section="4.7" sectionFormat="of" target="RFC7854"/>. where the
+			section="4.7" sectionFormat="of" target="RFC7854"/> where the
 		    Per-peer header is being followed by mandatory and optional TLVs.  
 		</t>
 		<t>
