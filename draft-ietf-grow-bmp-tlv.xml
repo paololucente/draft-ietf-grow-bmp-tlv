@@ -139,6 +139,15 @@
             </t>
         </section>
 
+	<section title="Message version">
+	    <t>
+		For an exporter to flag a receiver that it does comply with this document, the
+		Version field of the Common Header, documented in <xref target="RFC7854">
+		Section 4.4 of</xref>, MUST be set to 4. This applies to every BMP message
+		type.	
+	    </t>
+	</section>
+
 	<section title="TLV encoding">
 	    <t>
 		The TLV data type is already defined in <xref target="RFC7854">Section 4.4 of</xref>
@@ -277,9 +286,12 @@
 		<t>
 		    In a Route Monitoring message where the BGP Update PDU carries N
 		    NLRIs, indexed TLVs do allow to handle the cases of 1:1 and N:1
-		    relationship among NLRIs and TLVs. The case of N:M relationship
-		    does instead require a form of grouping and hence this document
-		    defines a Group TLV to achieve this.
+		    relationship among TLVs and NLRIs (ie. one TLV applies to one
+		    NLRI, N TLVs apply to one same NLRI). The cases of 1:N and M:N
+		    relationships (ie. one TLV applies to N NLRIs, M TLVs apply to
+		    N NLRIs) can benefit by a form of grouping. This is the context
+		    to define a Group TLV to achieve this with the aim to limit both
+		    verbosity and repetitions.
 		</t>
 		<t>
 		    The TLV value MUST contain:
