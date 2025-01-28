@@ -7,8 +7,6 @@
         <!ENTITY IANA_RM_CODE_GROUP "TBD2">
         <!ENTITY IANA_RM_CODE_VRF "TBD3">
         <!ENTITY IANA_RM_CODE_SP "TBD4">
-        <!ENTITY IANA_RM_SPREG_CODE_PATH_ID "TBD5">
-        <!ENTITY IANA_RM_SPREG_CODE_MULTI_LABELS "TBD6">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -342,20 +340,29 @@
 		</t>
 		<t>
 		    The Stateless Parsing TLV code point is &IANA_RM_CODE_SP; and
-		    is organized as a 5-bytes registry, one byte for the type,
-		    followed by AFI (2 bytes) and SAFI (1 byte) and finally one
-		    byte for the value. The type field encodes a code point from
-		    the Stateless Parsing registry. The following code points are
-		    defined for this registry:
-                    <list style="symbols">
-			<t>Type = &IANA_RM_SPREG_CODE_PATH_ID;: the BGP Update PDU is encoded with the ADD-PATH capability <xref target="RFC7911">RFC 7911</xref>, the value field MUST be 0 for false and 1 for true.</t>
-			<t>Type = &IANA_RM_SPREG_CODE_MULTI_LABELS;: the BGP Update PDU is encoded with the Multiple Labels capability <xref target="RFC8277">RFC 8277</xref>, the value field MUST match the Count for the relevant AFI/SAFI as it was encoded in the BGP Open PDU.</t>
-                    </list>
+		    its Value is organized as follows:
+
+		    <list style="symbols">
+		    <t>Capability Type, 1 byte</t>
+		    <t>AFI, 2 bytes</t>
+		    <t>SAFI, 1 byte</t>
+		    <t>Capability Value, variable length</t>
+		    </list>
 		</t>
 		<t>
-		    Only a single Stateless Parsing TLV is allowed in a message, this
-		    TLV cannot be repeated. Also the index of the TLV MUST be set to
-		    zero. 
+		    The Capability Type field encodes a code point from the <xref
+		    target="IANA-BCC">BGP Capabilities Codes</xref> registry defined 
+		    by <xref target="RFC5492">RFC 5492</xref>.
+		</t>
+		<t>
+		    The length of the Capability Value field can be inferred by
+		    subtracting the fixed component of the Stateless Parsing TLV
+		    Value from the TLV length. The value encoded MUST be the same
+		    as the one encoded by the capability in the original BGP Open
+		    message.
+		</t>  
+		<t>
+		    The index of the Stateless Parsing TLV MUST be set to zero. 
 		</t>
 		<t>
 		    If the Stateless Parsing TLV is not present in a Route Monitoring
@@ -384,8 +391,7 @@
                         6
                     </t>
 		    <t>
-			a Stateless Parsing TLV with Index 0x800b (Group TLV bit
-			set to 1, Index 0x000b)
+			a Stateless Parsing TLV with index 0x0000
 		    </t>
                     <t>
 			a TLV pertaining to NLRI 7
@@ -548,24 +554,6 @@
 		    </t>
 		</list>
             </t>
-            <t>
-		This document also requests the definition of a "Stateless Parsing TLV" registry
-		seeded as follows:
-		<list style="symbols">
-		    <t>
-			Type = &IANA_RM_SPREG_CODE_PATH_ID;: ADD-PATH capability flag. Set to 1
-			if the BGP Update PDU enclosed in the Route Monitoring message was encoded
-			according to the capability. The flag is defined in <xref target="SpTLVinRM"/>.
-			The recommended value for this flag is 0.
-		    </t>
-		    <t>
-			Type = &IANA_RM_SPREG_CODE_MULTI_LABELS;: Multiple Labels capability flag.
-			The Set to 1 if the BGP Update PDU enclosed in the Route Monitoring message
-			was encoded according to the capability. The flag is defined in <xref
-			target="SpTLVinRM"/>. The recommended value for this flag is 1.
-		    </t>
-		</list>
-            </t>
         </section>
 
     </middle>
@@ -585,6 +573,22 @@
 		<?rfc include="reference.RFC.9069.xml"?>
 
 		&I-D.ietf-grow-bmp-peer-up;
+        </references>
+	<references title="Informative References">
+                <?rfc include="reference.RFC.5492.xml"?>
+                <reference anchor="IANA-BCC" target="https://www.iana.org/assignments/capability-codes/">
+                        <front>
+                                <title>
+                                        Capabilities Codes
+                                </title>
+                                <author>
+                                        <organization>
+                                                IANA
+                                        </organization>
+                                </author>
+                                <date year="2025" />
+                        </front>
+                </reference>
         </references>
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
