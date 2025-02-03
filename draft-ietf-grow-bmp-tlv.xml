@@ -333,10 +333,11 @@
 		</t>
 		<t>
 		    Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN
-		    <xref target="RFC6793">RFC 6793</xref>, and hence these can be
-		    part of the BMP Peer flags section of a Route Monitoring message.
-		    Those that are, instead, per AFI/SAFI require finer granularity
-		    and hence the need to use an indexed TLV.
+		    <xref target="RFC6793">RFC 6793</xref>, and hence these can
+		    potentially be part of the BMP Peer flags section of a Route
+		    Monitoring message. Those that are, instead, per AFI/SAFI
+		    require finer granularity and hence the need to use an indexed
+		    TLV.
 		</t>
 		<t>
 		    The Stateless Parsing TLV code point is &IANA_RM_CODE_SP; and
@@ -344,8 +345,6 @@
 
 		    <list style="symbols">
 		    <t>Capability Type, 1 byte</t>
-		    <t>AFI, 2 bytes</t>
-		    <t>SAFI, 1 byte</t>
 		    <t>Capability Value, variable length</t>
 		    </list>
 		</t>
@@ -355,20 +354,28 @@
 		    by <xref target="RFC5492">RFC 5492</xref>.
 		</t>
 		<t>
-		    The length of the Capability Value field can be inferred by
-		    subtracting the fixed component of the Stateless Parsing TLV
-		    Value from the TLV length. The value encoded MUST be the same
-		    as the one encoded by the capability in the original BGP Open
-		    message.
+		    The Capability Value encodes the BGP capability exactly as it
+		    is encoded in the BGP Open of the session. For example, an
+		    ADD-PATH capability, as defined by <xref target="RFC7911">RFC
+		    7911</xref>, for IP/Unicast with value Send/Receive would be
+		    encoded in the Capability Value as: 
 		</t>  
+		<t>
+		    <list style="symbols">
+		    <t>AFI, 2 bytes, value=1</t>
+		    <t>SAFI, 1 byte, value=1</t>
+	            <t>Value, 1 byte, value=3</t>
+		    </list>
+		</t>
 		<t>
 		    The index of the Stateless Parsing TLV MUST be set to zero. 
 		</t>
 		<t>
-		    If the Stateless Parsing TLV is not present in a Route Monitoring
+		    If no Stateless Parsing TLV is present in a Route Monitoring
 		    message, the receiver MUST fall back to use capabilities present
 		    in the BGP Open PDU contained in the relevant BMP Peer Up message
-		    in order to properly parse BGP Update PDUs.
+		    in order to properly parse BGP Update PDUs. Each BGP capability  
+		    is to be encoded in a separate Stateless Parsing TLV.
 		</t>
 		<t>
 		    It is recommended that the Stateless Parsing TLV is encoded
@@ -432,8 +439,8 @@
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=TBD4            |         length=0x0005       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |0|           index=0             |         afi=1		  |
-  |    safi=1       |   cap=69      |    value=3    |
+  |0|           index=0             |     cap=69    |	 afi=1	  ~ 
+  ~                 |     safi=1    |    value=3    |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |            type=TBD1            |         length=X            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -567,8 +574,6 @@
 		<?rfc include="reference.RFC.4271.xml"?>
 		<?rfc include="reference.RFC.7854.xml"?>
 		<?rfc include="reference.RFC.6793.xml"?>
-		<?rfc include="reference.RFC.7911.xml"?>
-		<?rfc include="reference.RFC.8277.xml"?>
 		<?rfc include="reference.RFC.8654.xml"?>
 		<?rfc include="reference.RFC.9069.xml"?>
 
@@ -576,6 +581,7 @@
         </references>
 	<references title="Informative References">
                 <?rfc include="reference.RFC.5492.xml"?>
+		<?rfc include="reference.RFC.7911.xml"?>
                 <reference anchor="IANA-BCC" target="https://www.iana.org/assignments/capability-codes/">
                         <front>
                                 <title>
