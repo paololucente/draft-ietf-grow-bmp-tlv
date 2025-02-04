@@ -24,7 +24,7 @@
 
     <front>
         <title abbrev="BMP TLV">
-	    BMP v4: TLV support for BMP Route Monitoring and Peer Down Messages
+	    BMP v4: TLV Support for BGP Monitoring Prtoocol (BMP) Route Monitoring and Peer Down Messages
 	</title>
 
         <author fullname="Paolo Lucente" initials="P" surname="Lucente">
@@ -65,16 +65,16 @@
 
         <abstract>
             <t>
-		Most of the message types defined by the BGP Monitoring Protocol (BMP)
-		make provision for data in TLV format. However, Route Monitoring
+		Most of the BGP Monitoring Protocol (BMP) message types make provision
+		for data in Type, Length, Value (TLV) format. However, Route Monitoring
 		messages (which provide a snapshot of the monitored Routing Information
 		Base) and Peer Down messages (which indicate that a peering session was
 		terminated) do not. Supporting (optional) data in TLV format across
-		all BMP message types allows for a homogeneous and extensible structure
-		that would be useful for the most different use-cases that need to
-		convey additional data to a BMP station. While it is not intended
-		for this document to cover any specific utilization scenario, it defines
-		a consistent and simple way to support TLV data in all message types.
+		all BMP message types provides consistent and extensible structures
+		that would be useful among the various where conveying additional data 
+		to a monitoring station is required. This document updates
+		<xref target="RFC7854">RFC 7854</xref> to support TLV data in all message
+		types.
             </t>
         </abstract>
     </front>
@@ -108,19 +108,20 @@
            <t>
 		This means that both Route Monitoring and Peer Down messages have
 		a non-extensible format (except for the specific case of Peer Down
-		Reason Code 6 as <xref section="5.3" sectionFormat="of"
+		Reason Code 6 as specified in <xref section="5.3" sectionFormat="of"
 		target="RFC9069"/>). In the Route Monitoring case, this prevents
 		the transmission of characteristics of transported NLRIs (e.g. to
 		help with stateless parsing), status of a path after being
 		processed by the BGP process or of vendor-specific data. In the
 		Peer Down case, this prevents matching with TLVs previously sent
-		with the Peer Up message. The proposal of this document is to:
+		with the Peer Up message. This document:
 		<list style="symbols">
-			<t>Bump the BMP version for all message types defined in
+			<t>Bumps the BMP version for all message types defined in
 			   <xref target="RFC7854">RFC 7854</xref> for backward compatibility</t>
-			<t>Change the structure of Route Monitoring message type so that the BGP
-			   Update PDU is enclosed in a TLV. The BGP Message PDU TLV is mandatory</t>
-			<t>Allow all defined BMP message types to make provision for optional
+			<t>Changes the structure of Route Monitoring message type so that the BGP
+			   Update PDU is enclosed in a TLV. The BGP Message PDU TLV is mandatory
+			   to be included</t>
+			<t>Allows all defined BMP message types to make provision for optional
 			   TLV data.</t>
 		</list>
             </t>
@@ -139,17 +140,22 @@
 
 	<section title="Message version">
 	    <t>
-		For an exporter to flag a receiver that it does comply with this document, the
-		Version field of the Common Header, documented in <xref target="RFC7854">
-		Section 4.4 of</xref>, MUST be set to 4. This applies to every BMP message
-		type.	
+		For an exporter to flag a receiver that it does comply with this
+		specification, the Version field of the BMP Common header, documented
+		in <xref target="RFC7854">Section 4.4 of</xref>, MUST be set to 4. This
+		applies to every BMP message type.	
+	    </t>
+	    <t>
+		If a BMP station does not support the version indicated in the message,
+		it MUST close the session.
 	    </t>
 	</section>
 
-	<section title="TLV encoding">
+	<section title="TLV Encoding">
 	    <t>
-		The TLV data type is already defined in <xref target="RFC7854">Section 4.4 of</xref>
-		for the Initiation and Peer Up message types. A TLV consists of:
+		The TLV data type (Information TLV) is defined in <xref target="RFC7854">
+		Section 4.4 of</xref> for the Initiation and Peer Up message types. A
+		TLV object consists of:
 	    </t>
 	    <t>
 		<list style="symbols">
@@ -157,7 +163,7 @@
 			2 octets of TLV Type,
 		    </t>
 		    <t>
-			2 octets of TLV Length,
+			2 octets of TLV Length, and
 		    </t>
 		    <t>
 			0 or more octets of TLV Value.
@@ -179,24 +185,24 @@
 	    </figure>
 
 	    <t>
-		TLVs SHOULD be sorted by the sender by their code point. Multiple
-		TLVs of the same type can be repeated as part of the same message,
-		and it is left to the specific use-cases whether all, any, the
+		TLVs SHOULD be sorted by the sender by their type. Multiple
+		TLVs of the same type can be repeated as part of the same message;
+		it is left to the specific use-cases whether all, any, the
 		first or the last TLV should be considered as well as whether
 		ordering matters and repeating is allowed.
 	    </t>
 
 	    <t>
-	        Route Monitoring messages may require per-NLRI TLVs, that is, there may
+	        Route Monitoring messages may require per-NLRI TLVs. That is, there may
 		be a need to map TLVs to NLRIs contained in the BGP Update message, for
 		example, to express additional characteristics of a specific NLRI. For
-		this purpose specifically, TLVs in Route Monitoring messages MUST be
+		this purpose, TLVs enclosed in a Route Monitoring message MUST be
 		indexed, with the index starting at one (1) to refer to the first NLRI.
 		Index zero (0) specifies that a TLV does apply to all NLRIs contained in
-		the BGP Update message. The Index field is 2 bytes long of which the
-		top-most bit, G-bit, is reserved to flag a Group Index (more in <xref
+		the BGP Update message. The Index field is 2-byte long of which the
+		top-most bit, G-bit, is used to flag a Group Index (more in <xref
 		target="GroupTLVinRM"/>).
-		In general TLVs of the same type and with the same index can be repeated
+		TLVs of the same type and with the same index can be repeated
 		as part of the same message, unless specified otherwise by the definition
 		of the specific TLV. Indexed TLVs are encoded as in the following figure:
 	    </t>
@@ -217,23 +223,24 @@
 	    </figure>
 
 	    <t>
-		Indexed TLVs SHOULD be sorted by the sender by their code point and
-		index value. Also in indexed TLVs, the reported length refers to the
-		total encoded TLV value (ie. it does exclude the length of the index
-		field).
+		Indexed TLVs SHOULD be sorted by the sender by their type and
+		index value. The reported length in indexed TLVs refers to the
+		total encoded TLV value (ie. with the length of the index field
+		excluded).
 	    </t>
 
 	    <t>
-		A decoder can properly match indexed TLVs to the corresponding NLRI
-		only if - or as long as - NLRIs are decoded successfully. In case of
-		any parsing or error condition that prevents full decoding of the BGP
-		PDU, the decoder MUST stop matching indexed TLVs to NLRIs.
+		A monitoring station can properly match indexed TLVs to the
+		corresponding NLRI only if - or as long as - NLRIs are decoded
+		successfully. In case of any parsing or error condition that
+		prevents full decoding of the BGP PDU, the station MUST stop
+		matching indexed TLVs to NLRIs.
 	    </t>
 
 	    <t>
 	        Of the BMP message types defined so far, indexed TLVs apply only to
-		Route Monitoring messages and, for example, they do not apply to Route
-		Mirroring messages because the sender may not be aware of the payload
+		Route Monitoring messages. For example, they do not apply to Route
+		Mirroring messages because a sender may not be aware of the payload
 		of the transported BGP Update message.
 	    </t>
 	</section>
@@ -241,9 +248,9 @@
         <section title="BMP Message Format">
             <section title="Common Header" anchor="CommonHeader">
                 <t>
-		    <xref section="4.1" sectionFormat="of" target="RFC7854"/> defines
-			the Common Header. While the structure remains unaltered, the
-			following two definitions are changed:
+			While the structure of the Common header remains unaltered,
+			the following two definitions are changed compared to
+			<xref section="4.1" sectionFormat="of" target="RFC7854"/>:
 		     
 		    <list style="symbols">
 			<t>
@@ -259,72 +266,71 @@
 		    </list> 
                 </t>
             </section>
-	    <section title="TLV data in Route Monitoring" anchor="TLVinRM">
+	    <section title="TLV Data in Route Monitoring" anchor="TLVinRM">
 		<t>
-		    The Route Monitoring message type is defined in <xref section="4.6"
-			sectionFormat="of" target="RFC7854"/>. The consistency model
-			selected by this document to extend encoding of such message type
-			with TLVs is with the Route Mirroring type defined in <xref
-			section="4.7" sectionFormat="of" target="RFC7854"/> where the
-		    Per-peer header is being followed by mandatory and optional TLVs.  
+			For consistency with the Route Mirroring type defined in <xref
+			section="4.7" sectionFormat="of" target="RFC7854"/>, this document
+			extends the encoding of the Route Monitoring message type where the
+		    	Per-peer header is followed by mandatory and optional TLVs.  
 		</t>
 		<t>
-		    The BGP Update PDU <xref section="4.3" sectionFormat="of"
-			target="RFC4271"/> is encoded itself as part of a BGP Message TLV
+		    	The BGP Update PDU (<xref section="4.3" sectionFormat="of"
+			target="RFC4271"/>) is encoded itself as part of a BGP Message TLV
 			with code point &IANA_RM_CODE_BGP_PDU; and index set to zero. A Route
 			Monitoring message MUST contain one BGP Message TLV which may be
-			preceeded and/or followed by other optional TLV data.
+			preceded or followed by other optional TLV data.
 		</t>
 		<t>
-		    Corollary, in BMPv4 the BGP Update PDU is not just encoded as part
-		    of the message as it was the case for BMPv3 but it is rather enclosed
-		    in a TLV.
+		    	Corollary, the BGP Update PDU is not encoded as part of the message
+			as it was the case for BMPv3 (<xref target="RFC7854">RFC 7854</xref>)
+			but it is rather enclosed in a TLV.
 		</t>
 	    <section title="Group TLV" anchor="GroupTLVinRM">
 		<t>
-		    In a Route Monitoring message where the BGP Update PDU carries N
+		    In a Route Monitoring message where a BGP Update PDU carries N
 		    NLRIs, indexed TLVs do allow to handle the cases of 1:1 and N:1
 		    relationship among TLVs and NLRIs (ie. one TLV applies to one
 		    NLRI, N TLVs apply to one same NLRI). The cases of 1:N and M:N
-		    relationships (ie. one TLV applies to N NLRIs, M TLVs apply to
-		    N NLRIs) can benefit by a form of grouping. This is the context
-		    to define a Group TLV to achieve this with the aim to limit both
-		    verbosity and repetitions.
+		    relationships (i.e., one TLV applies to N NLRIs and M TLVs apply
+		    to N NLRIs) can benefit by a form of grouping. For that purpose,
+		    a Group TLV is defined with the aim to limit both verbosity and
+		    repetitions.
 		</t>
 		<t>
-		    The TLV value MUST contain:
+		    The Group TLV value MUST contain:
 		    <list style="symbols">
-		    <t>A 2 bytes Group Index where the top-most bit, G-bit or Group
-		    Bit MUST be set to one (1). The full 2 bytes value, that is
-		    including the G-bit, MUST be unique to the message</t>
-		    <t>Two or more 2 bytes NLRI indexes whose values MUST be less
+		    <t>A 2-byte Group Index where the top-most bit (G-bit) MUST 
+		    be set to one (1). The full 2-byte value, that is including the
+		    G-bit, MUST be unique to the message</t>
+		    <t>Two or more 2-byte NLRI indexes whose values MUST be less
 		    or equal to the amount of NLRIs packed in the BGP Update PDU.</t>
 		    </list>
-		    A NLRI index can be listed as part of multiple Group TLVs within
+		    An NLRI index can be listed as part of multiple Group TLVs within
 		    the same message. NLRI indexes within a Group TLV SHOULD be sorted
-		    by the sender. A Group Index can not reference an NLRI index 0.
+		    by the sender. A Group Index MUST NOT reference an NLRI index 0.
 		    A Group TLV MUST NOT include its own or another Group Index.
-		    Multiple non-Group TLVs can point to the same Group Index, ie. a
-		    group can be reused within the same Route Monitoring message.
+		    Multiple non-Group TLVs MAY point to the same Group Index, i.e.,
+		    a group can be reused within the same Route Monitoring message.
 		</t>
 		<t>
-		    The Group TLV code point is &IANA_RM_CODE_GROUP;. It is recommended
+		    The Group TLV type is &IANA_RM_CODE_GROUP;. It is recommended
 		    that this TLV is encoded first in order to ease parsing of the
-            Route Monitoring message at the BMP station side.
+            	    Route Monitoring message at the BMP station side.
 		</t>
 	    </section>
 	    <section title="VRF/Table Name TLV" anchor="VrfTLVinRM">
 		<t>
 		    The Information field contains a UTF-8 string whose value MUST
-		    be equal to the value of the VRF or table name (ie. RD instance
-		    name) being conveyed.  The string size MUST be within the range
-		    of 1 to 255 bytes.
+		    be equal to the value of the VRF or table name (i.e., RD instance
+		    name) being conveyed. The string size MUST be within the range
+		    of 1 to 255 bytes. This is in line with <xref section="5.2.1"
+		    sectionFormat="of" target="RFC9069"/>.
 		</t>
 		<t>
-		    The VRF/Table Name TLV code point is &IANA_RM_CODE_VRF;
+		    The VRF/Table Name TLV type is &IANA_RM_CODE_VRF;
 		</t>
 	    </section>
-	    <section title="Stateless parsing TLV" anchor="SpTLVinRM">
+	    <section title="Stateless Parsing TLV" anchor="SpTLVinRM">
 		<t>
 		    Stateless parsing helps scaling the amount of Route Monitoring
 		    messages that can be processed at collection time, avoiding to
@@ -332,16 +338,15 @@
 		    the Peer Up message, for example.
 		</t>
 		<t>
-		    Some BGP capabilities are not per AFI/SAFI, like 4-bytes ASN
+		    Some BGP capabilities are not per AFI/SAFI, like 4-byte ASN
 		    <xref target="RFC6793">RFC 6793</xref>, and hence these can
-		    potentially be part of the BMP Peer flags section of a Route
-		    Monitoring message. Those that are, instead, per AFI/SAFI
-		    require finer granularity and hence the need to use an indexed
-		    TLV.
+		    potentially be part of the BMP Peer flags of a Route Monitoring
+		    message. Those that are, instead, per AFI/SAFI require finer
+		    granularity and hence the need to use an indexed TLV.
 		</t>
 		<t>
-		    The Stateless Parsing TLV code point is &IANA_RM_CODE_SP; and
-		    its Value is organized as follows:
+		    The Stateless Parsing TLV type is &IANA_RM_CODE_SP; and its
+		    Value is organized as follows:
 
 		    <list style="symbols">
 		    <t>Capability Type, 1 byte</t>
@@ -349,7 +354,7 @@
 		    </list>
 		</t>
 		<t>
-		    The Capability Type field encodes a code point from the <xref
+		    The Capability Type field encodes a value from the <xref
 		    target="IANA-BCC">BGP Capabilities Codes</xref> registry defined 
 		    by <xref target="RFC5492">RFC 5492</xref>.
 		</t>
@@ -378,12 +383,12 @@
 		    is to be encoded in a separate Stateless Parsing TLV.
 		</t>
 		<t>
-		    It is recommended that the Stateless Parsing TLV is encoded
-		    preceeding the BGP Message TLV in order to ease parsing of the
+		    It is RECOMMENDED that the Stateless Parsing TLV is encoded
+		    preceding the BGP Message TLV in order to ease parsing of the
 		    Route Monitoring message at the BMP station side.
 		</t>
 	    </section>
-        <section title="Wire-format example" anchor="TLVexample">
+        <section title="Wire-format Example" anchor="TLVexample">
             <t>
                 The diagram in <xref target="BMP-RM-TLVs"/> shows an example of a
                 Route Monitoring message carrying a BGP UPDATE containing 10
@@ -476,25 +481,25 @@
             </t>
         </section>
         </section>
-	    <section title="TLV data in Peer Down" anchor="TLVinPD">
+	    <section title="TLV Data in Peer Down" anchor="TLVinPD">
 		<t>
-		    The Peer Down Notification message type is defined in 
-			<xref section="4.9" sectionFormat="of" target="RFC7854"/>.
-		    The consistency model selected by this document to extend encoding
-		    of such message type is with the Peer Up type defined in
-		    <xref section="4.10" sectionFormat="of" target="RFC7854"/> where
-			optional TLVs are placed at the end of the message.
+		    The Peer Down Notification message type (<xref section="4.9"
+		    sectionFormat="of" target="RFC7854"/>) is extended following
+		    a consistent approach with the Peer Up type (<xref section="4.10"
+		    sectionFormat="of" target="RFC7854"/>). That is, the message
+		    is extended so that optional TLVs are placed at the end of
+		    the message.
 		</t>
 		<t>
 		    This means for Reason codes 1 or 3, a BGP Notification
-		    PDU follows; the PDU MAY be further followed by optional
-		    TLV data. For Reason code 2, a 2-byte field follows to
-		    provide additional FSM info; this field MAY be followed
-		    by optional TLV data. For all other Reason codes, optional
-		    TLV data MAY follow the Reason field.
+		    PDU follows; the PDU MAY be further followed by TLV data. 
+		    For Reason code 2, a 2-byte field follows to provide
+		    additional Finite State Machine (FSM) info; this field MAY
+		    be followed by TLV data. For all other Reason codes, TLV
+		    data MAY follow the Reason field.
 		</t>
 	    </section>
-	    <section title="TLV data in other BMP messages" anchor="TLVinOther">
+	    <section title="TLV Data in Other BMP Messages" anchor="TLVinOther">
 		<t>
 		    All other message types defined in <xref target="RFC7854">RFC7854</xref>
 		    do already provision for TLV data. It is RECOMMENDED that
@@ -505,19 +510,18 @@
 	    </section>
         </section>
 
-        <section title="Error handling">
+        <section title="Error Handling">
 	    <t>
-		It is worth nothing that <xref target="RFC8654">RFC8654</xref>
-		permits BGP Update and other messages to grow to a length of
-		65535 octets. This may cause a BMP PDU that attempts to encapsulate
-		such long messages to overflow.
+		<xref target="RFC8654">RFC8654</xref> permits BGP Update and other
+		messages to grow to a length of 65535 octets. This may cause a BMP
+		PDU that attempts to encapsulate such long messages to overflow.
 	    </t>
         </section>
 
         <section title="Security Considerations">
             <t>
                 It is not believed that this document adds any additional
-				security considerations.
+		security considerations.
             </t>
         </section>
 
@@ -534,7 +538,7 @@
 
         <section title="IANA Considerations">
             <t>
-		This document requests the renaming of the "Peer Up TLVs" registry defined by
+		This document requests IANA to rename of the "Peer Up TLVs" registry defined by
 		<xref target="I-D.ietf-grow-bmp-peer-up">BMP Peer Up Message Namespace</xref>
 		into "Peer Up and Peer Down TLVs" and the definition of one new registry "BMP
 		Route Monitoring TLVs". As part of the "BMP Route Monitoring TLVs" registry,
@@ -573,7 +577,6 @@
 
 		<?rfc include="reference.RFC.4271.xml"?>
 		<?rfc include="reference.RFC.7854.xml"?>
-		<?rfc include="reference.RFC.6793.xml"?>
 		<?rfc include="reference.RFC.8654.xml"?>
 		<?rfc include="reference.RFC.9069.xml"?>
 
@@ -581,6 +584,7 @@
         </references>
 	<references title="Informative References">
                 <?rfc include="reference.RFC.5492.xml"?>
+		<?rfc include="reference.RFC.6793.xml"?>
 		<?rfc include="reference.RFC.7911.xml"?>
                 <reference anchor="IANA-BCC" target="https://www.iana.org/assignments/capability-codes/">
                         <front>
