@@ -6,7 +6,7 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: 8 August 2025                                   4 February 2025
+Expires: 9 August 2025                                   5 February 2025
 
 
  BMP v4: TLV Support for BGP Monitoring Prtoocol (BMP) Route Monitoring
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 August 2025.
+   This Internet-Draft will expire on 9 August 2025.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Lucente & Gu              Expires 8 August 2025                 [Page 1]
+Lucente & Gu              Expires 9 August 2025                 [Page 1]
 
 Internet-Draft                   BMP TLV                   February 2025
 
@@ -79,16 +79,16 @@ Table of Contents
        5.2.1.  Group TLV . . . . . . . . . . . . . . . . . . . . . .   6
        5.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   6
        5.2.3.  Stateless Parsing TLV . . . . . . . . . . . . . . . .   7
-       5.2.4.  Wire-format Example . . . . . . . . . . . . . . . . .   8
-     5.3.  TLV Data in Peer Down . . . . . . . . . . . . . . . . . .   9
-     5.4.  TLV Data in Other BMP Messages  . . . . . . . . . . . . .  10
-   6.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  10
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
-   8.  Operational Considerations  . . . . . . . . . . . . . . . . .  10
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  11
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  11
+     5.3.  TLV Data in Peer Down . . . . . . . . . . . . . . . . . .   8
+     5.4.  TLV Data in Other BMP Messages  . . . . . . . . . . . . .   8
+   6.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . .   8
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   8.  Operational Considerations  . . . . . . . . . . . . . . . . .   8
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  10
+   Appendix A.  Wire-format Example  . . . . . . . . . . . . . . . .  10
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  12
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Lucente & Gu              Expires 8 August 2025                 [Page 2]
+Lucente & Gu              Expires 9 August 2025                 [Page 2]
 
 Internet-Draft                   BMP TLV                   February 2025
 
@@ -127,10 +127,10 @@ Internet-Draft                   BMP TLV                   February 2025
    This means that both Route Monitoring and Peer Down messages have a
    non-extensible format (except for the specific case of Peer Down
    Reason Code 6 as specified in Section 5.3 of [RFC9069]).  In the
-   Route Monitoring case, this prevents the transmission of
-   characteristics of transported NLRIs (e.g. to help with stateless
-   parsing), status of a path after being processed by the BGP process
-   or of vendor-specific data.  In the Peer Down case, this prevents
+   Route Monitoring case, this prevents the transmission of parsing
+   characteristics of transported NLRIs (e.g.  ADD-PATH, Multi Labels,
+   etc.), RIB status of a path (e.g.  primary, backup, unused, etc.) or
+   of vendor-specific data.  In the Peer Down case, this prevents
    matching with TLVs previously sent with the Peer Up message.  This
    document:
 
@@ -160,12 +160,12 @@ Internet-Draft                   BMP TLV                   February 2025
    BMP message type.
 
    If a BMP station does not support the version indicated in the
-   message, it MUST close the session.
+   message, it can ignore unsupported messages or close the session.
 
 
 
 
-Lucente & Gu              Expires 8 August 2025                 [Page 3]
+Lucente & Gu              Expires 9 August 2025                 [Page 3]
 
 Internet-Draft                   BMP TLV                   February 2025
 
@@ -221,7 +221,7 @@ Internet-Draft                   BMP TLV                   February 2025
 
 
 
-Lucente & Gu              Expires 8 August 2025                 [Page 4]
+Lucente & Gu              Expires 9 August 2025                 [Page 4]
 
 Internet-Draft                   BMP TLV                   February 2025
 
@@ -277,7 +277,7 @@ Internet-Draft                   BMP TLV                   February 2025
 
 
 
-Lucente & Gu              Expires 8 August 2025                 [Page 5]
+Lucente & Gu              Expires 9 August 2025                 [Page 5]
 
 Internet-Draft                   BMP TLV                   February 2025
 
@@ -317,7 +317,7 @@ Internet-Draft                   BMP TLV                   February 2025
    non-Group TLVs MAY point to the same Group Index, i.e., a group can
    be reused within the same Route Monitoring message.
 
-   The Group TLV type is TBD2.  It is recommended that this TLV is
+   The Group TLV type is TBD2.  It is RECOMMENDED that this TLV is
    encoded first in order to ease parsing of the Route Monitoring
    message at the BMP station side.
 
@@ -333,7 +333,7 @@ Internet-Draft                   BMP TLV                   February 2025
 
 
 
-Lucente & Gu              Expires 8 August 2025                 [Page 6]
+Lucente & Gu              Expires 9 August 2025                 [Page 6]
 
 Internet-Draft                   BMP TLV                   February 2025
 
@@ -347,9 +347,9 @@ Internet-Draft                   BMP TLV                   February 2025
 
    Some BGP capabilities are not per AFI/SAFI, like 4-byte ASN RFC 6793
    [RFC6793], and hence these can potentially be part of the BMP Peer
-   flags of a Route Monitoring message.  Those that are, instead, per
-   AFI/SAFI require finer granularity and hence the need to use an
-   indexed TLV.
+   flags [IANA-BPPF] of a Route Monitoring message.  Those that are,
+   instead, per AFI/SAFI require finer granularity and hence the need to
+   use an indexed TLV.
 
    The Stateless Parsing TLV type is TBD4 and its Value is organized as
    follows:
@@ -389,12 +389,161 @@ Internet-Draft                   BMP TLV                   February 2025
 
 
 
-Lucente & Gu              Expires 8 August 2025                 [Page 7]
+Lucente & Gu              Expires 9 August 2025                 [Page 7]
 
 Internet-Draft                   BMP TLV                   February 2025
 
 
-5.2.4.  Wire-format Example
+5.3.  TLV Data in Peer Down
+
+   The Peer Down Notification message type (Section 4.9 of [RFC7854]) is
+   extended following a consistent approach with the Peer Up type
+   (Section 4.10 of [RFC7854]).  That is, the message is extended so
+   that optional TLVs are placed at the end of the message.
+
+   This means for Reason codes 1 or 3, a BGP Notification PDU follows;
+   the PDU MAY be further followed by TLV data.  For Reason code 2, a
+   2-byte field follows to provide additional Finite State Machine (FSM)
+   info; this field MAY be followed by TLV data.  For all other Reason
+   codes, TLV data MAY follow the Reason field.
+
+5.4.  TLV Data in Other BMP Messages
+
+   All other message types defined in RFC7854 [RFC7854] do already
+   provision for TLV data.  It is RECOMMENDED that all future defined
+   BMP message types will also provide for optional TLV data following a
+   consistency model for encoding with existing message types.
+
+6.  Error Handling
+
+   RFC8654 [RFC8654] permits BGP Update and other messages to grow to a
+   length of 65535 octets.  This may cause a BMP PDU that attempts to
+   encapsulate such long messages to overflow.
+
+7.  Security Considerations
+
+   It is not believed that this document adds any additional security
+   considerations compared to RFC7854 [RFC7854].
+
+8.  Operational Considerations
+
+   In Route Monitoring messages, the number of TLVs can be bound to the
+   amount of NLRIs carried in the BGP Update message.  This may degrade
+   the packing of information in such messages and have specific impacts
+   on the memory and CPU used in a BMP implementation.  As a result of
+   that it should always be possible to disable such features to
+   mitigate their impact.
+
+   A BMP exporter and a BMP station may not support the same version of
+   the protocool; being BMP uni-directional, with data flowing only from
+   the exporter to the station, the situation can be handled in two
+   ways: the station can close the session and the exporter can retry to
+   connect with a non-aggressitve timer or the station can keep the
+   session up, ignore the messages with the unsupported version and log
+   the condition as a warning so that it can may be acted upon.
+
+
+
+
+Lucente & Gu              Expires 9 August 2025                 [Page 8]
+
+Internet-Draft                   BMP TLV                   February 2025
+
+
+9.  IANA Considerations
+
+   This document requests IANA to rename of the "Peer Up TLVs" registry
+   defined by BMP Peer Up Message Namespace [I-D.ietf-grow-bmp-peer-up]
+   into "Peer Up and Peer Down TLVs" and the definition of one new
+   registry "BMP Route Monitoring TLVs".  As part of the "BMP Route
+   Monitoring TLVs" registry, the following new TLV types are defined
+   (Section 5.2):
+
+   *  Type = TBD1: Support for BGP Message TLV.  The value field is
+      defined in Section 5.2
+
+   *  Type = TBD2: Support for grouping of TLVs.  The value field is
+      defined in Section 5.2.1.  The recommended value for this TLV is
+      0.
+
+   *  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
+      defined in Section 5.2.2
+
+   *  Type = TBD4: Support for Stateless Parsing TLV.  The value field
+      is defined in Section 5.2.3.  The recommended value for this TLV
+      is 1.
+
+10.  References
+
+10.1.  Normative References
+
+   [I-D.ietf-grow-bmp-peer-up]
+              Scudder, J. and P. Lucente, "BMP Peer Up Message
+              Namespace", Work in Progress, Internet-Draft, draft-ietf-
+              grow-bmp-peer-up-05, 2 October 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-grow-
+              bmp-peer-up-05>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
+              Border Gateway Protocol 4 (BGP-4)", RFC 4271,
+              DOI 10.17487/RFC4271, January 2006,
+              <https://www.rfc-editor.org/info/rfc4271>.
+
+   [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
+              Monitoring Protocol (BMP)", RFC 7854,
+              DOI 10.17487/RFC7854, June 2016,
+              <https://www.rfc-editor.org/info/rfc7854>.
+
+
+
+Lucente & Gu              Expires 9 August 2025                 [Page 9]
+
+Internet-Draft                   BMP TLV                   February 2025
+
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
+              Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
+              2019, <https://www.rfc-editor.org/info/rfc8654>.
+
+   [RFC9069]  Evens, T., Bayraktar, S., Bhardwaj, M., and P. Lucente,
+              "Support for Local RIB in the BGP Monitoring Protocol
+              (BMP)", RFC 9069, DOI 10.17487/RFC9069, February 2022,
+              <https://www.rfc-editor.org/info/rfc9069>.
+
+10.2.  Informative References
+
+   [IANA-BCC] IANA, "Capabilities Codes", 2025,
+              <https://www.iana.org/assignments/capability-codes/>.
+
+   [IANA-BPPF]
+              IANA, "BMP Peer Flags", 2024,
+              <https://www.iana.org/assignments/bmp-parameters/bmp-
+              parameters.xhtml#peer-flags>.
+
+   [RFC5492]  Scudder, J. and R. Chandra, "Capabilities Advertisement
+              with BGP-4", RFC 5492, DOI 10.17487/RFC5492, February
+              2009, <https://www.rfc-editor.org/info/rfc5492>.
+
+   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
+              Autonomous System (AS) Number Space", RFC 6793,
+              DOI 10.17487/RFC6793, December 2012,
+              <https://www.rfc-editor.org/info/rfc6793>.
+
+   [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
+              "Advertisement of Multiple Paths in BGP", RFC 7911,
+              DOI 10.17487/RFC7911, July 2016,
+              <https://www.rfc-editor.org/info/rfc7911>.
+
+Appendix A.  Wire-format Example
 
    The diagram in Figure 3 shows an example of a Route Monitoring
    message carrying a BGP UPDATE containing 10 NLRIs.  The TLVs are
@@ -405,6 +554,13 @@ Internet-Draft                   BMP TLV                   February 2025
    2.  a Group TLV with index 0x000c, pointing to NLRI 4, 5 and 6
 
    3.  a Stateless Parsing TLV with index 0x0000
+
+
+
+Lucente & Gu              Expires 9 August 2025                [Page 10]
+
+Internet-Draft                   BMP TLV                   February 2025
+
 
    4.  a TLV pertaining to NLRI 7
 
@@ -442,14 +598,6 @@ Internet-Draft                   BMP TLV                   February 2025
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=TBD1            |         length=X            |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-
-
-Lucente & Gu              Expires 8 August 2025                 [Page 8]
-
-Internet-Draft                   BMP TLV                   February 2025
-
-
       |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
       ~                                                               ~
@@ -462,6 +610,14 @@ Internet-Draft                   BMP TLV                   February 2025
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={4 bytes}                      |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+
+Lucente & Gu              Expires 9 August 2025                [Page 11]
+
+Internet-Draft                   BMP TLV                   February 2025
+
+
       |            type=SomeTlvY        |         length=0x0008       |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |1|           index=0x000c        |
@@ -480,165 +636,14 @@ Internet-Draft                   BMP TLV                   February 2025
 
                                   Figure 3
 
-5.3.  TLV Data in Peer Down
-
-   The Peer Down Notification message type (Section 4.9 of [RFC7854]) is
-   extended following a consistent approach with the Peer Up type
-   (Section 4.10 of [RFC7854]).  That is, the message is extended so
-   that optional TLVs are placed at the end of the message.
-
-   This means for Reason codes 1 or 3, a BGP Notification PDU follows;
-   the PDU MAY be further followed by TLV data.  For Reason code 2, a
-   2-byte field follows to provide additional Finite State Machine (FSM)
-   info; this field MAY be followed by TLV data.  For all other Reason
-   codes, TLV data MAY follow the Reason field.
-
-
-
-
-
-
-
-
-
-Lucente & Gu              Expires 8 August 2025                 [Page 9]
-
-Internet-Draft                   BMP TLV                   February 2025
-
-
-5.4.  TLV Data in Other BMP Messages
-
-   All other message types defined in RFC7854 [RFC7854] do already
-   provision for TLV data.  It is RECOMMENDED that all future defined
-   BMP message types will also provide for optional TLV data following a
-   consistency model for encoding with existing message types.
-
-6.  Error Handling
-
-   RFC8654 [RFC8654] permits BGP Update and other messages to grow to a
-   length of 65535 octets.  This may cause a BMP PDU that attempts to
-   encapsulate such long messages to overflow.
-
-7.  Security Considerations
-
-   It is not believed that this document adds any additional security
-   considerations.
-
-8.  Operational Considerations
-
-   In Route Monitoring messages, the number of TLVs can be bound to the
-   amount of NLRIs carried in the BGP Update message.  This may degrade
-   the packing of information in such messages and have specific impacts
-   on the memory and CPU used in a BMP implementation.  As a result of
-   that it should always be possible to disable such features to
-   mitigate their impact.
-
-9.  IANA Considerations
-
-   This document requests IANA to rename of the "Peer Up TLVs" registry
-   defined by BMP Peer Up Message Namespace [I-D.ietf-grow-bmp-peer-up]
-   into "Peer Up and Peer Down TLVs" and the definition of one new
-   registry "BMP Route Monitoring TLVs".  As part of the "BMP Route
-   Monitoring TLVs" registry, the following new TLV types are defined
-   (Section 5.2):
-
-   *  Type = TBD1: Support for BGP Message TLV.  The value field is
-      defined in Section 5.2
-
-   *  Type = TBD2: Support for grouping of TLVs.  The value field is
-      defined in Section 5.2.1.  The recommended value for this TLV is
-      0.
-
-   *  Type = TBD3: Support for VRF/Table Name TLV.  The value field is
-      defined in Section 5.2.2
-
-
-
-
-
-
-Lucente & Gu              Expires 8 August 2025                [Page 10]
-
-Internet-Draft                   BMP TLV                   February 2025
-
-
-   *  Type = TBD4: Support for Stateless Parsing TLV.  The value field
-      is defined in Section 5.2.3.  The recommended value for this TLV
-      is 1.
-
-10.  References
-
-10.1.  Normative References
-
-   [I-D.ietf-grow-bmp-peer-up]
-              Scudder, J. and P. Lucente, "BMP Peer Up Message
-              Namespace", Work in Progress, Internet-Draft, draft-ietf-
-              grow-bmp-peer-up-05, 2 October 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-grow-
-              bmp-peer-up-05>.
-
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
-
-   [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
-              Border Gateway Protocol 4 (BGP-4)", RFC 4271,
-              DOI 10.17487/RFC4271, January 2006,
-              <https://www.rfc-editor.org/info/rfc4271>.
-
-   [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
-              Monitoring Protocol (BMP)", RFC 7854,
-              DOI 10.17487/RFC7854, June 2016,
-              <https://www.rfc-editor.org/info/rfc7854>.
-
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-   [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
-              Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
-              2019, <https://www.rfc-editor.org/info/rfc8654>.
-
-   [RFC9069]  Evens, T., Bayraktar, S., Bhardwaj, M., and P. Lucente,
-              "Support for Local RIB in the BGP Monitoring Protocol
-              (BMP)", RFC 9069, DOI 10.17487/RFC9069, February 2022,
-              <https://www.rfc-editor.org/info/rfc9069>.
-
-10.2.  Informative References
-
-   [IANA-BCC] IANA, "Capabilities Codes", 2025,
-              <https://www.iana.org/assignments/capability-codes/>.
-
-
-
-
-Lucente & Gu              Expires 8 August 2025                [Page 11]
-
-Internet-Draft                   BMP TLV                   February 2025
-
-
-   [RFC5492]  Scudder, J. and R. Chandra, "Capabilities Advertisement
-              with BGP-4", RFC 5492, DOI 10.17487/RFC5492, February
-              2009, <https://www.rfc-editor.org/info/rfc5492>.
-
-   [RFC6793]  Vohra, Q. and E. Chen, "BGP Support for Four-Octet
-              Autonomous System (AS) Number Space", RFC 6793,
-              DOI 10.17487/RFC6793, December 2012,
-              <https://www.rfc-editor.org/info/rfc6793>.
-
-   [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
-              "Advertisement of Multiple Paths in BGP", RFC 7911,
-              DOI 10.17487/RFC7911, July 2016,
-              <https://www.rfc-editor.org/info/rfc7911>.
-
 Acknowledgements
 
    The authors would like to thank Jeff Haas, Camilo Cardona, Thomas
    Graf, Pierre Francois, Ben Maddison, Tim Evens, Luuk Hendriks,
    Maxence Younsi, Ahmed Elhassany, Colin Petrie, Dhananjay Pakti and
    Shunwan Zhuang for their valuable input.  The authors would also like
-   to thank Greg Skinner and Zongpeng Du for their review.
+   to thank Greg Skinner, Zongpeng Du and Mohamed Boucadair for their
+   review.
 
 Authors' Addresses
 
@@ -664,9 +669,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-Lucente & Gu              Expires 8 August 2025                [Page 12]
+Lucente & Gu              Expires 9 August 2025                [Page 12]

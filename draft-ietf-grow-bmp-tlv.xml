@@ -110,9 +110,9 @@
 		a non-extensible format (except for the specific case of Peer Down
 		Reason Code 6 as specified in <xref section="5.3" sectionFormat="of"
 		target="RFC9069"/>). In the Route Monitoring case, this prevents
-		the transmission of characteristics of transported NLRIs (e.g. to
-		help with stateless parsing), status of a path after being
-		processed by the BGP process or of vendor-specific data. In the
+		the transmission of parsing characteristics of transported NLRIs
+		(e.g. ADD-PATH, Multi Labels, etc.), RIB status of a path (e.g.
+		primary, backup, unused, etc.) or of vendor-specific data. In the
 		Peer Down case, this prevents matching with TLVs previously sent
 		with the Peer Up message. This document:
 		<list style="symbols">
@@ -147,7 +147,7 @@
 	    </t>
 	    <t>
 		If a BMP station does not support the version indicated in the message,
-		it MUST close the session.
+		it can ignore unsupported messages or close the session.
 	    </t>
 	</section>
 
@@ -313,7 +313,7 @@
 		    a group can be reused within the same Route Monitoring message.
 		</t>
 		<t>
-		    The Group TLV type is &IANA_RM_CODE_GROUP;. It is recommended
+		    The Group TLV type is &IANA_RM_CODE_GROUP;. It is RECOMMENDED 
 		    that this TLV is encoded first in order to ease parsing of the
             	    Route Monitoring message at the BMP station side.
 		</t>
@@ -340,9 +340,10 @@
 		<t>
 		    Some BGP capabilities are not per AFI/SAFI, like 4-byte ASN
 		    <xref target="RFC6793">RFC 6793</xref>, and hence these can
-		    potentially be part of the BMP Peer flags of a Route Monitoring
-		    message. Those that are, instead, per AFI/SAFI require finer
-		    granularity and hence the need to use an indexed TLV.
+		    potentially be part of the <xref target="IANA-BPPF">BMP Peer
+		    flags</xref> of a Route Monitoring message. Those that are,
+		    instead, per AFI/SAFI require finer granularity and hence the
+		    need to use an indexed TLV.
 		</t>
 		<t>
 		    The Stateless Parsing TLV type is &IANA_RM_CODE_SP; and its
@@ -388,6 +389,150 @@
 		    Route Monitoring message at the BMP station side.
 		</t>
 	    </section>
+        </section>
+	    <section title="TLV Data in Peer Down" anchor="TLVinPD">
+		<t>
+		    The Peer Down Notification message type (<xref section="4.9"
+		    sectionFormat="of" target="RFC7854"/>) is extended following
+		    a consistent approach with the Peer Up type (<xref section="4.10"
+		    sectionFormat="of" target="RFC7854"/>). That is, the message
+		    is extended so that optional TLVs are placed at the end of
+		    the message.
+		</t>
+		<t>
+		    This means for Reason codes 1 or 3, a BGP Notification
+		    PDU follows; the PDU MAY be further followed by TLV data. 
+		    For Reason code 2, a 2-byte field follows to provide
+		    additional Finite State Machine (FSM) info; this field MAY
+		    be followed by TLV data. For all other Reason codes, TLV
+		    data MAY follow the Reason field.
+		</t>
+	    </section>
+	    <section title="TLV Data in Other BMP Messages" anchor="TLVinOther">
+		<t>
+		    All other message types defined in <xref target="RFC7854">RFC7854</xref>
+		    do already provision for TLV data. It is RECOMMENDED that
+		    all future defined BMP message types will also provide for
+		    optional TLV data following a consistency model for encoding
+		    with existing message types.
+		</t>
+	    </section>
+        </section>
+
+        <section title="Error Handling">
+	    <t>
+		<xref target="RFC8654">RFC8654</xref> permits BGP Update and other
+		messages to grow to a length of 65535 octets. This may cause a BMP
+		PDU that attempts to encapsulate such long messages to overflow.
+	    </t>
+        </section>
+
+        <section title="Security Considerations">
+            <t>
+                It is not believed that this document adds any additional security
+		considerations compared to <xref target="RFC7854">RFC7854</xref>.
+            </t>
+        </section>
+
+        <section title="Operational Considerations">
+            <t>
+                In Route Monitoring messages, the number of TLVs can be bound to
+		the amount of NLRIs carried in the BGP Update message. This may
+		degrade the packing of information in such messages and have
+		specific impacts on the memory and CPU used in a BMP implementation.
+		As a result of that it should always be possible to disable such
+		features to mitigate their impact.
+            </t>
+	    <t>
+		A BMP exporter and a BMP station may not support the same version
+		of the protocool; being BMP uni-directional, with data flowing only
+		from the exporter to the station, the situation can be handled in
+		two ways: the station can close the session and the exporter can
+		retry to connect with a non-aggressitve timer or the station can
+		keep the session up, ignore the messages with the unsupported
+		version and log the condition as a warning so that it can may be
+		acted upon. 
+	    </t>
+        </section>
+
+        <section title="IANA Considerations">
+            <t>
+		This document requests IANA to rename of the "Peer Up TLVs" registry defined by
+		<xref target="I-D.ietf-grow-bmp-peer-up">BMP Peer Up Message Namespace</xref>
+		into "Peer Up and Peer Down TLVs" and the definition of one new registry "BMP
+		Route Monitoring TLVs". As part of the "BMP Route Monitoring TLVs" registry,
+		the following new TLV types are defined (<xref target="TLVinRM"/>):
+
+		<list style="symbols">
+		    <t>
+			Type = &IANA_RM_CODE_BGP_PDU;: Support for BGP Message TLV. The value
+			field is defined in <xref target="TLVinRM"/>
+		    </t>
+		    <t>
+			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
+			field is defined in <xref target="GroupTLVinRM"/>. The recommended
+			value for this TLV is 0.
+		    </t>
+		    <t>
+			Type = &IANA_RM_CODE_VRF;: Support for VRF/Table Name TLV. The value
+			field is defined in <xref target="VrfTLVinRM"/>
+		    </t>
+		    <t>
+			Type = &IANA_RM_CODE_SP;: Support for Stateless Parsing TLV. The value
+			field is defined in <xref target="SpTLVinRM"/>. The recommended value
+			for this TLV is 1.
+		    </t>
+		</list>
+            </t>
+        </section>
+
+    </middle>
+
+    <back>
+
+        <references title="Normative References">
+		&RFC2119;
+		&RFC8174;
+
+		<?rfc include="reference.RFC.4271.xml"?>
+		<?rfc include="reference.RFC.7854.xml"?>
+		<?rfc include="reference.RFC.8654.xml"?>
+		<?rfc include="reference.RFC.9069.xml"?>
+
+		&I-D.ietf-grow-bmp-peer-up;
+        </references>
+	<references title="Informative References">
+                <?rfc include="reference.RFC.5492.xml"?>
+		<?rfc include="reference.RFC.6793.xml"?>
+		<?rfc include="reference.RFC.7911.xml"?>
+                <reference anchor="IANA-BCC" target="https://www.iana.org/assignments/capability-codes/">
+                        <front>
+                                <title>
+                                        Capabilities Codes
+                                </title>
+                                <author>
+                                        <organization>
+                                                IANA
+                                        </organization>
+                                </author>
+                                <date year="2025" />
+                        </front>
+                </reference>
+                <reference anchor="IANA-BPPF" target="https://www.iana.org/assignments/bmp-parameters/bmp-parameters.xhtml#peer-flags">
+                        <front>
+                                <title>
+                                        BMP Peer Flags
+                                </title>
+                                <author>
+                                        <organization>
+                                                IANA
+                                        </organization>
+                                </author>
+                                <date year="2024" />
+                        </front>
+                </reference>
+        </references>
+
         <section title="Wire-format Example" anchor="TLVexample">
             <t>
                 The diagram in <xref target="BMP-RM-TLVs"/> shows an example of a
@@ -480,134 +625,14 @@
                 </figure>
             </t>
         </section>
-        </section>
-	    <section title="TLV Data in Peer Down" anchor="TLVinPD">
-		<t>
-		    The Peer Down Notification message type (<xref section="4.9"
-		    sectionFormat="of" target="RFC7854"/>) is extended following
-		    a consistent approach with the Peer Up type (<xref section="4.10"
-		    sectionFormat="of" target="RFC7854"/>). That is, the message
-		    is extended so that optional TLVs are placed at the end of
-		    the message.
-		</t>
-		<t>
-		    This means for Reason codes 1 or 3, a BGP Notification
-		    PDU follows; the PDU MAY be further followed by TLV data. 
-		    For Reason code 2, a 2-byte field follows to provide
-		    additional Finite State Machine (FSM) info; this field MAY
-		    be followed by TLV data. For all other Reason codes, TLV
-		    data MAY follow the Reason field.
-		</t>
-	    </section>
-	    <section title="TLV Data in Other BMP Messages" anchor="TLVinOther">
-		<t>
-		    All other message types defined in <xref target="RFC7854">RFC7854</xref>
-		    do already provision for TLV data. It is RECOMMENDED that
-		    all future defined BMP message types will also provide for
-		    optional TLV data following a consistency model for encoding
-		    with existing message types.
-		</t>
-	    </section>
-        </section>
-
-        <section title="Error Handling">
-	    <t>
-		<xref target="RFC8654">RFC8654</xref> permits BGP Update and other
-		messages to grow to a length of 65535 octets. This may cause a BMP
-		PDU that attempts to encapsulate such long messages to overflow.
-	    </t>
-        </section>
-
-        <section title="Security Considerations">
-            <t>
-                It is not believed that this document adds any additional
-		security considerations.
-            </t>
-        </section>
-
-        <section title="Operational Considerations">
-            <t>
-                In Route Monitoring messages, the number of TLVs can be bound to
-		the amount of NLRIs carried in the BGP Update message. This may
-		degrade the packing of information in such messages and have
-		specific impacts on the memory and CPU used in a BMP implementation.
-		As a result of that it should always be possible to disable such
-		features to mitigate their impact.
-            </t>
-        </section>
-
-        <section title="IANA Considerations">
-            <t>
-		This document requests IANA to rename of the "Peer Up TLVs" registry defined by
-		<xref target="I-D.ietf-grow-bmp-peer-up">BMP Peer Up Message Namespace</xref>
-		into "Peer Up and Peer Down TLVs" and the definition of one new registry "BMP
-		Route Monitoring TLVs". As part of the "BMP Route Monitoring TLVs" registry,
-		the following new TLV types are defined (<xref target="TLVinRM"/>):
-
-		<list style="symbols">
-		    <t>
-			Type = &IANA_RM_CODE_BGP_PDU;: Support for BGP Message TLV. The value
-			field is defined in <xref target="TLVinRM"/>
-		    </t>
-		    <t>
-			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
-			field is defined in <xref target="GroupTLVinRM"/>. The recommended
-			value for this TLV is 0.
-		    </t>
-		    <t>
-			Type = &IANA_RM_CODE_VRF;: Support for VRF/Table Name TLV. The value
-			field is defined in <xref target="VrfTLVinRM"/>
-		    </t>
-		    <t>
-			Type = &IANA_RM_CODE_SP;: Support for Stateless Parsing TLV. The value
-			field is defined in <xref target="SpTLVinRM"/>. The recommended value
-			for this TLV is 1.
-		    </t>
-		</list>
-            </t>
-        </section>
-
-    </middle>
-
-    <back>
-
-        <references title="Normative References">
-		&RFC2119;
-		&RFC8174;
-
-		<?rfc include="reference.RFC.4271.xml"?>
-		<?rfc include="reference.RFC.7854.xml"?>
-		<?rfc include="reference.RFC.8654.xml"?>
-		<?rfc include="reference.RFC.9069.xml"?>
-
-		&I-D.ietf-grow-bmp-peer-up;
-        </references>
-	<references title="Informative References">
-                <?rfc include="reference.RFC.5492.xml"?>
-		<?rfc include="reference.RFC.6793.xml"?>
-		<?rfc include="reference.RFC.7911.xml"?>
-                <reference anchor="IANA-BCC" target="https://www.iana.org/assignments/capability-codes/">
-                        <front>
-                                <title>
-                                        Capabilities Codes
-                                </title>
-                                <author>
-                                        <organization>
-                                                IANA
-                                        </organization>
-                                </author>
-                                <date year="2025" />
-                        </front>
-                </reference>
-        </references>
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
             <t>
 		The authors would like to thank Jeff Haas, Camilo Cardona, Thomas Graf,
 		Pierre Francois, Ben Maddison, Tim Evens, Luuk Hendriks, Maxence Younsi,
 		Ahmed Elhassany, Colin Petrie, Dhananjay Pakti and Shunwan Zhuang for
-		their valuable input. The authors would also like to thank Greg Skinner
-		and Zongpeng Du for their review.
+		their valuable input. The authors would also like to thank Greg Skinner,
+		Zongpeng Du and Mohamed Boucadair for their review.
             </t>
         </section>
 
