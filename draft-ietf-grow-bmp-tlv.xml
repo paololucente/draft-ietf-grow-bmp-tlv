@@ -71,8 +71,8 @@
 		Base) and Peer Down messages (which indicate that a peering session was
 		terminated) do not. Supporting (optional) data in TLV format across
 		all BMP message types provides consistent and extensible structures
-		that would be useful among the various where conveying additional data 
-		to a monitoring station is required. This document updates
+		that would be useful among the various use-cases where conveying
+		additional data  to a monitoring station is required. This document updates
 		<xref target="RFC7854">RFC 7854</xref> to support TLV data in all message
 		types.
             </t>
@@ -136,6 +136,9 @@
 		<xref target="RFC8174">RFC 8174</xref> when, and only when, they
 		appear in all capitals, as shown here.
             </t>
+	    <t>
+		The document uses the terms defined in <xref target="RFC7854">RFC 7854</xref>.
+            </t>
         </section>
 
 	<section title="Message version">
@@ -147,7 +150,8 @@
 	    </t>
 	    <t>
 		If a BMP station does not support the version indicated in the message,
-		it can ignore unsupported messages or close the session.
+		it SHOULD close the session and take the procedures described in
+		<xref target="ErrHdl">Error Handling</xref>
 	    </t>
 	</section>
 
@@ -419,11 +423,25 @@
 	    </section>
         </section>
 
-        <section title="Error Handling">
+        <section title="Error Handling" anchor="ErrHdl">
 	    <t>
 		<xref target="RFC8654">RFC8654</xref> permits BGP Update and other
 		messages to grow to a length of 65535 octets. This may cause a BMP
 		PDU that attempts to encapsulate such long messages to overflow.
+	    </t>
+	    <t>
+		A BMP exporter and a BMP station may not support the same version
+		of the protocol; being BMP uni-directional, with data flowing only
+		from the exporter to the station, the station SHOULD close the BMP
+		session and log the condition as a warning; the exporter SHOULD
+		retry to connect with a non-aggressitve timer.
+	    </t>
+	    <t>
+ 		A BMP station may not support some of the TLVs encoded by the
+		exporter; the station MUST ignore unsupported TLV types; additionally,
+		in case of indexed TLVs, if the index is invalid (i.e. out of bounds),
+		the TLV MUST be ignored. The station SHOULD log the condition as a
+		warning.  
 	    </t>
         </section>
 
@@ -443,16 +461,6 @@
 		As a result of that it should always be possible to disable such
 		features to mitigate their impact.
             </t>
-	    <t>
-		A BMP exporter and a BMP station may not support the same version
-		of the protocool; being BMP uni-directional, with data flowing only
-		from the exporter to the station, the situation can be handled in
-		two ways: the station can close the session and the exporter can
-		retry to connect with a non-aggressitve timer or the station can
-		keep the session up, ignore the messages with the unsupported
-		version and log the condition as a warning so that it can may be
-		acted upon. 
-	    </t>
         </section>
 
         <section title="IANA Considerations">
