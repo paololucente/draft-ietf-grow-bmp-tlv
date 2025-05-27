@@ -2,11 +2,10 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
         <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
-	<!ENTITY I-D.ietf-grow-bmp-peer-up SYSTEM "https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-grow-bmp-peer-up.xml">
-        <!ENTITY IANA_RM_CODE_BGP_PDU "TBD1">
-        <!ENTITY IANA_RM_CODE_GROUP "TBD2">
-        <!ENTITY IANA_RM_CODE_VRF "TBD3">
-        <!ENTITY IANA_RM_CODE_SP "TBD4">
+        <!ENTITY IANA_RM_CODE_BGP_PDU "1">
+        <!ENTITY IANA_RM_CODE_GROUP "2">
+        <!ENTITY IANA_RM_CODE_VRF "3">
+        <!ENTITY IANA_RM_CODE_SP "4">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -466,10 +465,10 @@
         <section title="IANA Considerations">
             <t>
 		This document requests IANA to rename of the "Peer Up TLVs" registry defined by
-		<xref target="I-D.ietf-grow-bmp-peer-up">BMP Peer Up Message Namespace</xref>
-		into "Peer Up and Peer Down TLVs" and the definition of one new registry "BMP
-		Route Monitoring TLVs". As part of the "BMP Route Monitoring TLVs" registry,
-		the following new TLV types are defined (<xref target="TLVinRM"/>):
+		<xref target="RFC9736">BMP Peer Up Message Namespace</xref> into "Peer Up and
+		Peer Down TLVs" and the definition of one new registry "BMP Route Monitoring
+		TLVs". The new "BMP Route Monitoring TLVs" registry is seeded with the following
+		new TLV types (<xref target="TLVinRM"/>):
 
 		<list style="symbols">
 		    <t>
@@ -506,8 +505,7 @@
 		<?rfc include="reference.RFC.7854.xml"?>
 		<?rfc include="reference.RFC.8654.xml"?>
 		<?rfc include="reference.RFC.9069.xml"?>
-
-		&I-D.ietf-grow-bmp-peer-up;
+		<?rfc include="reference.RFC.9736.xml"?>
         </references>
 	<references title="Informative References">
                 <?rfc include="reference.RFC.5492.xml"?>
@@ -581,26 +579,26 @@
   |        Common Header + Per-Peer Header (6 + 42 bytes)         ~
   ~                                                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD2            |         length=0x0008       |
+  |            type=2            |         length=0x0008       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |1|           index=0x000b        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0001,   0x0002,                     |
   |                         0x0003,   0x000a}                     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD2            |         length=0x0006       |
+  |            type=2            |         length=0x0006       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |1|           index=0x000c        |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0004,   0x0005,                     |
   |                         0x0006} |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD4            |         length=0x0005       |
+  |            type=4            |         length=0x0005       |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|           index=0             |     cap=69    |	 afi=1	  ~ 
   ~                 |     safi=1    |    value=3    |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=TBD1            |         length=X            |
+  |            type=1            |         length=X            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
