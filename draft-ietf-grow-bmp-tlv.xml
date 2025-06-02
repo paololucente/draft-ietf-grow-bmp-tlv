@@ -23,7 +23,7 @@
 
     <front>
         <title abbrev="BMP TLV">
-	    BMP v4: TLV Support for BGP Monitoring Prtoocol (BMP) Route Monitoring and Peer Down Messages
+	    BMP v4: TLV Support for BGP Monitoring Protocol (BMP) Route Monitoring and Peer Down Messages
 	</title>
 
         <author fullname="Paolo Lucente" initials="P" surname="Lucente">
@@ -346,33 +346,35 @@
 		    potentially be part of the <xref target="IANA-BPPF">BMP Peer
 		    flags</xref> of a Route Monitoring message. Those that are,
 		    instead, per AFI/SAFI require finer granularity and hence the
-		    need to use an indexed TLV.
+		    need to use an indexed TLV. To maintain the consistency between
+		    BGP Capabilities, they are all carried in Stateless Parsing TLVs,
+		    regardless of their type.
+		</t>
+		<t>
+			The encoding of BGP Capabilities is already generically defined 
+			in Section 4 of <xref target="RFC5492"></xref>. It includes every
+			information needed for its understanding, including AFI/SAFI codes.
+			This encoding can be reused in the Stateless Parsing TLV, leveraging 
+			already existing BGP encoders and decoders for implementers. 
 		</t>
 		<t>
 		    The Stateless Parsing TLV type is &IANA_RM_CODE_SP; and its
-		    Value is organized as follows:
-
-		    <list style="symbols">
-		    <t>Capability Type, 1 byte</t>
-		    <t>Capability Value, variable length</t>
-		    </list>
+		    Value is the BGP Capability encoded as exactly as it would be in the 
+		    BGP OPEN of the session. It is thus made of all three Capability Code, 
+		    Capability Length, and Capability Value fields defined in 
+		    <xref target="RFC5492"></xref>.
 		</t>
 		<t>
-		    The Capability Type field encodes a value from the <xref
-		    target="IANA-BCC">BGP Capabilities Codes</xref> registry defined 
-		    by <xref target="RFC5492">RFC 5492</xref>.
-		</t>
-		<t>
-		    The Capability Value encodes the BGP capability exactly as it
-		    is encoded in the BGP Open of the session. For example, an
-		    ADD-PATH capability, as defined by <xref target="RFC7911">RFC
+		    For example, an ADD-PATH capability, as defined by <xref target="RFC7911">RFC
 		    7911</xref>, for IP/Unicast with value Send/Receive would be
 		    encoded in the Capability Value as: 
-		</t>  
+		</t>
 		<t>
 		    <list style="symbols">
-		    <t>AFI, 2 bytes, value=1</t>
-		    <t>SAFI, 1 byte, value=1</t>
+		    	<t>Capability Code, 1 byte, value=69</t>
+		    	<t>Capability Length, 1 byte, value=4</t>
+		    	<t>AFI, 2 bytes, value=1</t>
+		    	<t>SAFI, 1 byte, value=1</t>
 	            <t>Value, 1 byte, value=3</t>
 		    </list>
 		</t>
@@ -553,12 +555,14 @@
                         a Group TLV with index 0x000c, pointing to NLRI 4, 5 and
                         6
                     </t>
-		    <t>
-			a Stateless Parsing TLV with index 0x0000
-		    </t>
+				    <t>
+						a Stateless Parsing TLV with index 0x0000, stating that
+						the Add-Path Capability is set to Both(Snd/Rcv) for the
+						IPv4 Unicast address family in the BGP UPDATE.
+				    </t>
                     <t>
-			a TLV pertaining to NLRI 7
-		    </t>
+						a TLV pertaining to NLRI 7
+		    		</t>
                     <t>
                         a TLV pertaining to the NLRIs listed in the Group TLV
                         defined in 1
@@ -579,49 +583,50 @@
   |        Common Header + Per-Peer Header (6 + 42 bytes)         ~
   ~                                                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=2            |         length=0x0008       |
+  |            type=2             |         length=0x0008         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |1|           index=0x000b        |
+  |1|           index=0x000b      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0001,   0x0002,                     |
   |                         0x0003,   0x000a}                     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=2            |         length=0x0006       |
+  |            type=2             |        length=0x0006          |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |1|           index=0x000c        |
+  |1|           index=0x000c      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0004,   0x0005,                     |
-  |                         0x0006} |
+  |                         0x0006}                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=4            |         length=0x0005       |
+  |            type=4             |         length=0x0005         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |0|           index=0             |     cap=69    |	 afi=1	  ~ 
-  ~                 |     safi=1    |    value=3    |
+  |0|           index=0           |     code=69   |     len=4     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=1            |         length=X            |
+  |      afi=1    |    safi=1     |     value=3   |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |0|           index=0             |    value=$BGP_UPDATE_PDU{   ~
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                             ~
+  |            type=1             |         length=X              |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |0|           index=0           |    value=$BGP_UPDATE_PDU{     ~
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               ~
   ~                                                               ~
   ~                       NLRI_1 .. NLRI_10                       ~
   ~                                                            }  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=SomeTlvX        |         length=0x0004       |
+  |            type=SomeTlvX      |         length=0x0004         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |1|           index=0x000b        |
+  |1|           index=0x000b      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={4 bytes}                      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=SomeTlvY        |         length=0x0008       |
+  |            type=SomeTlvY      |         length=0x0008         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |1|           index=0x000c        |
+  |1|           index=0x000c      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={8 bytes}                      ~
   ~                                                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |            type=SomeTlvZ        |         length=0x0008       |
+  |            type=SomeTlvZ      |         length=0x0008         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |0|           index=0x0007        |
+  |0|           index=0x0007      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={8 bytes}                      ~
   ~                                                               |
