@@ -427,12 +427,16 @@
 
 	<section title="Mandatory Timestamp">
 		<t>
-		    BMP as defined by <xref target="RFC7854">RFC7854</xref> does
-		    not require to specify a timestamp. This is not ideal, as expressed
+		    As defined by <xref target="RFC7854">Section 4.2 of</xref>, it is
+		    not required to specify a timestamp as part of any BMP message
+		    that includes a Per-peer header. This is not ideal, as expressed
 		    in <xref target="I-D.boucadair-nmop-rfc3535-20years-later">
-		    Section 4.10 of RFC 3535, 20 Years Later: An Update of Operators
-		    Requirements on Network Management Protocols and Modelling</xref>.
-		    
+		    Section 4.10 of</xref>. An event timestamp MUST always be defined.
+		    The observation timestamp SHOULD always be preferred as reference
+		    for its inherent maximum accuracy in reporting a given event; would
+		    that not be available in an implementation, the next accurate
+		    timestamp SHOULD be picked up to, as a last resort, the time at
+		    which the information was exported. 
 		</t>
 	</section>
 
@@ -520,6 +524,7 @@
 		<?rfc include="reference.RFC.8654.xml"?>
 		<?rfc include="reference.RFC.9069.xml"?>
 		<?rfc include="reference.RFC.9736.xml"?>
+		&I-D.boucadair-nmop-rfc3535-20years-later;
         </references>
 	<references title="Informative References">
                 <?rfc include="reference.RFC.5492.xml"?>
