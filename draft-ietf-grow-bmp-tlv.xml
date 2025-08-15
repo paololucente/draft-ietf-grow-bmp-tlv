@@ -495,8 +495,7 @@
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
-			field is defined in <xref target="GroupTLVinRM"/>. The recommended
-			value for this TLV is 0.
+			field is defined in <xref target="GroupTLVinRM"/>.
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_VRF;: Support for VRF/Table Name TLV. The value
@@ -504,8 +503,7 @@
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_SP;: Support for Stateless Parsing TLV. The value
-			field is defined in <xref target="SpTLVinRM"/>. The recommended value
-			for this TLV is 1.
+			field is defined in <xref target="SpTLVinRM"/>.
 		    </t>
 		</list>
             </t>

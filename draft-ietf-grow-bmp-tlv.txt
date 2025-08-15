@@ -482,22 +482,22 @@ Internet-Draft                   BMP TLV                     August 2025
       in Section 5.2
 
    *  Type = 2: Support for grouping of TLVs.  The value field is
-      defined in Section 5.2.1.  The recommended value for this TLV is
-      0.
+      defined in Section 5.2.1.
 
    *  Type = 3: Support for VRF/Table Name TLV.  The value field is
       defined in Section 5.2.2
 
    *  Type = 4: Support for Stateless Parsing TLV.  The value field is
-      defined in Section 5.2.3.  The recommended value for this TLV is
-      1.
+      defined in Section 5.2.3.
 
 11.  References
 
 11.1.  Normative References
 
-
-
+   [I-D.boucadair-nmop-rfc3535-20years-later]
+              Boucadair, M., Contreras, L. M., de Dios, O. G., Graf, T.,
+              Rahman, R., and L. Tailhardat, "RFC 3535, 20 Years Later:
+              An Update of Operators Requirements on Network Management
 
 
 
@@ -506,10 +506,6 @@ Lucente & Gu            Expires 16 February 2026                [Page 9]
 Internet-Draft                   BMP TLV                     August 2025
 
 
-   [I-D.boucadair-nmop-rfc3535-20years-later]
-              Boucadair, M., Contreras, L. M., de Dios, O. G., Graf, T.,
-              Rahman, R., and L. Tailhardat, "RFC 3535, 20 Years Later:
-              An Update of Operators Requirements on Network Management
               Protocols and Modelling", Work in Progress, Internet-
               Draft, draft-boucadair-nmop-rfc3535-20years-later-08, 12
               May 2025, <https://datatracker.ietf.org/doc/html/draft-
@@ -553,6 +549,10 @@ Internet-Draft                   BMP TLV                     August 2025
    [IANA-BCC] IANA, "Capabilities Codes", 2025,
               <https://www.iana.org/assignments/capability-codes/>.
 
+   [IANA-BPPF]
+              IANA, "BMP Peer Flags", 2024,
+              <https://www.iana.org/assignments/bmp-parameters/bmp-
+              parameters.xhtml#peer-flags>.
 
 
 
@@ -561,11 +561,6 @@ Lucente & Gu            Expires 16 February 2026               [Page 10]
 
 Internet-Draft                   BMP TLV                     August 2025
 
-
-   [IANA-BPPF]
-              IANA, "BMP Peer Flags", 2024,
-              <https://www.iana.org/assignments/bmp-parameters/bmp-
-              parameters.xhtml#peer-flags>.
 
    [RFC5492]  Scudder, J. and R. Chandra, "Capabilities Advertisement
               with BGP-4", RFC 5492, DOI 10.17487/RFC5492, February
@@ -610,6 +605,11 @@ Appendix A.  Wire-format Example
       |        Common Header + Per-Peer Header (6 + 42 bytes)         ~
       ~                                                               |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |            type=2             |         length=0x0008         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |1|           index=0x000b      |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                  value={0x0001,   0x0002,                     |
 
 
 
@@ -618,11 +618,6 @@ Lucente & Gu            Expires 16 February 2026               [Page 11]
 Internet-Draft                   BMP TLV                     August 2025
 
 
-      |            type=2             |         length=0x0008         |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |1|           index=0x000b      |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                  value={0x0001,   0x0002,                     |
       |                         0x0003,   0x000a}                     |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |            type=2             |        length=0x0006          |
@@ -668,13 +663,16 @@ Internet-Draft                   BMP TLV                     August 2025
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
+                                  Figure 3
+
+
+
+
 
 Lucente & Gu            Expires 16 February 2026               [Page 12]
 
 Internet-Draft                   BMP TLV                     August 2025
 
-
-                                  Figure 3
 
 Acknowledgements
 
@@ -702,6 +700,8 @@ Authors' Addresses
    100095
    China
    Email: guyunan@huawei.com
+
+
 
 
 
