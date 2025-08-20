@@ -3,10 +3,10 @@
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
         <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
 	<!ENTITY I-D.boucadair-nmop-rfc3535-20years-later SYSTEM "https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.boucadair-nmop-rfc3535-20years-later.xml">
-        <!ENTITY IANA_RM_CODE_BGP_PDU "1">
+        <!ENTITY IANA_RM_CODE_SP "1">
         <!ENTITY IANA_RM_CODE_GROUP "2">
         <!ENTITY IANA_RM_CODE_VRF "3">
-        <!ENTITY IANA_RM_CODE_SP "4">
+        <!ENTITY IANA_RM_CODE_BGP_PDU "4">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -490,8 +490,8 @@
 
 		<list style="symbols">
 		    <t>
-			Type = &IANA_RM_CODE_BGP_PDU;: Support for BGP Message TLV. The value
-			field is defined in <xref target="TLVinRM"/>
+			Type = &IANA_RM_CODE_SP;: Support for Stateless Parsing TLV. The value
+			field is defined in <xref target="SpTLVinRM"/>.
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
@@ -502,8 +502,8 @@
 			field is defined in <xref target="VrfTLVinRM"/>
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_SP;: Support for Stateless Parsing TLV. The value
-			field is defined in <xref target="SpTLVinRM"/>.
+			Type = &IANA_RM_CODE_BGP_PDU;: Support for BGP Message TLV. The value
+			field is defined in <xref target="TLVinRM"/>
 		    </t>
 		</list>
             </t>
