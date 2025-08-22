@@ -482,11 +482,11 @@
 
         <section title="IANA Considerations">
             <t>
-		This document requests IANA to rename of the "Peer Up TLVs" registry defined by
-		<xref target="RFC9736">BMP Peer Up Message Namespace</xref> into "Peer Up and
-		Peer Down TLVs" and the definition of one new registry "BMP Route Monitoring
-		TLVs". The new "BMP Route Monitoring TLVs" registry is seeded with the following
-		new TLV types (<xref target="TLVinRM"/>):
+		This document requests IANA to rename of the "BMP Peer Up Message TLVs" registry
+		defined by <xref target="RFC9736">BMP Peer Up Message Namespace</xref> into
+		"BMP Peer Up and Peer Down TLVs" and the definition of one new registry "BMP
+		Route Monitoring TLVs". The new "BMP Route Monitoring TLVs" registry is seeded
+		with the following new TLV types (<xref target="TLVinRM"/>):
 
 		<list style="symbols">
 		    <t>
@@ -506,6 +506,10 @@
 			field is defined in <xref target="TLVinRM"/>
 		    </t>
 		</list>
+		
+		Values 0 through 32767 MUST be assigned using the "First Come First Served"
+		policy as defined in <xref target="RFC8126">Section 4.4 of</xref>. The upper
+		bound of the registry is 65535. Value 65535 is Reserved.
             </t>
         </section>
 
@@ -519,6 +523,7 @@
 
 		<?rfc include="reference.RFC.4271.xml"?>
 		<?rfc include="reference.RFC.7854.xml"?>
+		<?rfc include="reference.RFC.8126.xml"?>
 		<?rfc include="reference.RFC.8654.xml"?>
 		<?rfc include="reference.RFC.9069.xml"?>
 		<?rfc include="reference.RFC.9736.xml"?>
