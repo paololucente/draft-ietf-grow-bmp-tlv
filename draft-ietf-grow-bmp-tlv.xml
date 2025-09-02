@@ -509,9 +509,9 @@
 		
 		Values 0 through 16383 MUST be assigned using the Standards Action policy as
 		defined in <xref target="RFC8126">Section 4.9 of</xref>; values 16384 through
-		MUST be assigned using the First Come First Served policy as defined in <xref
-		target="RFC8126">Section 4.4 of</xref>. The upper bound of the registry is
-		65535. Value 65535 is Reserved.
+		32767 MUST be assigned using the First Come First Served policy as defined in
+		<xref target="RFC8126">Section 4.4 of</xref>. The upper bound of the registry
+		is 65535. Value 65535 is Reserved.
             </t>
         </section>
 
