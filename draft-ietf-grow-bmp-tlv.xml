@@ -76,6 +76,11 @@
 		<xref target="RFC7854">RFC 7854</xref> to support TLV data in all message
 		types.
             </t>
+	    <t>
+		Additionally, support for enterprise-specific TLVs in the BGP Monitoring
+		Protocol is introduced by defining an Enterprise Bit (E-bit) that allows
+		usage of per-vendor Type values.
+	    </t>
         </abstract>
     </front>
 
@@ -125,6 +130,14 @@
 			   TLV data.</t>
 		</list>
             </t>
+
+	    <t>
+		Also, vendors need the ability to define proprietary Information Elements for
+		reasons such as delivering pre-standard products. The E-bit allows early
+		development phases to interoperate among vendors by defining enterprise-specific
+		TLVs without conflicting with existing IANA allocations.
+	    </t>
+
         </section>
 
         <section title="Terminology">
@@ -161,41 +174,122 @@
 		Section 4.4 of</xref> for the Initiation and Peer Up message types. A
 		TLV object consists of:
 	    </t>
-	    <t>
-		<list style="symbols">
-		    <t>
-			2 octets of TLV Type,
-		    </t>
-		    <t>
-			2 octets of TLV Length, and
-		    </t>
-		    <t>
-			0 or more octets of TLV Value.
-		    </t>
-		</list>
-	    </t>
 
-	    <figure anchor="BMP-TLV-header" align="center">
-	    	<artwork align="center">
-	    	    <![CDATA[
+	    <section title="IANA-registered TLV Encoding">
+	        <t>
+		    <list style="symbols">
+                        <t>
+                        	1 bit to flag an enterprise-specific TLV, set to zero. The
+                        	TLV Type value must have been defined in <xref target="IANA-BMP">IANA-BMP</xref>
+                        </t>
+		        <t>
+				15 bits of TLV Type,
+		        </t>
+		        <t>
+				2 octets of TLV Length, and
+		        </t>
+		        <t>
+				0 or more octets of TLV Value.
+		        </t>
+		    </list>
+	        </t>
+
+	        <figure anchor="BMP-TLV-header" align="center">
+	    	    <artwork align="center">
+	    	        <![CDATA[
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |        Type (2 octets)        |     Length (2 octets)         |
+  |E|             Type            |     Length (2 octets)         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   ~                      Value (variable)                         ~
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	    	    ]]>
-	    	</artwork>
-	    </figure>
+	    	        ]]>
+	    	    </artwork>
+	        </figure>
+	    </section>
 
-	    <t>
-		TLVs SHOULD be sorted by the sender by their type. Multiple
-		TLVs of the same type can be repeated as part of the same message;
-		it is left to the specific use-cases whether all, any, the
-		first or the last TLV should be considered as well as whether
-		ordering matters and repeating is allowed.
-	    </t>
+            <section title="Enterprise-specific TLV encoding">
+            <t>
+                Enterprise-specific TLV encoding is defined as follows:
+            </t>
+            <t>
+                <list style="symbols">
+                    <t>
+                        1 bit to flag an enterprise-specific TLV, set to one
+                    </t>
+                    <t>
+                        15 bits of TLV Type,
+                    </t>
+                    <t>
+                        2 octets of TLV length. Comprising length of IANA PEN plus TLV value,
+                    </t>
+                    <t>
+                        4 octets of IANA Private Enterprise Number <xref target="IANA-PEN">IANA-PEN</xref>
+                    </t>
+                    <t>
+                        0 or more octets of TLV Value.
+                    </t>
+                </list>
+            </t>
+            <figure anchor="BMP-TLV-enterprise-header" align="center">
+                <artwork align="center">
+                    <![CDATA[
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |E|             Type            |     Length (2 octets)         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                        Enterprise number                      |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                        Value (variable)                       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                    ]]>
+                </artwork>
+            </figure>
+            <t>
+                Stats Report messages are also encoded in a TLV-like fashion, as
+                documented in <xref target="RFC7854">Section 4.8 of</xref>. E-bit
+                does hence similarly apply to these messages too, with the most
+                relevant bit of Stat Type set to 1 in order to flag the presence
+                of a 4-bytes PEN field following Stat Len field and preceding Stat
+                Data field, i.e.:
+            </t>
+            <figure anchor="BMP-Stats-Report-enterprise--header" align="center">
+                <artwork align="center">
+                    <![CDATA[
 
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |E|       Stat Type             |          Stat Len             |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                        Enterprise number                      |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                        Stat Data                              |
+     ~                                                               ~
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                    ]]>
+                </artwork>
+            </figure>
+            <t> 
+                While the encoding is not per-se backward compatible, there
+                is no existing IANA-allocated Type value that makes use of the most
+                significant bit (which is being used in this document to define the
+                E-bit), except the experimental and reserved ones mentioned in
+                <xref target="RFC7854">Section 10.5 of</xref>,
+                <xref target="RFC7854">Section 10.6 of</xref> and
+                <xref target="RFC7854">Section 10.9 of</xref>. Of these, the
+                Experimental values are being suppressed in favor of using the E-bit
+                mechanism described in this document; the Reserved value is instead
+                excluded by the E-bit mechanism such that no PEN will be included
+                as part of the TLV.
+            </t>
+            <t>
+                Future BMP Message Types MUST make use of the TLV encoding defined
+                in this document.
+            </t>
+	    </section>
+
+	    <section title="IANA-registered Indexed TLV Encoding">
 	    <t>
 	        Route Monitoring messages may require per-NLRI TLVs. That is, there may
 		be a need to map TLVs to NLRIs contained in the BGP Update message, for
@@ -227,10 +321,8 @@
 	    </figure>
 
 	    <t>
-		Indexed TLVs SHOULD be sorted by the sender by their type and
-		index value. The reported length in indexed TLVs refers to the
-		total encoded TLV value (ie. with the length of the index field
-		excluded).
+		The reported length in indexed TLVs refers to the total encoded
+		TLV value (ie. with the length of the index field excluded).
 	    </t>
 
 	    <t>
@@ -247,6 +339,29 @@
 		Mirroring messages because a sender may not be aware of the payload
 		of the transported BGP Update message.
 	    </t>
+	    </section>
+	    <section title="Enterprise-specific Indexed TLV encoding">
+	    <t>
+	        For completeness, following is an illustration of the structure of
+		an Enterprise-specific Indexed TLV.
+	    </t>
+            <figure anchor="BMP-TLV-enterprise-index-header" align="center">
+                <artwork align="center">
+                    <![CDATA[
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |E|             Type            |     Length (2 octets)         |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |        Index (2 octets)       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                        Enterprise number                      |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                        Value (variable)                       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                    ]]>
+                </artwork>
+            </figure>
+	    </section>
 	</section>
 
         <section title="BMP Message Format">
@@ -478,6 +593,18 @@
 		As a result of that it should always be possible to disable such
 		features to mitigate their impact.
             </t>
+            <t>
+                TLVs SHOULD be sorted by the sender by their type. Multiple
+                TLVs of the same type can be repeated as part of the same message;
+                it is left to the specific use-cases whether all, any, the
+                first or the last TLV should be considered as well as whether
+                ordering matters and repeating is allowed.
+            </t>
+            <t> 
+                It is recommended that implementors making use of the Enterprise
+                Bit extension have a well-defined internal registry for privately
+                assigned code points that is also exposed to the public.
+            </t>
         </section>
 
         <section title="IANA Considerations">
@@ -507,11 +634,33 @@
 		    </t>
 		</list>
 		
-		Values 0 through 16383 MUST be assigned using the Standards Action policy as
-		defined in <xref target="RFC8126">Section 4.9 of</xref>; values 16384 through
-		32767 MUST be assigned using the First Come First Served policy as defined in
-		<xref target="RFC8126">Section 4.4 of</xref>. The upper bound of the registry
-		is 65535. Value 65535 is Reserved.
+		Values 0 through 16383 of the BMP Route Monitoring TLVs MUST be assigned
+		using the Standards Action policy as defined in <xref target="RFC8126">
+		Section 4.9 of</xref>; values 16384 through 32767 MUST be assigned using
+		the First Come First Served policy as defined in <xref target="RFC8126">
+		Section 4.4 of</xref>. The upper bound of the registry is 65535. Value
+		65535 is Reserved.
+            </t>
+            <t>                                 
+                The TLV Type values used by BMP are managed by IANA as are the
+                Private Enterprise Numbers used by enterprise-specific Type
+                values <xref target="IANA-PEN">IANA-PEN</xref>.
+            </t>
+            <t> 
+                This document requests to make the range 0-16383 as Standards
+                Action (down from current 0-32767); it also asks to make the
+                range 16384-32767 as First Come First Served (in place of current
+                32768-65530): this applies to the BMP Initiation Information TLVs,
+                BMP Termination Message TLVs, BMP Peer Up and Peer Down TLVs and
+		BMP Route Mirroring TLVs registries.
+            </t>                
+            <t>                         
+                This document also requests to remove the Experimental allocation
+                from the same registries, the code points now flagged Experimental
+                will become Unassigned. The top most bit of each registry will be
+                reserved to the E-bit, reducing the Unassigned pool: the maximum
+                availble value for assignment for the registries will be 32767
+                (ie. as opposed to current 65530).
             </t>
         </section>
 
@@ -535,17 +684,17 @@
                 <?rfc include="reference.RFC.5492.xml"?>
 		<?rfc include="reference.RFC.6793.xml"?>
 		<?rfc include="reference.RFC.7911.xml"?>
-                <reference anchor="IANA-BCC" target="https://www.iana.org/assignments/capability-codes/">
-                        <front>
+                <reference anchor="IANA-BMP" target="https://www.iana.org/assignments/bmp-parameters/bmp-parameters.xhtml">
+                        <front> 
                                 <title>
-                                        Capabilities Codes
+                                        BGP Monitoring Protocol (BMP) Parameters
                                 </title>
                                 <author>
                                         <organization>
                                                 IANA
                                         </organization>
                                 </author>
-                                <date year="2025" />
+                                <date year="2016" />
                         </front>
                 </reference>
                 <reference anchor="IANA-BPPF" target="https://www.iana.org/assignments/bmp-parameters/bmp-parameters.xhtml#peer-flags">
@@ -559,6 +708,20 @@
                                         </organization>
                                 </author>
                                 <date year="2024" />
+                        </front>
+                </reference>
+                <?rfc include="reference.RFC.7011.xml"?>
+                <reference anchor="IANA-PEN" target="http://www.iana.org/assignments/enterprise-numbers/">
+                        <front>
+                                <title>
+                                        Private Enterprise Numbers
+                                </title>
+                                <author>
+                                        <organization>
+                                                IANA
+                                        </organization>
+                                </author>
+                                <date year="1982" />
                         </front>
                 </reference>
         </references>
