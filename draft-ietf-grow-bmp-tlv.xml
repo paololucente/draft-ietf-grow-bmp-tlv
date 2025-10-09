@@ -77,9 +77,9 @@
 		types.
             </t>
 	    <t>
-		Additionally, support for enterprise-specific TLVs in the BGP Monitoring
-		Protocol is introduced by defining an Enterprise Bit (E-bit) that allows
-		usage of per-vendor Type values.
+		Additionally, this document introduces support for enterprise-specific
+		TLVs in the BGP Monitoring Protocol by defining an Enterprise Bit (E-bit)
+		that allows usage of per-vendor Type values.
 	    </t>
         </abstract>
     </front>
@@ -133,11 +133,15 @@
 
 	    <t>
 		Also, vendors need the ability to define proprietary Information Elements for
-		reasons such as delivering pre-standard products. The E-bit allows early
-		development phases to interoperate among vendors by defining enterprise-specific
-		TLVs without conflicting with existing IANA allocations.
+		reasons such as delivering pre-standard products, this need aligns with <xref
+		target="RFC8126">Section 4.1 of</xref>. The E-bit allows early development
+		phases to interoperate among vendors by defining enterprise-specific TLVs
+		without conflicting with existing IANA allocations.
 	    </t>
-
+	    <t>
+		The concept of an E-bit is not new. For example, such mechanism is defined
+		in <xref target="RFC7011">Section 3.2 of</xref> for a very similar purpose.
+	    </t>
         </section>
 
         <section title="Terminology">
@@ -171,11 +175,15 @@
 	<section title="TLV Encoding">
 	    <t>
 		The TLV data type (Information TLV) is defined in <xref target="RFC7854">
-		Section 4.4 of</xref> for the Initiation and Peer Up message types. A
-		TLV object consists of:
+		Section 4.4 of</xref> for the Initiation and Peer Up message types. The
+		definition is updated as described in <xref target="IANATlv">IANA-registered
+		TLV Encoding</xref> and further extended by <xref target="EnterpriseTlv">
+		Enterprise-specific TLV Encoding</xref>, <xref target="IANAIndexedTlv"> 
+		IANA-registered Indexed TLV Encoding</xref> and <xref target="EnterpriseIndexedTlv">
+		Enterprise-specific Indexed TLV Encoding</xref>.
 	    </t>
 
-	    <section title="IANA-registered TLV Encoding">
+	    <section title="IANA-registered TLV Encoding" anchor="IANATlv">
 	        <t>
 		    <list style="symbols">
                         <t>
@@ -208,7 +216,7 @@
 	        </figure>
 	    </section>
 
-            <section title="Enterprise-specific TLV encoding">
+            <section title="Enterprise-specific TLV Encoding" anchor="EnterpriseTlv">
             <t>
                 Enterprise-specific TLV encoding is defined as follows:
             </t>
@@ -289,7 +297,7 @@
             </t>
 	    </section>
 
-	    <section title="IANA-registered Indexed TLV Encoding">
+	    <section title="IANA-registered Indexed TLV Encoding" anchor="IANAIndexedTlv">
 	    <t>
 	        Route Monitoring messages may require per-NLRI TLVs. That is, there may
 		be a need to map TLVs to NLRIs contained in the BGP Update message, for
@@ -340,7 +348,7 @@
 		of the transported BGP Update message.
 	    </t>
 	    </section>
-	    <section title="Enterprise-specific Indexed TLV encoding">
+	    <section title="Enterprise-specific Indexed TLV encoding" anchor="EnterpriseIndexedTlv">
 	    <t>
 	        For completeness, following is an illustration of the structure of
 		an Enterprise-specific Indexed TLV.
@@ -647,12 +655,11 @@
                 values <xref target="IANA-PEN">IANA-PEN</xref>.
             </t>
             <t> 
-                This document requests to make the range 0-16383 as Standards
-                Action (down from current 0-32767); it also asks to make the
-                range 16384-32767 as First Come First Served (in place of current
-                32768-65530): this applies to the BMP Initiation Information TLVs,
-                BMP Termination Message TLVs, BMP Peer Up and Peer Down TLVs and
-		BMP Route Mirroring TLVs registries.
+                For BMP Initiation Information TLVs, BMP Termination Message TLVs,
+		BMP Peer Up and Peer Down TLVs and BMP Route Mirroring TLVs registries
+		it is requested to make the range 0-16383 as Standards Action (down
+		from current 0-32767); it also asks to make the range 16384-32767 as
+		First Come First Served (in place of current 32768-65530).
             </t>                
             <t>                         
                 This document also requests to remove the Experimental allocation
