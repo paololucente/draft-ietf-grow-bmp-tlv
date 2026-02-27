@@ -606,12 +606,15 @@
 			reserved in all TLV registries, namely: BMP Initiation Information TLVs,
 			BMP Termination Message TLVs, BMP Route Mirroring TLVs along with
 			registries defined in this document BMP Route Monitoring TLVs and
-			BMP Peer Up and Peer Down TLVs.  
+			BMP Peer Up and Peer Down TLVs. We thus request IANA to allocate, for each TLV, 
+			the same codepoint value in every TLV codepoint registry of this document, 
+			as detailed in their respective sections.
+
 		</t>
 		<section title="Timestamp TLV" anchor="timestamp-tlv">
 			<t>The Timestamp TLV carries one of multiple types of Timestamp
-			for a BMP message. For the registries seeded in this document, the
-			code point is &IANA_RM_CODE_TSTAMP;.</t>
+			for a BMP message. For each TLV registry seeded in this document, 
+			the code point of the Timestamp TLV is &IANA_RM_CODE_TSTAMP;.</t>
 
 			<t>The value of the TLV is the Timestamp Type code, defined in
 			<xref target="list-timestamp-types"></xref>, followed by the
@@ -681,7 +684,7 @@
 					
 					<tr>
 					<td>0x02</td>
-					<td>Adj-In Time</td>
+					<td>Adj-RIB-In Time</td>
 					<td><xref target="sec-timestamp-adjin"></xref></td>
 					</tr>
 					
@@ -693,7 +696,7 @@
 					
 					<tr>
 					<td>0x04</td>
-					<td>Adj-Out Time</td>
+					<td>Adj-RIB-Out Time</td>
 					<td><xref target="sec-timestamp-adjout"></xref></td>
 					</tr>
 					</tbody>
@@ -732,8 +735,8 @@
 		</section>
 		<section title="Sequence Number TLV" anchor="seq-num-tlv">
 			<t>The Sequence Number TLV carries the sequence number of a message
-			in a BMP session. For the registries seeded in this document, the
-                        code point is &IANA_RM_CODE_SEQ;.</t>
+			in a BMP session. For each TLV registry seeded in this document, 
+			the code point of the Sequence Number TLV is &IANA_RM_CODE_SEQ;.</t>
 
 			<t>Ordering of BMP messages based on timestamp becomes complicated
 			when timestamps have conflicting meanings or when they are simply
@@ -771,8 +774,8 @@
 			<t>The Extended Flags TLV carries the Flags field usually present
 			in the Per-Peer Header, while extending the length of the field.
 			This allows for a larger range of flags to be allocated in the
-			future. For the registries seeded in this document, the code point
-			is &IANA_RM_CODE_EXT_FLAGS;.</t>
+			future. For each TLV registry seeded in this document, the code 
+			point of the Extended Flags TLV is &IANA_RM_CODE_EXT_FLAGS;.</t>
 
 			<t>The value of the TLV is a sequence of bytes of variable size.
 			The minimum size of the sequence is one, to fit at least the
@@ -910,12 +913,24 @@
 		It is requested the definition of a new "BMP Stats Reports TLVs" registry seeded
                 with the following new TLV types (<xref target="TLVinSR"/>):
 
-                <list style="symbols">
-                    <t>
-                        Type = &IANA_SR_CODE_STATS;: Support for Stats TLV to enclose Stats Count
-			and stats data.
-                    </t>
-		</list>
+            <list style="symbols">
+                <t>
+                    Type = &IANA_SR_CODE_STATS;: Support for Stats TLV to enclose Stats Count
+		            and stats data.
+                </t>
+                <t>
+		            Type = &IANA_RM_CODE_SEQ;: Support for Sequence TLV. The value field
+		            is defined in <xref target="seq-num-tlv"/>.
+	            </t>
+	            <t>
+		            Type = &IANA_RM_CODE_EXT_FLAGS;: Support for Extended Flags TLV. The value
+		            field is defined in <xref target="extended-flags-tlv"/>.
+	            </t>
+	            <t>
+		            Type = &IANA_RM_CODE_TSTAMP;: Support for Timestamp TLV. The value
+		            field is defined in <xref target="timestamp-tlv"/>.
+	            </t>
+	        </list>
 	    </t>
 		
 	    <t>
