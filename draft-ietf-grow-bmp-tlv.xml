@@ -2,7 +2,6 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
         <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
-	<!ENTITY I-D.boucadair-nmop-rfc3535-20years-later SYSTEM "https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.boucadair-nmop-rfc3535-20years-later.xml">
         <!ENTITY IANA_RM_CODE_SEQ "1">
         <!ENTITY IANA_RM_CODE_EXT_FLAGS "2">
         <!ENTITY IANA_RM_CODE_TSTAMP "3">
@@ -25,7 +24,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-tlv-20"
+<rfc category="std" docName="draft-ietf-grow-bmp-tlv-21"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -41,7 +40,6 @@
                     <street>Veemweg 23</street>
                     <city>Barneveld</city>
                     <code>3771</code>
-                    <region>MT</region>
                     <country>NL</country>
                 </postal>
                 <email>paolo@ntt.net</email>
@@ -1040,7 +1038,6 @@
 		<?rfc include="reference.RFC.8671.xml"?>
 		<?rfc include="reference.RFC.9069.xml"?>
 		<?rfc include="reference.RFC.9736.xml"?>
-		&I-D.boucadair-nmop-rfc3535-20years-later;
         </references>
 	<references title="Informative References">
                 <?rfc include="reference.RFC.5492.xml"?>
