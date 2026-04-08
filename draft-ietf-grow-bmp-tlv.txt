@@ -100,12 +100,12 @@ Table of Contents
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
    8.  Operational Considerations  . . . . . . . . . . . . . . . . .  16
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  19
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  19
-   Appendix A.  Wire-format Example  . . . . . . . . . . . . . . . .  20
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  22
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+     9.1.  BMP Route Monitoring TLVs . . . . . . . . . . . . . . . .  16
+     9.2.  BMP Stats Reports TLVs  . . . . . . . . . . . . . . . . .  17
+     9.3.  Changes to existing registries  . . . . . . . . . . . . .  17
+     9.4.  BMP Extended Peer Flags . . . . . . . . . . . . . . . . .  18
+     9.5.  BMP Timestamp Types . . . . . . . . . . . . . . . . . . .  18
+     9.6.  Miscellaneous . . . . . . . . . . . . . . . . . . . . . .  19
 
 
 
@@ -113,6 +113,13 @@ Lucente, et al.          Expires 10 October 2026                [Page 2]
 
 Internet-Draft                   BMP TLV                      April 2026
 
+
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  19
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  20
+   Appendix A.  Wire-format Example  . . . . . . . . . . . . . . . .  21
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  22
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 1.  Introduction
 
@@ -155,13 +162,6 @@ Internet-Draft                   BMP TLV                      April 2026
    This means that Route Monitoring, Stats Reports and Peer Down
    messages have a non-extensible format (except for the specific case
    of Peer Down Reason Code 6 as specified in Section 5.3 of [RFC9069].
-   In the Route Monitoring case, this prevents the transmission of
-   parsing characteristics of transported NLRIs (e.g.  ADD-PATH, Multi
-   Labels, etc.), RIB status of a path (e.g. primary, backup, unused,
-   etc.) or of vendor- specific data.  In the Stats Resports and Peer
-   Down case, this prevents matching with TLVs previously sent in other
-   messages, including the Peer Up message.  This document:
-
 
 
 
@@ -169,6 +169,13 @@ Lucente, et al.          Expires 10 October 2026                [Page 3]
 
 Internet-Draft                   BMP TLV                      April 2026
 
+
+   In the Route Monitoring case, this prevents the transmission of
+   parsing characteristics of transported NLRIs (e.g.  ADD-PATH, Multi
+   Labels, etc.), RIB status of a path (e.g. primary, backup, unused,
+   etc.) or of vendor- specific data.  In the Stats Resports and Peer
+   Down case, this prevents matching with TLVs previously sent in other
+   messages, including the Peer Up message.  This document:
 
    *  Bumps the BMP version for all message types defined in RFC 7854
       [RFC7854] for backward compatibility
@@ -210,13 +217,6 @@ Internet-Draft                   BMP TLV                      April 2026
    If a BMP station does not support the version indicated in the
    message, it SHOULD close the session and take the procedures
    described in Error Handling (Section 6)
-
-
-
-
-
-
-
 
 
 
@@ -863,12 +863,15 @@ Internet-Draft                   BMP TLV                      April 2026
 
 9.  IANA Considerations
 
-   This document requests IANA to rename of the "BMP Peer Up Message
-   TLVs" registry defined by BMP Peer Up Message Namespace [RFC9736]
-   into "BMP Peer Up and Peer Down TLVs" and the definition of one new
-   registry "BMP Route Monitoring TLVs".  The new "BMP Route Monitoring
-   TLVs" registry is seeded with the following new TLV types
-   (Section 5.2):
+   This document asks IANA to rename, create, change registration
+   procedures and available values for, and add assignments to
+   registries.
+
+9.1.  BMP Route Monitoring TLVs
+
+   It is requested the definition of a new registry "BMP Route
+   Monitoring TLVs" which is to be seeded with the following new TLV
+   types (Section 5.2):
 
    *  Type = 1: Support for Sequence TLV.  The value field is defined in
       Section 5.6.2.
@@ -888,15 +891,24 @@ Internet-Draft                   BMP TLV                      April 2026
    *  Type = 6: Support for Stateless Parsing TLV.  The value field is
       defined in Section 5.2.3.
 
-   *  Type = 7: Support for BGP Message TLV.  The value field is defined
-      in Section 5.2.
-
 
 
 Lucente, et al.          Expires 10 October 2026               [Page 16]
 
 Internet-Draft                   BMP TLV                      April 2026
 
+
+   *  Type = 7: Support for BGP Message TLV.  The value field is defined
+      in Section 5.2.
+
+   Values 0 through 16383 of the "BMP Route Monitoring TLVs" registry
+   MUST be assigned using the Standards Action policy as defined in
+   Section 4.9 of [RFC8126]; values 16384 through 32767 MUST be assigned
+   using the First Come First Served policy as defined in Section 4.4 of
+   [RFC8126].  The upper bound of the registry is 65535.  Value 65535 is
+   Reserved.
+
+9.2.  BMP Stats Reports TLVs
 
    It is requested the definition of a new "BMP Stats Reports TLVs"
    registry seeded with the following new TLV types (Section 5.4):
@@ -913,16 +925,18 @@ Internet-Draft                   BMP TLV                      April 2026
    *  Type = 3: Support for Timestamp TLV.  The value field is defined
       in Section 5.6.1.
 
-   Values 0 through 16383 of the "BMP Route Monitoring TLVs" and BMP
-   Stats Reports TLVs" registries MUST be assigned using the Standards
-   Action policy as defined in Section 4.9 of [RFC8126]; values 16384
-   through 32767 MUST be assigned using the First Come First Served
-   policy as defined in Section 4.4 of [RFC8126].  The upper bound of
-   the registry is 65535.  Value 65535 is Reserved.
+   Values 0 through 16383 of the "BMP Stats Reports TLVs" registry MUST
+   be assigned using the Standards Action policy as defined in
+   Section 4.9 of [RFC8126]; values 16384 through 32767 MUST be assigned
+   using the First Come First Served policy as defined in Section 4.4 of
+   [RFC8126].  The upper bound of the registry is 65535.  Value 65535 is
+   Reserved.
 
-   The TLV Type values used by BMP are managed by IANA as are the
-   Private Enterprise Numbers used by enterprise-specific Type values
-   IANA-PEN [IANA-PEN].
+9.3.  Changes to existing registries
+
+   The "BMP Peer Up Message TLVs" registry defined by BMP Peer Up
+   Message Namespace [RFC9736] is to be renamed "BMP Peer Up and Peer
+   Down TLVs".
 
    For BMP Initiation Information TLVs, BMP Termination Message TLVs,
    BMP Peer Up and Peer Down TLVs and BMP Route Mirroring TLVs
@@ -930,20 +944,6 @@ Internet-Draft                   BMP TLV                      April 2026
    Action (down from current 0-32767); it also asks to make the range
    16384-32767 as First Come First Served (in place of current
    32768-65530).
-
-   This document also requests to remove the Experimental allocation
-   from the same registries, the code points now flagged Experimental
-   will become Unassigned.  The top most bit of each registry will be
-   reserved to the E-bit, reducing the Unassigned pool: the maximum
-   availble value for assignment for the registries will be 32767 (ie.
-   as opposed to current 65530).
-
-   Finally, for the same registries, this document requests IANA to
-   allocate the codepoints for Timestamp TLV (TBD1), Sequence Number TLV
-   (TBD2) and Extended Flags TLV (TBD3).  It is recommended that the
-   code points are assigned consistently to the registry seeded in this
-   document (ie.  Timestamp TLV = 3 , etc.).
-
 
 
 
@@ -954,16 +954,32 @@ Lucente, et al.          Expires 10 October 2026               [Page 17]
 Internet-Draft                   BMP TLV                      April 2026
 
 
-   This document requests that IANA assigns the following new parameters
-   to the BMP Peer Flags for Peer Types 0 through 2; registry and to the
-   BMP Peer Flags for Loc-RIB Instance Peer Type registry:
+   This document also requests to remove the Experimental allocation
+   from the same registries, the code points now flagged Experimental
+   will become Unassigned.  The top most bit of each registry will be
+   reserved to the E-bit, reducing the Unassigned pool: the maximum
+   availble value for assignment for the registries will be 32767 (ie.
+   as opposed to current 65530).
 
-   * Flag = 7: X Flag (Extended Flags).  Set if the Flags are carried in
-   the Extended Flags TLV instead of the Per-Peer Header.
+   For the same registries, this document requests IANA to allocate the
+   codepoints for Timestamp TLV (TBD1), Sequence Number TLV (TBD2) and
+   Extended Flags TLV (TBD3).  It is recommended that the code points
+   are assigned consistently to "BMP Route Monitoring TLVs" and "BMP
+   Stats Reports TLVs" registries seeded in this document (ie.
+   Timestamp TLV = 3 , etc.).
 
-   This document also requests the definition of a BMP Extended Peer
-   Flags; registry which contains flags contained in the Extended Flags
-   TLV The size of this registry is TBD.  The registration policy for
+   This document requests that IANA assigns the following new code point
+   to the "BMP Peer Flags for Peer Types 0 through 2" and the "BMP Peer
+   Flags for Loc-RIB Instance Peer Type" registries:
+
+   * Flag = 7 (suggested): X Flag (Extended Flags).  Set if the Flags
+   are carried in the Extended Flags TLV instead of the Per-Peer Header.
+
+9.4.  BMP Extended Peer Flags
+
+   This document also requests the definition of a "BMP Extended Peer
+   Flags" registry which allocates flags contained in the Extended Flags
+   TLV.  The size of this registry is TBD.  The registration policy for
    this registry is Standards Action as defined in [RFC8126].
 
    The registry is seeded as follows:
@@ -974,9 +990,11 @@ Internet-Draft                   BMP TLV                      April 2026
    *  Flag 3: O flag [RFC8671]
    *  Flag 4: F flag [RFC9069]
 
-   This document also requests the definition of a BMP Timestamp Types
-   registry.  This registry contains type codes for the kinds of
-   timestamps carried by the Timestamp TLV.  The size of the registry
+9.5.  BMP Timestamp Types
+
+   This document also requests the definition of a "BMP Timestamp Types"
+   registry.  This registry contains code points for the type of
+   timestamp carried by the Timestamp TLV.  The size of the registry
    matches the size of the Timestamp Type field defined in Figure 6
    which is 1 byte.
 
@@ -985,30 +1003,34 @@ Internet-Draft                   BMP TLV                      April 2026
 
    The registry is seeded as follows:
 
-   *  Type = 0x00: Trigger Time.  Set to 0x00 if the timestamp
-      corresponds to the event that triggered BMP to report the route or
-      state, such as receiving a message or a session transition.
-   *  Type = 0x01: Message Export Time.  Set to 0x01 if the timestamp
-      corresponds to the time when the BMP message was generated for
-      export.
-   *  Type = 0x02: Adj-In Time.  Set to 0x02 if the timestamp
-      corresponds to when the route was installed in the Adj-RIB-In, as
-      per [RFC7854].
-   *  Type = 0x03: Local-RIB Time.  Set to 0x03 if the timestamp
-      corresponds to when the route was installed in the Local-RIB, as
-      per [RFC9069].
-   *  Type = 0x04: Adj-Out Time.  Set to 0x04 if the timestamp
-      corresponds to when the route was installed in the Adj-RIB-Out, as
-      per [RFC8671].
-
-10.  References
-
 
 
 Lucente, et al.          Expires 10 October 2026               [Page 18]
 
 Internet-Draft                   BMP TLV                      April 2026
 
+
+   *  Type = 1: Trigger Time.  Set to 1 if the timestamp corresponds to
+      the event that triggered BMP to report the route or state, such as
+      receiving a message or a session transition.
+   *  Type = 2: Message Export Time.  Set to 2 if the timestamp
+      corresponds to the time when the BMP message was generated for
+      export.
+   *  Type = 3: Adj-In Time.  Set to 3 if the timestamp corresponds to
+      when the route was installed in the Adj-RIB-In, as per [RFC7854].
+   *  Type = 4: Local-RIB Time.  Set to 4 if the timestamp corresponds
+      to when the route was installed in the Local-RIB, as per
+      [RFC9069].
+   *  Type = 5: Adj-Out Time.  Set to 5 if the timestamp corresponds to
+      when the route was installed in the Adj-RIB-Out, as per [RFC8671].
+
+9.6.  Miscellaneous
+
+   The TLV Type values used by BMP are managed by IANA as are the
+   Private Enterprise Numbers used by enterprise-specific Type values
+   IANA-PEN [IANA-PEN].
+
+10.  References
 
 10.1.  Normative References
 
@@ -1036,6 +1058,14 @@ Internet-Draft                   BMP TLV                      April 2026
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
+
+
+
+Lucente, et al.          Expires 10 October 2026               [Page 19]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
    [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
               Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
               2019, <https://www.rfc-editor.org/info/rfc8654>.
@@ -1056,15 +1086,6 @@ Internet-Draft                   BMP TLV                      April 2026
               <https://www.rfc-editor.org/info/rfc9736>.
 
 10.2.  Informative References
-
-
-
-
-
-Lucente, et al.          Expires 10 October 2026               [Page 19]
-
-Internet-Draft                   BMP TLV                      April 2026
-
 
    [IANA-BMP] IANA, "BGP Monitoring Protocol (BMP) Parameters", 2016,
               <https://www.iana.org/assignments/bmp-parameters/bmp-
@@ -1093,6 +1114,14 @@ Internet-Draft                   BMP TLV                      April 2026
               RFC 7011, DOI 10.17487/RFC7011, September 2013,
               <https://www.rfc-editor.org/info/rfc7011>.
 
+
+
+
+Lucente, et al.          Expires 10 October 2026               [Page 20]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
    [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
               "Advertisement of Multiple Paths in BGP", RFC 7911,
               DOI 10.17487/RFC7911, July 2016,
@@ -1113,14 +1142,6 @@ Appendix A.  Wire-format Example
        address family in the BGP UPDATE.
 
    4.  a TLV pertaining to NLRI 7
-
-
-
-
-Lucente, et al.          Expires 10 October 2026               [Page 20]
-
-Internet-Draft                   BMP TLV                      April 2026
-
 
    5.  a TLV pertaining to the NLRIs listed in the Group TLV defined in
        1
@@ -1149,6 +1170,14 @@ Internet-Draft                   BMP TLV                      April 2026
       |                         0x0006}                               |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|          type=4             |         length=0x0005         |
+
+
+
+Lucente, et al.          Expires 10 October 2026               [Page 21]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|           index=0           |     code=69   |     len=4     |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1170,14 +1199,6 @@ Internet-Draft                   BMP TLV                      April 2026
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|          type=SomeTlvY      |         length=0x0008         |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-
-
-Lucente, et al.          Expires 10 October 2026               [Page 21]
-
-Internet-Draft                   BMP TLV                      April 2026
-
-
       |1|           index=0x0002      |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={8 bytes}                      ~
@@ -1205,6 +1226,14 @@ Acknowledgements
 
 Authors' Addresses
 
+
+
+
+Lucente, et al.          Expires 10 October 2026               [Page 22]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
    Paolo Lucente
    NTT
    Veemweg 23
@@ -1228,39 +1257,10 @@ Authors' Addresses
    Email: maxence.younsi@insa-lyon.fr
 
 
-
-Lucente, et al.          Expires 10 October 2026               [Page 22]
-
-Internet-Draft                   BMP TLV                      April 2026
-
-
    Pierre Francois
    INSA-Lyon
    France
    Email: pierre.francois@insa-lyon.fr
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
