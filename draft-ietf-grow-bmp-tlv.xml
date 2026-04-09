@@ -775,14 +775,17 @@
 			future. For each TLV registry seeded in this document, the code 
 			point of the Extended Flags TLV is &IANA_RM_CODE_EXT_FLAGS;.</t>
 
-			<t>The value of the TLV is a sequence of bytes of variable size.
-			The minimum size of the sequence is one, to fit at least the
-			already existing flags. The flags carried in this TLV are defined
-			in the BMP Extended Peer Flags IANA registry defined by this
-			document. The first byte of the sequence carries all flags
-			defined previous to this document, that is Flags V, L, A, O, and F.
-			Newly allocated bits will be carried in the following byte of the
-			sequence.</t>
+			<t>
+			    The value of the TLV is a sequence of bytes of variable size.
+			    The minimum size of the sequence is one, to fit at least the
+			    already existing flags. The flags carried in this TLV are
+			    defined in the BMP Extended Peer Flags IANA registry defined
+			    by this document. The first byte of the sequence carries all
+			    flags defined previous to this document, that is Flags V, L,
+			    A, O, and F as defined in <xref target="RFC7854">Section 10.3
+			    of</xref>, <xref target="RFC8671">Section 9.1 of</xref> and
+			    <xref target="RFC9069"> Section 4.2 of</xref>.
+			</t>
 
 			<t>The value of the Length field is the number of bytes in the
 			sequence. The Index field is not included in the length.</t>
@@ -805,12 +808,21 @@
 </artwork>
 </figure>
 
-			<t>When this TLV is included in a BMP message, the rightmost bit (X
-			Flag) of the Per-Peer Header Flags MUST be set to 1 to indicate that
-			the flags to consider are carried in this TLV. The flags in the
-			Per-Peer Header are still set according to the current specification,
-			allowing collectors that do not understand the X Flag and
-			Extended Flags TLV to still function.</t>
+			<t>
+			    When this TLV is included in a BMP message, the rightmost bit (X
+			    Flag) of the Per-Peer Header Flags MUST be set to 1 to indicate
+			    that the flags to consider are carried in this TLV. The flags in
+			    the Per-Peer Header are still set according to the current
+			    specification, allowing collectors that do not understand the X
+			    Flag and Extended Flags TLV to still function. For consistency,
+			    the X Flag MUST always be set in the Extended Flags TLV.
+			</t>
+			<t>
+			    Unused bits of the first byte are declared as reserved, newly
+			    allocated bits will be carried in the following byte(s) of the
+			    sequence and counting of the bits will always start at bit zero
+			    of the first byte (ie. first bit of the second byte will be 8).
+			</t>
 		</section>
 	    </section>
         </section>
@@ -987,13 +999,14 @@
                 </t>
 		<t>
 		    This document requests that IANA assigns the following new code
-		    point to the "BMP Peer Flags for Peer Types 0 through 2" and the
+		    points to the "BMP Peer Flags for Peer Types 0 through 2" and the
 		    "BMP Peer Flags for Loc-RIB Instance Peer Type" registries:
 		</t>
 		<t>
-		    * Flag = 7 (suggested): X Flag (Extended Flags). Set if the Flags
-		      are carried in the Extended Flags TLV instead of the Per-Peer
-		      Header.
+		    * Flag = 5: Reserved
+		    * Flag = 6: Reserved
+		    * Flag = 7: X Flag (Extended Flags). Set if the Flags are carried
+		      in the Extended Flags TLV instead of the Per-Peer Header.
 		</t>
 	    </section>
 
@@ -1013,6 +1026,9 @@
 			<li>Flag 2: A flag <xref target="RFC7854"/></li>
 			<li>Flag 3: O flag <xref target="RFC8671"/></li>
 			<li>Flag 4: F flag <xref target="RFC9069"/></li>
+			<li>Flag 5: Reserved</li>
+			<li>Flag 6: Reserved</li>
+			<li>Flag 7: X flag defined in this document</li>
 		    </ul>
 		</t>
 	    </section>
@@ -1035,6 +1051,7 @@
 		    The registry is seeded as follows:
 
 		    <ul spacing="compact">
+			<li>Type = 0: Reserved.</li>
 			<li>Type = 1: Trigger Time. Set to 1 if the timestamp
 			corresponds to the event that triggered BMP to report the
 			route or state, such as receiving a message or a session
@@ -1140,14 +1157,14 @@
                         a Group TLV with index 0x000c, pointing to NLRI 4, 5 and
                         6
                     </t>
-				    <t>
-						a Stateless Parsing TLV with index 0x0000, stating that
-						the Add-Path Capability is set to Both (Snd/Rcv) for the
-						IPv4 Unicast address family in the BGP UPDATE.
-				    </t>
+		    <t>
+			a Stateless Parsing TLV with index 0x0000, stating that
+			the Add-Path Capability is set to Both (Snd/Rcv) for the
+			IPv4 Unicast address family in the BGP UPDATE.
+		    </t>
                     <t>
-						a TLV pertaining to NLRI 7
-		    		</t>
+			a TLV pertaining to NLRI 7
+		    </t>
                     <t>
                         a TLV pertaining to the NLRIs listed in the Group TLV
                         defined in 1
