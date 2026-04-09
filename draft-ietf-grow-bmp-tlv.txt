@@ -677,15 +677,15 @@ Internet-Draft                   BMP TLV                      April 2026
             +======+=====================+===================+
             | Code | Name                | Section           |
             +======+=====================+===================+
-            | 0x00 | Trigger Time        | Section 5.6.1.1.1 |
+            | 1    | Trigger Time        | Section 5.6.1.1.1 |
             +------+---------------------+-------------------+
-            | 0x01 | Message Export Time | Section 5.6.1.1.2 |
+            | 2    | Message Export Time | Section 5.6.1.1.2 |
             +------+---------------------+-------------------+
-            | 0x02 | Adj-RIB-In Time     | Section 5.6.1.1.3 |
+            | 3    | Adj-RIB-In Time     | Section 5.6.1.1.3 |
             +------+---------------------+-------------------+
-            | 0x03 | Local-RIB Time      | Section 5.6.1.1.4 |
+            | 4    | Local-RIB Time      | Section 5.6.1.1.4 |
             +------+---------------------+-------------------+
-            | 0x04 | Adj-RIB-Out Time    | Section 5.6.1.1.5 |
+            | 5    | Adj-RIB-Out Time    | Section 5.6.1.1.5 |
             +------+---------------------+-------------------+
 
                                  Table 1
@@ -878,17 +878,17 @@ Internet-Draft                   BMP TLV                      April 2026
    Monitoring TLVs" which is to be seeded with the following new TLV
    types (Section 5.2):
 
-   *  Type = 1: Support for Sequence TLV.  The value field is defined in
+   *  Type = 1: Sequence TLV.  The value field is defined in
       Section 5.6.2.
 
-   *  Type = 2: Support for Extended Flags TLV.  The value field is
-      defined in Section 5.6.3.
+   *  Type = 2: Extended Flags TLV.  The value field is defined in
+      Section 5.6.3.
 
-   *  Type = 3: Support for Timestamp TLV.  The value field is defined
-      in Section 5.6.1.
+   *  Type = 3: Timestamp TLV.  The value field is defined in
+      Section 5.6.1.
 
-   *  Type = 4: Support for grouping of TLVs.  The value field is
-      defined in Section 5.2.1.
+   *  Type = 4: Group TLV.  The value field is defined in Section 5.2.1.
+
 
 
 
@@ -898,14 +898,14 @@ Lucente, et al.          Expires 11 October 2026               [Page 16]
 Internet-Draft                   BMP TLV                      April 2026
 
 
-   *  Type = 5: Support for VRF/Table Name TLV.  The value field is
-      defined in Section 5.2.2.
+   *  Type = 5: VRF/Table Name TLV.  The value field is defined in
+      Section 5.2.2.
 
-   *  Type = 6: Support for Stateless Parsing TLV.  The value field is
-      defined in Section 5.2.3.
+   *  Type = 6: Stateless Parsing TLV.  The value field is defined in
+      Section 5.2.3.
 
-   *  Type = 7: Support for BGP Message TLV.  The value field is defined
-      in Section 5.2.
+   *  Type = 7: BGP Message TLV.  The value field is defined in
+      Section 5.2.
 
    Values 0 through 16383 of the "BMP Route Monitoring TLVs" registry
    MUST be assigned using the Standards Action policy as defined in
@@ -919,17 +919,17 @@ Internet-Draft                   BMP TLV                      April 2026
    It is requested the definition of a new "BMP Stats Reports TLVs"
    registry seeded with the following new TLV types (Section 5.4):
 
-   *  Type = 1: Support for Stats TLV to enclose Stats Count and stats
-      data.
+   *  Type = 1: Stats TLV.  It enclose Stats Count and stats data.  The
+      value field is defined in Section 5.4
 
-   *  Type = 1: Support for Sequence TLV.  The value field is defined in
+   *  Type = 1: Sequence TLV.  The value field is defined in
       Section 5.6.2.
 
-   *  Type = 2: Support for Extended Flags TLV.  The value field is
-      defined in Section 5.6.3.
+   *  Type = 2: Extended Flags TLV.  The value field is defined in
+      Section 5.6.3.
 
-   *  Type = 3: Support for Timestamp TLV.  The value field is defined
-      in Section 5.6.1.
+   *  Type = 3: Timestamp TLV.  The value field is defined in
+      Section 5.6.1.
 
    Values 0 through 16383 of the "BMP Stats Reports TLVs" registry MUST
    be assigned using the Standards Action policy as defined in
@@ -963,10 +963,10 @@ Internet-Draft                   BMP TLV                      April 2026
 
    This document also requests to remove the Experimental allocation
    from the same registries, the code points now flagged Experimental
-   will become Unassigned.  The top most bit of each registry will be
-   reserved to the E-bit, reducing the Unassigned pool: the maximum
-   availble value for assignment for the registries will be 32767 (ie.
-   as opposed to current 65530).
+   will become Unassigned.  The the high-order, or leftmost, bit of each
+   registry will be assigned to the E-bit, hence reducing the Unassigned
+   pool: the maximum availble value for assignment for the registries
+   will be 32767 (ie. as opposed to current 65530).
 
    For the same registries, this document requests IANA to allocate the
    codepoints for Timestamp TLV (TBD1), Sequence Number TLV (TBD2) and
@@ -979,9 +979,10 @@ Internet-Draft                   BMP TLV                      April 2026
    points to the "BMP Peer Flags for Peer Types 0 through 2" and the
    "BMP Peer Flags for Loc-RIB Instance Peer Type" registries:
 
-   * Flag = 5: Reserved * Flag = 6: Reserved * Flag = 7: X Flag
-   (Extended Flags).  Set if the Flags are carried in the Extended Flags
-   TLV instead of the Per-Peer Header.
+   *  Flag 5: Reserved
+   *  Flag 6: Reserved
+   *  Flag 7: X Flag (Extended Flags).  Set if the Flags are carried in
+      the Extended Flags TLV instead of the Per-Peer Header.
 
 9.4.  BMP Extended Peer Flags
 
@@ -1000,7 +1001,6 @@ Internet-Draft                   BMP TLV                      April 2026
    *  Flag 5: Reserved
    *  Flag 6: Reserved
    *  Flag 7: X flag defined in this document
-
 
 
 

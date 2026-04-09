@@ -669,31 +669,31 @@
 	
 					<tbody>
 					<tr>
-					<td>0x00</td>
+					<td>1</td>
 					<td>Trigger Time</td>
 					<td><xref target="sec-timestamp-trigger"></xref></td>
 					</tr>
 					
 					<tr>
-					<td>0x01</td>
+					<td>2</td>
 					<td>Message Export Time</td>
 					<td><xref target="sec-timestamp-export"></xref></td>
 					</tr>
 					
 					<tr>
-					<td>0x02</td>
+					<td>3</td>
 					<td>Adj-RIB-In Time</td>
 					<td><xref target="sec-timestamp-adjin"></xref></td>
 					</tr>
 					
 					<tr>
-					<td>0x03</td>
+					<td>4</td>
 					<td>Local-RIB Time</td>
 					<td><xref target="sec-timestamp-locrib"></xref></td>
 					</tr>
 					
 					<tr>
-					<td>0x04</td>
+					<td>5</td>
 					<td>Adj-RIB-Out Time</td>
 					<td><xref target="sec-timestamp-adjout"></xref></td>
 					</tr>
@@ -892,32 +892,32 @@
 
 		<list style="symbols">
 		    <t>
-			Type = &IANA_RM_CODE_SEQ;: Support for Sequence TLV. The value field
-			is defined in <xref target="seq-num-tlv"/>.
+			Type = &IANA_RM_CODE_SEQ;: Sequence TLV. The value field is defined in
+			<xref target="seq-num-tlv"/>.
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_EXT_FLAGS;: Support for Extended Flags TLV. The value
-			field is defined in <xref target="extended-flags-tlv"/>.
+			Type = &IANA_RM_CODE_EXT_FLAGS;: Extended Flags TLV. The value field is
+			defined in <xref target="extended-flags-tlv"/>.
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_TSTAMP;: Support for Timestamp TLV. The value
-			field is defined in <xref target="timestamp-tlv"/>.
+			Type = &IANA_RM_CODE_TSTAMP;: Timestamp TLV. The value field is defined
+			in <xref target="timestamp-tlv"/>.
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_GROUP;: Support for grouping of TLVs. The value
-			field is defined in <xref target="GroupTLVinRM"/>.
+			Type = &IANA_RM_CODE_GROUP;: Group TLV. The value field is defined in
+			<xref target="GroupTLVinRM"/>.
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_VRF;: Support for VRF/Table Name TLV. The value
-			field is defined in <xref target="VrfTLVinRM"/>.
+			Type = &IANA_RM_CODE_VRF;: VRF/Table Name TLV. The value field is defined
+			in <xref target="VrfTLVinRM"/>.
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_SP;: Support for Stateless Parsing TLV. The value
-			field is defined in <xref target="SpTLVinRM"/>.
+			Type = &IANA_RM_CODE_SP;: Stateless Parsing TLV. The value field is
+			defined in <xref target="SpTLVinRM"/>.
 		    </t>
 		    <t>
-			Type = &IANA_RM_CODE_BGP_PDU;: Support for BGP Message TLV. The value
-			field is defined in <xref target="TLVinRM"/>.
+			Type = &IANA_RM_CODE_BGP_PDU;: BGP Message TLV. The value field is defined
+			in <xref target="TLVinRM"/>.
 		    </t>
 		</list>
 	        </t>
@@ -939,20 +939,20 @@
 
                 <list style="symbols">
                     <t>
-                        Type = &IANA_SR_CODE_STATS;: Support for Stats TLV to enclose Stats Count
-		        and stats data.
+                        Type = &IANA_SR_CODE_STATS;: Stats TLV. It enclose Stats Count and stats
+			data. The value field is defined in <xref target="TLVinSR"/>
                     </t>
                     <t>
-		        Type = &IANA_RM_CODE_SEQ;: Support for Sequence TLV. The value field
-		        is defined in <xref target="seq-num-tlv"/>.
+		        Type = &IANA_RM_CODE_SEQ;: Sequence TLV. The value field is defined in
+			<xref target="seq-num-tlv"/>.
 	            </t>
 	            <t>
-		        Type = &IANA_RM_CODE_EXT_FLAGS;: Support for Extended Flags TLV. The value
-		        field is defined in <xref target="extended-flags-tlv"/>.
+		        Type = &IANA_RM_CODE_EXT_FLAGS;: Extended Flags TLV. The value field is
+			defined in <xref target="extended-flags-tlv"/>.
 	            </t>
 	            <t>
-		        Type = &IANA_RM_CODE_TSTAMP;: Support for Timestamp TLV. The value
-		        field is defined in <xref target="timestamp-tlv"/>.
+		        Type = &IANA_RM_CODE_TSTAMP;: Timestamp TLV. The value field is defined
+			in <xref target="timestamp-tlv"/>.
 	            </t>
 	        </list>
 	        </t>
@@ -983,10 +983,10 @@
                 <t>                         
                     This document also requests to remove the Experimental allocation
                     from the same registries, the code points now flagged Experimental
-                    will become Unassigned. The top most bit of each registry will be
-                    reserved to the E-bit, reducing the Unassigned pool: the maximum
-                    availble value for assignment for the registries will be 32767
-                    (ie. as opposed to current 65530).
+                    will become Unassigned. The the high-order, or leftmost, bit of
+		    each registry will be assigned to the E-bit, hence reducing the
+		    Unassigned pool: the maximum availble value for assignment for the
+		    registries will be 32767 (ie. as opposed to current 65530).
                 </t>
 	        <t>
 		    For the same registries, this document requests IANA to allocate
@@ -1003,10 +1003,12 @@
 		    "BMP Peer Flags for Loc-RIB Instance Peer Type" registries:
 		</t>
 		<t>
-		    * Flag = 5: Reserved
-		    * Flag = 6: Reserved
-		    * Flag = 7: X Flag (Extended Flags). Set if the Flags are carried
-		      in the Extended Flags TLV instead of the Per-Peer Header.
+		   <ul spacing="compact">
+		       <li>Flag 5: Reserved</li>
+		       <li>Flag 6: Reserved</li>
+		       <li>Flag 7: X Flag (Extended Flags). Set if the Flags are carried
+		           in the Extended Flags TLV instead of the Per-Peer Header.</li>
+		    </ul>
 		</t>
 	    </section>
 
