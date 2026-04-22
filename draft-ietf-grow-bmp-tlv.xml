@@ -623,36 +623,47 @@
 			the code point of the Timestamp TLV is &IANA_RM_CODE_TSTAMP;.</t>
 
 			<t>The value of the TLV is the Timestamp Type code, defined in
-			<xref target="list-timestamp-types"></xref>, followed by the
-			timestamp values expressed in seconds and microseconds since
-			midnight (zero hour), January 1, 1970 (UTC).</t>
+			<xref target="list-timestamp-types"></xref> followed by a 4 bytes 
+			"Timestamp Seconds" field representing the number of seconds 
+			since midnight (zero hour), January 1, 1970 (UTC).</t>
 
-			<t>The encoding of the timestamp is identical to existing BMP
-			documents <xref target="RFC7854"></xref>, <xref target="RFC8671">
-			</xref>, and <xref target="RFC9069"></xref>, except that the
-			timestamp MUST NOT be set to zero to indicate unavailability. The
+			<t>The Timestamp TLV also optionally supports microseconds precision. 
+			If available, the subsecond microseconds of the timestamp follow 
+			the "Timestamp Seconds" as a 4 bytes field called "Timestamp Microseconds".
+			</t>
+
+			<t>When using microseconds precision, the encoding of the timestamp 
+			is identical to existing BMP documents <xref target="RFC7854"></xref>, 
+			<xref target="RFC8671"> </xref>, and <xref target="RFC9069"></xref>.
+			</t>
+
+			<t>
+			The timestamp MUST NOT be set to zero to indicate unavailability. The
 			Timestamp TLV is optional, a timestamp MUST NOT be included if it
-			is not available.</t>
+			is not available.
+			</t>
 
-			<t>The value of the Length field is 9 bytes (1 byte for the
-			Timestamp Type field plus the length of the Timestamp fields which
-			are 4 bytes each). The Index field is not included in the length.</t>
+			<t>The value of the Length field is 5 bytes (1 byte for the
+			Timestamp Type field plus the length of the 4 bytes "Timestamp Seconds" field). 
+			The value of Length field is 9 bytes when microseconds are included as the "Timestamp Microseconds" field.
+			The Index field is not included in the length.</t>
 
 			<t>The TLV structure is illustrated in <xref target="fig-timestamp-tlv">
 			</xref>.</t>
 
 <figure anchor="fig-timestamp-tlv"><name>Timestamp TLV
 </name>
-<artwork> 0                   1                   2                   3
+<artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |        Type (2 octets)        |       Length (2 octets)       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |G|      Index (2 octets)       | Timestmp Type |               ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-~              Timestamp (seconds)              |               ~
+~               Timestamp Seconds               |               ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-~            Timestamp (microseconds)           ~
+~       Timestamp Microseconds (optional)       ~				
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 </figure>

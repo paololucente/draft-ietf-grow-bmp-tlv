@@ -604,9 +604,9 @@ Internet-Draft                   BMP TLV                      April 2026
    BMP message.  For each TLV registry seeded in this document, the code
    point of the Timestamp TLV is 3.
 
-   The value of the TLV is the Timestamp Type code, defined in Table 1,
-   followed by the timestamp values expressed in seconds and
-   microseconds since midnight (zero hour), January 1, 1970 (UTC).
+   The value of the TLV is the Timestamp Type code, defined in Table 1
+   followed by a 4 bytes "Timestamp Seconds" field representing the
+   number of seconds since midnight (zero hour), January 1, 1970 (UTC).
 
 
 
@@ -618,14 +618,24 @@ Lucente, et al.          Expires 24 October 2026               [Page 11]
 Internet-Draft                   BMP TLV                      April 2026
 
 
-   The encoding of the timestamp is identical to existing BMP documents
-   [RFC7854], [RFC8671], and [RFC9069], except that the timestamp MUST
-   NOT be set to zero to indicate unavailability.  The Timestamp TLV is
-   optional, a timestamp MUST NOT be included if it is not available.
+   The Timestamp TLV also optionally supports microseconds precision.
+   If available, the subsecond microseconds of the timestamp follow the
+   "Timestamp Seconds" as a 4 bytes field called "Timestamp
+   Microseconds".
 
-   The value of the Length field is 9 bytes (1 byte for the Timestamp
-   Type field plus the length of the Timestamp fields which are 4 bytes
-   each).  The Index field is not included in the length.
+   When using microseconds precision, the encoding of the timestamp is
+   identical to existing BMP documents [RFC7854], [RFC8671], and
+   [RFC9069].
+
+   The timestamp MUST NOT be set to zero to indicate unavailability.
+   The Timestamp TLV is optional, a timestamp MUST NOT be included if it
+   is not available.
+
+   The value of the Length field is 5 bytes (1 byte for the Timestamp
+   Type field plus the length of the 4 bytes "Timestamp Seconds" field).
+   The value of Length field is 9 bytes when microseconds are included
+   as the "Timestamp Microseconds" field.  The Index field is not
+   included in the length.
 
    The TLV structure is illustrated in Figure 6.
 
@@ -636,9 +646,9 @@ Internet-Draft                   BMP TLV                      April 2026
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |G|      Index (2 octets)       | Timestmp Type |               ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   ~              Timestamp (seconds)              |               ~
+   ~               Timestamp Seconds               |               ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   ~            Timestamp (microseconds)           ~
+   ~       Timestamp Microseconds (optional)       ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                           Figure 6: Timestamp TLV
@@ -651,16 +661,6 @@ Internet-Draft                   BMP TLV                      April 2026
    The Table 1 defines the list of timestamp types that can be carried
    in the Timestamp TLV.  Each timestamp type is described in the
    section associated with its name and code in the table.
-
-
-
-
-
-
-
-
-
-
 
 
 
