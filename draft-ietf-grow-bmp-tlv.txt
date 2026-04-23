@@ -6,10 +6,10 @@ Global Routing Operations                                     P. Lucente
 Internet-Draft                                                       NTT
 Updates: 7854 (if approved)                                        Y. Gu
 Intended status: Standards Track                                  Huawei
-Expires: 11 October 2026                                       M. Younsi
+Expires: 24 October 2026                                       M. Younsi
                                                              P. Francois
                                                                INSA-Lyon
-                                                            9 April 2026
+                                                           22 April 2026
 
 
      BMP v4: Extended TLV Support for BGP Monitoring Protocol (BMP)
@@ -48,12 +48,12 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 October 2026.
+   This Internet-Draft will expire on 24 October 2026.
 
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 1]
+Lucente, et al.          Expires 24 October 2026                [Page 1]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -94,7 +94,7 @@ Table of Contents
      5.6.  New TLVs in all BMP Messages  . . . . . . . . . . . . . .  11
        5.6.1.  Timestamp TLV . . . . . . . . . . . . . . . . . . . .  11
          5.6.1.1.  Timestamp Types . . . . . . . . . . . . . . . . .  12
-       5.6.2.  Sequence Number TLV . . . . . . . . . . . . . . . . .  13
+       5.6.2.  Sequence Number TLV . . . . . . . . . . . . . . . . .  14
        5.6.3.  Extended Flags TLV  . . . . . . . . . . . . . . . . .  14
    6.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  15
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
@@ -102,22 +102,22 @@ Table of Contents
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
      9.1.  BMP Route Monitoring TLVs . . . . . . . . . . . . . . . .  16
      9.2.  BMP Stats Reports TLVs  . . . . . . . . . . . . . . . . .  17
-     9.3.  Changes to existing registries  . . . . . . . . . . . . .  17
-     9.4.  BMP Extended Peer Flags . . . . . . . . . . . . . . . . .  18
+     9.3.  Changes to existing registries  . . . . . . . . . . . . .  18
+     9.4.  BMP Extended Peer Flags . . . . . . . . . . . . . . . . .  19
      9.5.  BMP Timestamp Types . . . . . . . . . . . . . . . . . . .  19
-     9.6.  Miscellaneous . . . . . . . . . . . . . . . . . . . . . .  19
+     9.6.  Miscellaneous . . . . . . . . . . . . . . . . . . . . . .  20
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 2]
+Lucente, et al.          Expires 24 October 2026                [Page 2]
 
 Internet-Draft                   BMP TLV                      April 2026
 
 
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  19
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  20
-   Appendix A.  Wire-format Example  . . . . . . . . . . . . . . . .  21
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  20
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  21
+   Appendix A.  Wire-format Example  . . . . . . . . . . . . . . . .  22
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  23
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
@@ -165,7 +165,7 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 3]
+Lucente, et al.          Expires 24 October 2026                [Page 3]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -221,7 +221,7 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 4]
+Lucente, et al.          Expires 24 October 2026                [Page 4]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -277,7 +277,7 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 5]
+Lucente, et al.          Expires 24 October 2026                [Page 5]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -333,7 +333,7 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 6]
+Lucente, et al.          Expires 24 October 2026                [Page 6]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -389,7 +389,7 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 7]
+Lucente, et al.          Expires 24 October 2026                [Page 7]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -445,7 +445,7 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 8]
+Lucente, et al.          Expires 24 October 2026                [Page 8]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -501,7 +501,7 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-Lucente, et al.          Expires 11 October 2026                [Page 9]
+Lucente, et al.          Expires 24 October 2026                [Page 9]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -557,7 +557,7 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-Lucente, et al.          Expires 11 October 2026               [Page 10]
+Lucente, et al.          Expires 24 October 2026               [Page 10]
 
 Internet-Draft                   BMP TLV                      April 2026
 
@@ -604,28 +604,38 @@ Internet-Draft                   BMP TLV                      April 2026
    BMP message.  For each TLV registry seeded in this document, the code
    point of the Timestamp TLV is 3.
 
-   The value of the TLV is the Timestamp Type code, defined in Table 1,
-   followed by the timestamp values expressed in seconds and
-   microseconds since midnight (zero hour), January 1, 1970 (UTC).
+   The value of the TLV is the Timestamp Type code, defined in Table 1
+   followed by a 4 bytes "Timestamp Seconds" field representing the
+   number of seconds since midnight (zero hour), January 1, 1970 (UTC).
 
 
 
 
 
 
-Lucente, et al.          Expires 11 October 2026               [Page 11]
+Lucente, et al.          Expires 24 October 2026               [Page 11]
 
 Internet-Draft                   BMP TLV                      April 2026
 
 
-   The encoding of the timestamp is identical to existing BMP documents
-   [RFC7854], [RFC8671], and [RFC9069], except that the timestamp MUST
-   NOT be set to zero to indicate unavailability.  The Timestamp TLV is
-   optional, a timestamp MUST NOT be included if it is not available.
+   The Timestamp TLV also optionally supports microseconds precision.
+   If available, the subsecond microseconds of the timestamp follow the
+   "Timestamp Seconds" as a 4 bytes field called "Timestamp
+   Microseconds".
 
-   The value of the Length field is 9 bytes (1 byte for the Timestamp
-   Type field plus the length of the Timestamp fields which are 4 bytes
-   each).  The Index field is not included in the length.
+   When using microseconds precision, the encoding of the timestamp is
+   identical to existing BMP documents [RFC7854], [RFC8671], and
+   [RFC9069].
+
+   The timestamp MUST NOT be set to zero to indicate unavailability.
+   The Timestamp TLV is optional, a timestamp MUST NOT be included if it
+   is not available.
+
+   The value of the Length field is 5 bytes (1 byte for the Timestamp
+   Type field plus the length of the 4 bytes "Timestamp Seconds" field).
+   The value of Length field is 9 bytes when microseconds are included
+   as the "Timestamp Microseconds" field.  The Index field is not
+   included in the length.
 
    The TLV structure is illustrated in Figure 6.
 
@@ -636,9 +646,9 @@ Internet-Draft                   BMP TLV                      April 2026
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |G|      Index (2 octets)       | Timestmp Type |               ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   ~              Timestamp (seconds)              |               ~
+   ~               Timestamp Seconds               |               ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   ~            Timestamp (microseconds)           ~
+   ~       Timestamp Microseconds (optional)       ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                           Figure 6: Timestamp TLV
@@ -659,36 +669,30 @@ Internet-Draft                   BMP TLV                      April 2026
 
 
 
-
-
-
-
-
-
-
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 12]
+Lucente, et al.          Expires 24 October 2026               [Page 12]
 
 Internet-Draft                   BMP TLV                      April 2026
 
 
-            +======+=====================+===================+
-            | Code | Name                | Section           |
-            +======+=====================+===================+
-            | 1    | Trigger Time        | Section 5.6.1.1.1 |
-            +------+---------------------+-------------------+
-            | 2    | Message Export Time | Section 5.6.1.1.2 |
-            +------+---------------------+-------------------+
-            | 3    | Adj-RIB-In Time     | Section 5.6.1.1.3 |
-            +------+---------------------+-------------------+
-            | 4    | Local-RIB Time      | Section 5.6.1.1.4 |
-            +------+---------------------+-------------------+
-            | 5    | Adj-RIB-Out Time    | Section 5.6.1.1.5 |
-            +------+---------------------+-------------------+
+        +======+==============================+===================+
+        | Code | Name                         | Section           |
+        +======+==============================+===================+
+        | TBD7 | Trigger Time                 | Section 5.6.1.1.1 |
+        +------+------------------------------+-------------------+
+        | TBD6 | Message Export Time          | Section 5.6.1.1.2 |
+        +------+------------------------------+-------------------+
+        | TBD1 | Adj-RIB-In Pre-Policy Time   | Section 5.6.1.1.3 |
+        +------+------------------------------+-------------------+
+        | TBD2 | Adj-RIB-In Post-Policy Time  | Section 5.6.1.1.3 |
+        +------+------------------------------+-------------------+
+        | TBD3 | Local-RIB Time               | Section 5.6.1.1.4 |
+        +------+------------------------------+-------------------+
+        | TBD4 | Adj-RIB-Out Pre-Policy Time  | Section 5.6.1.1.5 |
+        +------+------------------------------+-------------------+
+        | TBD5 | Adj-RIB-Out Post-Policy Time | Section 5.6.1.1.5 |
+        +------+------------------------------+-------------------+
 
-                                 Table 1
+                                  Table 1
 
 5.6.1.1.1.  Trigger Time
 
@@ -703,8 +707,9 @@ Internet-Draft                   BMP TLV                      April 2026
 
 5.6.1.1.3.  Adj-RIB-In Time
 
-   The Adj-In Time is the time at which the route has been installed in
-   the Adj-RIB-In, as per [RFC7854].
+   The Adj-RIB-In Pre-Policy and Adj-RIB-In Post-Policy Times are the
+   times at which the route has been installed in the Adj-RIB-In Pre-
+   Policy and Post-Policy, as per [RFC7854].
 
 5.6.1.1.4.  Local-RIB Time
 
@@ -713,22 +718,23 @@ Internet-Draft                   BMP TLV                      April 2026
 
 5.6.1.1.5.  Adj-RIB-Out Time
 
-   The Adj-Out Time is the time at which the route has been installed in
-   the Adj-RIB-Out, as per [RFC8671].
+   The Adj-RIB-Out Pre-Policy and Adj-RIB-Out Post-Policy Times are the
+   times at which the route has been installed in the Adj-RIB-Out Pre-
+   Policy and Post-Policy, as per [RFC8671].
+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 13]
+
+Internet-Draft                   BMP TLV                      April 2026
+
 
 5.6.2.  Sequence Number TLV
 
    The Sequence Number TLV carries the sequence number of a message in a
    BMP session.  For each TLV registry seeded in this document, the code
    point of the Sequence Number TLV is 1.
-
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 13]
-
-Internet-Draft                   BMP TLV                      April 2026
-
 
    Ordering of BMP messages based on timestamp becomes complicated when
    timestamps have conflicting meanings or when they are simply
@@ -767,6 +773,19 @@ Internet-Draft                   BMP TLV                      April 2026
    For each TLV registry seeded in this document, the code point of the
    Extended Flags TLV is 2.
 
+
+
+
+
+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 14]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
    The value of the TLV is a sequence of bytes of variable size.  The
    minimum size of the sequence is one, to fit at least the already
    existing flags.  The flags carried in this TLV are defined in the BMP
@@ -777,14 +796,6 @@ Internet-Draft                   BMP TLV                      April 2026
 
    The value of the Length field is the number of bytes in the sequence.
    The Index field is not included in the length.
-
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 14]
-
-Internet-Draft                   BMP TLV                      April 2026
-
 
    The Index field is set to 0 to indicate the global scope of the TLV.
 
@@ -819,6 +830,18 @@ Internet-Draft                   BMP TLV                      April 2026
    length of 65535 octets.  This may cause a BMP PDU that attempts to
    encapsulate such long messages to overflow.
 
+
+
+
+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 15]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
    A BMP exporter and a BMP station may not support the same version of
    the protocol; being BMP uni-directional, with data flowing only from
    the exporter to the station, the station SHOULD close the BMP session
@@ -830,17 +853,6 @@ Internet-Draft                   BMP TLV                      April 2026
    additionally, in case of indexed TLVs, if the index is invalid (i.e.
    out of bounds), the TLV MUST be ignored.  The station SHOULD log the
    condition as a warning.
-
-
-
-
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 15]
-
-Internet-Draft                   BMP TLV                      April 2026
-
 
 7.  Security Considerations
 
@@ -878,6 +890,14 @@ Internet-Draft                   BMP TLV                      April 2026
    Monitoring TLVs" which is to be seeded with the following new TLV
    types (Section 5.2):
 
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 16]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
    *  Type = 1: Sequence TLV.  The value field is defined in
       Section 5.6.2.
 
@@ -888,15 +908,6 @@ Internet-Draft                   BMP TLV                      April 2026
       Section 5.6.1.
 
    *  Type = 4: Group TLV.  The value field is defined in Section 5.2.1.
-
-
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 16]
-
-Internet-Draft                   BMP TLV                      April 2026
-
 
    *  Type = 5: VRF/Table Name TLV.  The value field is defined in
       Section 5.2.2.
@@ -931,6 +942,18 @@ Internet-Draft                   BMP TLV                      April 2026
    *  Type = 3: Timestamp TLV.  The value field is defined in
       Section 5.6.1.
 
+
+
+
+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 17]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
    Values 0 through 16383 of the "BMP Stats Reports TLVs" registry MUST
    be assigned using the Standards Action policy as defined in
    Section 4.9 of [RFC8126]; values 16384 through 32767 MUST be assigned
@@ -943,16 +966,6 @@ Internet-Draft                   BMP TLV                      April 2026
    The "BMP Peer Up Message TLVs" registry defined by BMP Peer Up
    Message Namespace [RFC9736] is to be renamed "BMP Peer Up and Peer
    Down TLVs".
-
-
-
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 17]
-
-Internet-Draft                   BMP TLV                      April 2026
-
 
    For BMP Initiation Information TLVs, BMP Termination Message TLVs,
    BMP Peer Up and Peer Down TLVs and BMP Route Mirroring TLVs
@@ -984,6 +997,19 @@ Internet-Draft                   BMP TLV                      April 2026
    *  Flag 7: X Flag (Extended Flags).  Set if the Flags are carried in
       the Extended Flags TLV instead of the Per-Peer Header.
 
+
+
+
+
+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 18]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
 9.4.  BMP Extended Peer Flags
 
    This document also requests the definition of a "BMP Extended Peer
@@ -1002,14 +1028,6 @@ Internet-Draft                   BMP TLV                      April 2026
    *  Flag 6: Reserved
    *  Flag 7: X flag defined in this document
 
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 18]
-
-Internet-Draft                   BMP TLV                      April 2026
-
-
 9.5.  BMP Timestamp Types
 
    This document also requests the definition of a "BMP Timestamp Types"
@@ -1024,19 +1042,36 @@ Internet-Draft                   BMP TLV                      April 2026
    The registry is seeded as follows:
 
    *  Type = 0: Reserved.
-   *  Type = 1: Trigger Time.  Set to 1 if the timestamp corresponds to
-      the event that triggered BMP to report the route or state, such as
-      receiving a message or a session transition.
-   *  Type = 2: Message Export Time.  Set to 2 if the timestamp
+   *  Type = TBD7: Trigger Time.  Set to 1 if the timestamp corresponds
+      to the event that triggered BMP to report the route or state, such
+      as receiving a message or a session transition.
+   *  Type = TBD6: Message Export Time.  Set to 2 if the timestamp
       corresponds to the time when the BMP message was generated for
       export.
-   *  Type = 3: Adj-In Time.  Set to 3 if the timestamp corresponds to
-      when the route was installed in the Adj-RIB-In, as per [RFC7854].
-   *  Type = 4: Local-RIB Time.  Set to 4 if the timestamp corresponds
-      to when the route was installed in the Local-RIB, as per
-      [RFC9069].
-   *  Type = 5: Adj-Out Time.  Set to 5 if the timestamp corresponds to
-      when the route was installed in the Adj-RIB-Out, as per [RFC8671].
+   *  Type = TBD1: Adj-RIB-In Pre-Policy Time.  Set to 3 if the
+      timestamp corresponds to when the route was installed in the Adj-
+      RIB-In Pre-Policy, as per [RFC7854].
+   *  Type = TBD2: Adj-RIB-In Post-Policy Time.  Set to 3 if the
+      timestamp corresponds to when the route was installed in the Adj-
+      RIB-In Post-Policy, as per [RFC7854].
+   *  Type = TBD3: Local-RIB Time.  Set to 4 if the timestamp
+      corresponds to when the route was installed in the Local-RIB, as
+      per [RFC9069].
+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 19]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
+   *  Type = TBD4: Adj-RIB-Out Pre-Policy Time.  Set to 5 if the
+      timestamp corresponds to when the route was installed in the Adj-
+      RIB-Out Pre-Policy, as per [RFC8671].
+   *  Type = TBD5: Adj-RIB-Out Post-Policy Time.  Set to 5 if the
+      timestamp corresponds to when the route was installed in the Adj-
+      RIB-Out Post-Policy, as per [RFC8671].
 
 9.6.  Miscellaneous
 
@@ -1058,14 +1093,6 @@ Internet-Draft                   BMP TLV                      April 2026
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
 
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 19]
-
-Internet-Draft                   BMP TLV                      April 2026
-
-
    [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
               Monitoring Protocol (BMP)", RFC 7854,
               DOI 10.17487/RFC7854, June 2016,
@@ -1083,6 +1110,17 @@ Internet-Draft                   BMP TLV                      April 2026
    [RFC8654]  Bush, R., Patel, K., and D. Ward, "Extended Message
               Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
               2019, <https://www.rfc-editor.org/info/rfc8654>.
+
+
+
+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 20]
+
+Internet-Draft                   BMP TLV                      April 2026
+
 
    [RFC8671]  Evens, T., Bayraktar, S., Lucente, P., Mi, P., and S.
               Zhuang, "Support for Adj-RIB-Out in the BGP Monitoring
@@ -1113,15 +1151,6 @@ Internet-Draft                   BMP TLV                      April 2026
    [IANA-PEN] IANA, "Private Enterprise Numbers", 1982,
               <http://www.iana.org/assignments/enterprise-numbers/>.
 
-
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 20]
-
-Internet-Draft                   BMP TLV                      April 2026
-
-
    [RFC5492]  Scudder, J. and R. Chandra, "Capabilities Advertisement
               with BGP-4", RFC 5492, DOI 10.17487/RFC5492, February
               2009, <https://www.rfc-editor.org/info/rfc5492>.
@@ -1141,6 +1170,13 @@ Internet-Draft                   BMP TLV                      April 2026
               "Advertisement of Multiple Paths in BGP", RFC 7911,
               DOI 10.17487/RFC7911, July 2016,
               <https://www.rfc-editor.org/info/rfc7911>.
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 21]
+
+Internet-Draft                   BMP TLV                      April 2026
+
 
 Appendix A.  Wire-format Example
 
@@ -1170,14 +1206,6 @@ Appendix A.  Wire-format Example
       |        Common Header + Per-Peer Header (6 + 42 bytes)         ~
       ~                                                               |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-
-
-Lucente, et al.          Expires 11 October 2026               [Page 21]
-
-Internet-Draft                   BMP TLV                      April 2026
-
-
       |0|          type=2             |         length=0x0008         |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |1|           index=0x0001      |
@@ -1198,6 +1226,14 @@ Internet-Draft                   BMP TLV                      April 2026
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |      afi=1    |    safi=1     |     value=3   |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 22]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
       |0|          type=1             |         length=X              |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|           index=0           |    value=$BGP_UPDATE_PDU{     ~
@@ -1228,12 +1264,6 @@ Internet-Draft                   BMP TLV                      April 2026
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
-
-Lucente, et al.          Expires 11 October 2026               [Page 22]
-
-Internet-Draft                   BMP TLV                      April 2026
-
-
                                   Figure 9
 
 Acknowledgements
@@ -1252,6 +1282,14 @@ Authors' Addresses
    Veemweg 23
    3771 Barneveld
    Netherlands
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 23]
+
+Internet-Draft                   BMP TLV                      April 2026
+
+
    Email: paolo@ntt.net
 
 
@@ -1285,4 +1323,22 @@ Authors' Addresses
 
 
 
-Lucente, et al.          Expires 11 October 2026               [Page 23]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lucente, et al.          Expires 24 October 2026               [Page 24]
