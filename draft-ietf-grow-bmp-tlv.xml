@@ -910,6 +910,19 @@
             </t>
         </section>
 
+        <section title="Upgrading an exporter from BMPv3" anchor="UpgradeFromV3">
+		<t>
+		    Minimum compliance when upgrading a BMP exporter from BMPv3 to
+		    BMPv4:
+
+		    <ul spacing="compact">
+			<li>Version change from 3 to 4 in the Common Header</li>
+			<li>Timestamp can't be zero in the Per-Peer Header</li>
+			<li>Stats TLV container in Stats Report message</li>
+		    </ul>
+		</t>
+        </section>
+
         <section title="IANA Considerations">
             <t>
 		This document asks IANA to rename, create, change registration procedures and
