@@ -918,6 +918,7 @@
 		    <ul spacing="compact">
 			<li>Version change from 3 to 4 in the Common Header</li>
 			<li>Timestamp can't be zero in the Per-Peer Header</li>
+			<li>BGP Message TLV in Route Monitoring message</li>
 			<li>Stats TLV container in Stats Report message</li>
 		    </ul>
 		</t>
