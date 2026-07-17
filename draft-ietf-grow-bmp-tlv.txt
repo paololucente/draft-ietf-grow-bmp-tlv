@@ -605,11 +605,11 @@ Internet-Draft                   BMP TLV                       July 2026
    point of the Timestamp TLV is 7.
 
    In BMP message types that require indexing, for example Route
-   Monitoring, the index field must be included and set to zero.
+   Monitoring, the index field must be included and set to zero.  This
+   TLV MUST NOT be repeated within the same message.
 
-   The value of the TLV is the Timestamp Type code, defined in Table 1
-   followed by a 4 bytes "Timestamp Seconds" field representing the
-   number of seconds since midnight (zero hour), January 1, 1970 (UTC).
+
+
 
 
 
@@ -617,6 +617,10 @@ Lucente, et al.          Expires 18 January 2027               [Page 11]
 
 Internet-Draft                   BMP TLV                       July 2026
 
+
+   The value of the TLV is the Timestamp Type code, defined in Table 1
+   followed by a 4 bytes "Timestamp Seconds" field representing the
+   number of seconds since midnight (zero hour), January 1, 1970 (UTC).
 
    The Timestamp TLV also optionally supports microseconds precision.
    If available, the subsecond microseconds of the timestamp follow the
@@ -662,10 +666,6 @@ Internet-Draft                   BMP TLV                       July 2026
    The Table 1 defines the list of timestamp types that can be carried
    in the Timestamp TLV.  Each timestamp type is described in the
    section associated with its name and code in the table.
-
-
-
-
 
 
 
@@ -737,7 +737,8 @@ Internet-Draft                   BMP TLV                       July 2026
    point of the Sequence Number TLV is 5.
 
    In BMP message types that require indexing, for example Route
-   Monitoring, the index field must be included and set to zero.
+   Monitoring, the index field must be included and set to zero.  This
+   TLV MUST NOT be repeated within the same message.
 
    Ordering of BMP messages based on timestamp becomes complicated when
    timestamps have conflicting meanings or when they are simply
@@ -780,14 +781,14 @@ Internet-Draft                   BMP TLV                       July 2026
 
 
 
-
 Lucente, et al.          Expires 18 January 2027               [Page 14]
 
 Internet-Draft                   BMP TLV                       July 2026
 
 
    In BMP message types that require indexing, for example Route
-   Monitoring, the index field must be included and set to zero.
+   Monitoring, the index field must be included and set to zero.  This
+   TLV MUST NOT be repeated within the same message.
 
    The value of the TLV is a sequence of bytes of variable size.  The
    minimum size of the sequence is one, to fit at least the already
@@ -799,8 +800,6 @@ Internet-Draft                   BMP TLV                       July 2026
 
    The value of the Length field is the number of bytes in the sequence.
    The Index field is not included in the length.
-
-   The Index field is set to 0 to indicate the global scope of the TLV.
 
    The TLV structure including the index, ie. suitable for the Route
    Monitoring message type, is illustrated in Figure 8.
@@ -833,6 +832,7 @@ Internet-Draft                   BMP TLV                       July 2026
    RFC8654 [RFC8654] permits BGP Update and other messages to grow to a
    length of 65535 octets.  This may cause a BMP PDU that attempts to
    encapsulate such long messages to overflow.
+
 
 
 

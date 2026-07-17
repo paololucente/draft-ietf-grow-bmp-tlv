@@ -624,7 +624,8 @@
 			the code point of the Timestamp TLV is &IANA_RM_CODE_TSTAMP;.</t>
 
 			<t>In BMP message types that require indexing, for example Route
-			Monitoring, the index field must be included and set to zero.</t>
+			Monitoring, the index field must be included and set to zero. This
+			TLV MUST NOT be repeated within the same message.</t>
 
 			<t>The value of the TLV is the Timestamp Type code, defined in
 			<xref target="list-timestamp-types"></xref> followed by a 4 bytes 
@@ -774,7 +775,8 @@
 			the code point of the Sequence Number TLV is &IANA_RM_CODE_SEQ;.</t>
 
 			<t>In BMP message types that require indexing, for example Route
-			Monitoring, the index field must be included and set to zero.</t>
+			Monitoring, the index field must be included and set to zero. This
+			TLV MUST NOT be repeated within the same message.</t>
 
 			<t>Ordering of BMP messages based on timestamp becomes complicated
 			when timestamps have conflicting meanings or when they are simply
@@ -817,7 +819,8 @@
 			point of the Extended Flags TLV is &IANA_RM_CODE_EXT_FLAGS;.</t>
 
 			<t>In BMP message types that require indexing, for example Route
-			Monitoring, the index field must be included and set to zero.</t>
+			Monitoring, the index field must be included and set to zero. This
+			TLV MUST NOT be repeated within the same message.</t>
 
 			<t>
 			    The value of the TLV is a sequence of bytes of variable size.
@@ -833,9 +836,6 @@
 
 			<t>The value of the Length field is the number of bytes in the
 			sequence. The Index field is not included in the length.</t>
-
-			<t>The Index field is set to 0 to indicate the global scope of the
-			TLV.</t>
 
 			<t>The TLV structure including the index, ie. suitable for the
 			Route Monitoring message type, is illustrated in <xref
