@@ -2,14 +2,15 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
         <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
-        <!ENTITY IANA_RM_CODE_SEQ "1">
-        <!ENTITY IANA_RM_CODE_EXT_FLAGS "2">
-        <!ENTITY IANA_RM_CODE_TSTAMP "3">
-        <!ENTITY IANA_RM_CODE_GROUP "4">
-        <!ENTITY IANA_RM_CODE_VRF "5">
-        <!ENTITY IANA_RM_CODE_SP "6">
-        <!ENTITY IANA_RM_CODE_BGP_PDU "7">
+        <!ENTITY IANA_RM_CODE_SEQ "5">
+        <!ENTITY IANA_RM_CODE_EXT_FLAGS "6">
+        <!ENTITY IANA_RM_CODE_TSTAMP "7">
+        <!ENTITY IANA_RM_CODE_GROUP "1">
+        <!ENTITY IANA_RM_CODE_VRF "2">
+        <!ENTITY IANA_RM_CODE_SP "3">
+        <!ENTITY IANA_RM_CODE_BGP_PDU "4">
         <!ENTITY IANA_SR_CODE_STATS "1">
+
         <!ENTITY IANA_ALL_CODE_TSTAMP "TBD1">
         <!ENTITY IANA_ALL_CODE_SEQ "TBD2">
         <!ENTITY IANA_ALL_CODE_EXT_FLAGS "TBD3">
@@ -910,9 +911,8 @@
 		features to mitigate their impact.
             </t>
             <t>
-                TLVs SHOULD be sorted by the sender by their type. Multiple
-                TLVs of the same type can be repeated as part of the same message;
-                it is left to the specific use-cases whether all, any, the
+                Multiple TLVs of the same type can be repeated as part of the same
+		message; it is left to the specific use-cases whether all, any, the
                 first or the last TLV should be considered as well as whether
                 ordering matters and repeating is allowed.
             </t>
