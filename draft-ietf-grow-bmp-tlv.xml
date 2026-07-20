@@ -623,10 +623,6 @@
 			for a BMP message. For each TLV registry seeded in this document, 
 			the code point of the Timestamp TLV is &IANA_RM_CODE_TSTAMP;.</t>
 
-			<t>In BMP message types that require indexing, for example Route
-			Monitoring, the index field must be included and set to zero. This
-			TLV MUST NOT be repeated within the same message.</t>
-
 			<t>The value of the TLV is the Timestamp Type code, defined in
 			<xref target="list-timestamp-types"></xref> followed by a 4 bytes 
 			"Timestamp Seconds" field representing the number of seconds 
@@ -747,25 +743,39 @@
 	
 				<section title="Message Export Time" anchor="sec-timestamp-export">
 					<t>The Message Export Time is the time at which BMP
-					generates the BMP message.</t>
+					generates the BMP message. This type applies to all BMP
+					messages and is unique within a BMP message. In message
+					types that require indexing the index field must be
+					included and set to zero.</t>
 				</section>
 	
 				<section title="Adj-RIB-In Time" anchor="sec-timestamp-adjin">
-					<t>The Adj-RIB-In Pre-Policy and Adj-RIB-In Post-Policy Times are the times at which the route has been
-					installed in the Adj-RIB-In Pre-Policy and Post-Policy, as per <xref target="RFC7854">
-					</xref>.</t>
+					<t>The Adj-RIB-In Pre-Policy and Adj-RIB-In Post-Policy
+					Times are the times at which the route has been installed
+					in the Adj-RIB-In Pre-Policy and Post-Policy, as per
+					<xref target="RFC7854"></xref>. This type is per NLRI
+					and hence applies only to message types supporting
+					indexing. If the timestamp applies to all prefixes in
+					a BGP PDU, index must be zero.</t> 
 				</section>
 	
 				<section title="Local-RIB Time" anchor="sec-timestamp-locrib">
 					<t>The Local-RIB Time is the time at which the route has
 					been installed in the Local-RIB, as per <xref target="RFC9069">
-					</xref>.</t>
+					</xref>. This type is per NLRI and hence applies only to
+					message types supporting indexing. If the timestamp
+					applies to all prefixes in a BGP PDU, index must be
+					zero.</t>
 				</section>
 	
 				<section title="Adj-RIB-Out Time" anchor="sec-timestamp-adjout">
-					<t>The Adj-RIB-Out Pre-Policy and Adj-RIB-Out Post-Policy Times are the times at which the route has been
-					installed in the Adj-RIB-Out Pre-Policy and Post-Policy, as per <xref target="RFC8671">
-					</xref>.</t>
+					<t>The Adj-RIB-Out Pre-Policy and Adj-RIB-Out Post-Policy
+					Times are the times at which the route has been installed
+					in the Adj-RIB-Out Pre-Policy and Post-Policy, as per
+					<xref target="RFC8671"></xref>. This type is per NLRI
+                                        and hence applies only to message types supporting
+                                        indexing. If the timestamp applies to all prefixes in
+                                        a BGP PDU, index must be zero.</t>
 				</section>
 			</section>
 		</section>
