@@ -739,6 +739,9 @@
 					triggered BMP to report the event. This might be a
 					received message, a BGP peering or a BMP session going
 					down or up, etc.</t>
+					<t>This type applies to all BMP messages and is unique 
+					within a BMP message. In message types that require 
+					indexing the index field must be included and set to zero.</t>
 				</section>
 	
 				<section title="Message Export Time" anchor="sec-timestamp-export">
