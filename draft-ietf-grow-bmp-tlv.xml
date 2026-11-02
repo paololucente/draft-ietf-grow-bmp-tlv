@@ -158,11 +158,11 @@
            <t>
 		This means that Route Monitoring, Stats Reports and Peer Down messages
 		have a non-extensible format (except for the specific case of Peer Down
-		Reason Code 6 as specified in <xref target="RFC9069">Section 5.3 of</xref>.
+		Reason Code 6 as specified in <xref target="RFC9069">Section 5.3 of</xref>).
 		In the Route Monitoring case, this prevents the transmission of parsing
 		characteristics of transported NLRIs (e.g. ADD-PATH, Multi Labels, etc.),
 		RIB status of a path (e.g. primary, backup, unused, etc.) or of vendor-
-		specific data. In the Stats Resports and Peer Down case, this prevents
+		specific data. In the Stats Reports and Peer Down case, this prevents
 		matching with TLVs previously sent in other messages, including the Peer
 		Up message. This document:
 		<list style="symbols">
@@ -204,15 +204,15 @@
 
 	<section title="Message version">
 	    <t>
-		For an exporter to flag a receiver that it does comply with this
-		specification, the Version field of the BMP Common header, documented
+		For an exporter to flag a receiver that it complies with this
+		specification, the Version field of the BMP Common Header, documented
 		in <xref target="RFC7854">Section 4.4 of</xref>, MUST be set to 4. This
 		applies to every BMP message type.	
 	    </t>
 	    <t>
 		If a BMP station does not support the version indicated in the message,
 		it SHOULD close the session and take the procedures described in
-		<xref target="ErrHdl">Error Handling</xref>
+		<xref target="ErrHdl">Error Handling</xref>.
 	    </t>
 	</section>
 
@@ -302,7 +302,7 @@
                 documented in <xref target="RFC7854">Section 4.8 of</xref>. E-bit
                 does hence similarly apply to these messages too, with the most
                 relevant bit of Stat Type set to 1 in order to flag the presence
-		of a 4-bytes PEN field following Stat Len field and preceding
+		of a 4-byte PEN field following Stat Len field and preceding
 		Stat Data field, i.e.:
             </t>
             <figure anchor="BMP-Stats-Report-enterprise--header" align="center">
@@ -322,7 +322,7 @@
                 </artwork>
             </figure>
             <t> 
-                While the encoding is not per-se backward compatible, there
+                While the encoding is not per se backward compatible, there
                 is no existing IANA-allocated Type value that makes use of the most
                 significant bit (which is being used in this document to define the
                 E-bit), except the experimental and reserved ones mentioned in
@@ -347,8 +347,8 @@
 		example, to express additional characteristics of a specific NLRI. For
 		this purpose, TLVs enclosed in a Route Monitoring message MUST be
 		indexed, with the index starting at one (1) to refer to the first NLRI.
-		Index zero (0) specifies that a TLV does apply to all NLRIs contained in
-		the BGP Update message. The Index field is 2-byte long of which the
+		Index zero (0) specifies that a TLV applies to all NLRIs contained in
+		the BGP Update message. The Index field is 2 bytes long, of which the
 		top-most bit, G-bit, is used to flag a Group Index (more in <xref
 		target="GroupTLVinRM"/>).
 		TLVs of the same type and with the same index can be repeated
@@ -373,7 +373,7 @@
 
 	    <t>
 		The reported length in indexed TLVs refers to the total encoded
-		TLV value (ie. with the length of the index field excluded).
+		TLV value (i.e., with the length of the index field excluded).
 	    </t>
 
 	    <t>
@@ -418,7 +418,7 @@
         <section title="BMP Message Format">
             <section title="Common Header" anchor="CommonHeader">
                 <t>
-			While the structure of the Common header remains unaltered,
+			While the structure of the Common Header remains unaltered,
 			the following two definitions are changed compared to
 			<xref section="4.1" sectionFormat="of" target="RFC7854"/>:
 		     
@@ -441,7 +441,7 @@
 			For consistency with the Route Mirroring type defined in <xref
 			section="4.7" sectionFormat="of" target="RFC7854"/>, this document
 			extends the encoding of the Route Monitoring message type where the
-		    	Per-peer header is followed by mandatory and optional TLVs.  
+		    	Per-Peer Header is followed by mandatory and optional TLVs.  
 		</t>
 		<t>
 		    	The BGP Update PDU (<xref section="4.3" sectionFormat="of"
@@ -451,15 +451,15 @@
 			may be preceded or followed by other optional TLV data.
 		</t>
 		<t>
-		    	Corollary, the BGP Update PDU is not encoded as part of the message
-			as it was the case for BMPv3 (<xref target="RFC7854">RFC 7854</xref>)
+		    	Consequently, the BGP Update PDU is not encoded as part of the message
+			as was the case for BMPv3 (<xref target="RFC7854">RFC 7854</xref>)
 			but it is rather enclosed in a TLV.
 		</t>
 	    <section title="Group TLV" anchor="GroupTLVinRM">
 		<t>
 		    In a Route Monitoring message where a BGP Update PDU carries N
 		    NLRIs, indexed TLVs do allow to handle the cases of 1:1 and N:1
-		    relationship among TLVs and NLRIs (ie. one TLV applies to one
+		    relationship among TLVs and NLRIs (i.e., one TLV applies to one
 		    NLRI, N TLVs apply to one same NLRI). The cases of 1:N and M:N
 		    relationships (i.e., one TLV applies to N NLRIs and M TLVs apply
 		    to N NLRIs) can benefit by a form of grouping. For that purpose,
@@ -469,11 +469,11 @@
 		<t>
 		    The 2-byte index defines a new Group Index and the top-most bit
 		    (G-bit) MUST be set to 1. The full 2-byte value, that is including
-		    the G-bit, MUST be unique to the message
+		    the G-bit, MUST be unique to the message.
 		</t>
 		<t>
 		    The value carries two or more 2-byte NLRI indexes whose values
-		    MUST be less or equal to the amount of NLRIs packed in the BGP
+		    MUST be less than or equal to the number of NLRIs packed in the BGP
 		    Update PDU.
 		</t>
 		<t>
@@ -492,7 +492,7 @@
 	    </section>
 	    <section title="VRF/Table Name TLV" anchor="VrfTLVinRM">
 		<t>
-		    The Information field contains a UTF-8 string whose value MUST
+		    The Value field contains a UTF-8 string whose value MUST
 		    be equal to the value of the VRF or table name (i.e., RD instance
 		    name) being conveyed. The string size MUST be within the range
 		    of 1 to 255 bytes. This is in line with <xref section="5.2.1"
@@ -504,7 +504,7 @@
 	    </section>
 	    <section title="Stateless Parsing TLV" anchor="SpTLVinRM">
 		<t>
-		    Stateless parsing helps scaling the amount of Route Monitoring
+		    Stateless parsing helps scaling the number of Route Monitoring
 		    messages that can be processed at collection time, avoiding to
 		    have to correlate them to BGP capabilities received as part of
 		    the Peer Up message, for example.
@@ -599,7 +599,7 @@
 	    </section>
 	    <section title="TLV Data in Other BMP Messages" anchor="TLVinOther">
 		<t>
-		    All other message types defined in <xref target="RFC7854">RFC7854</xref>
+		    All other message types defined in <xref target="RFC7854">RFC 7854</xref>
 		    do already provision for TLV data. It is RECOMMENDED that
 		    all future defined BMP message types will also provide for
 		    optional TLV data following a consistency model for encoding
@@ -630,7 +630,7 @@
 
 			<t>The Timestamp TLV also optionally supports microseconds precision. 
 			If available, the subsecond microseconds of the timestamp follow 
-			the "Timestamp Seconds" as a 4 bytes field called "Timestamp Microseconds".
+			the "Timestamp Seconds" as a 4-byte field called "Timestamp Microseconds".
 			</t>
 
 			<t>When using microseconds precision, the encoding of the timestamp 
@@ -650,7 +650,7 @@
 			included as the "Timestamp Microseconds" field. The Index field is not
 			included in the length.</t>
 
-			<t>The TLV structure including the index, ie. suitable for the Route
+			<t>The TLV structure including the index, i.e., suitable for the Route
 			Monitoring message type, is illustrated in <xref target="fig-timestamp-tlv">
 			</xref>.</t>
 
@@ -662,7 +662,7 @@
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |        Type (2 octets)        |       Length (2 octets)       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|G|      Index (2 octets)       | Timestmp Type |               ~
+|G|      Index (2 octets)       | Timestamp Type|               ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~               Timestamp Seconds               |               ~
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -671,7 +671,7 @@
 </artwork>
 </figure>
 
-			<t>The <xref target="sec-timestamp-types"></xref> defines the list
+			<t><xref target="sec-timestamp-types"></xref> defines the list
 			of currently defined Timestamp Types.</t>
 
 			<section title="Timestamp Types" anchor="sec-timestamp-types">
@@ -741,7 +741,7 @@
 					down or up, etc.</t>
 					<t>This type applies to all BMP messages and is unique 
 					within a BMP message. In message types that require 
-					indexing the index field must be included and set to zero.</t>
+					indexing the index field MUST be included and set to zero.</t>
 				</section>
 	
 				<section title="Message Export Time" anchor="sec-timestamp-export">
@@ -759,7 +759,7 @@
 					<xref target="RFC7854"></xref>. This type is per NLRI
 					and hence applies only to message types supporting
 					indexing. If the timestamp applies to all prefixes in
-					a BGP PDU, index must be zero.</t> 
+					a BGP PDU, index MUST be zero.</t> 
 				</section>
 	
 				<section title="Local-RIB Time" anchor="sec-timestamp-locrib">
@@ -778,7 +778,7 @@
 					<xref target="RFC8671"></xref>. This type is per NLRI
                                         and hence applies only to message types supporting
                                         indexing. If the timestamp applies to all prefixes in
-                                        a BGP PDU, index must be zero.</t>
+                                        a BGP PDU, index MUST be zero.</t>
 				</section>
 			</section>
 		</section>
@@ -788,7 +788,7 @@
 			the code point of the Sequence Number TLV is &IANA_RM_CODE_SEQ;.</t>
 
 			<t>In BMP message types that require indexing, for example Route
-			Monitoring, the index field must be included and set to zero. This
+			Monitoring, the index field MUST be included and set to zero. This
 			TLV MUST NOT be repeated within the same message.</t>
 
 			<t>Ordering of BMP messages based on timestamp becomes complicated
@@ -804,7 +804,7 @@
 			<t>The value of the Length field is 8. The Index field is not
 			included in the length.</t>
 
-			<t>The TLV structure including the index, ie. suitable for the Route
+			<t>The TLV structure including the index, i.e., suitable for the Route
                         Monitoring message type, is illustrated in <xref target="fig-seqnum-tlv">
 			</xref>.</t>
 
@@ -832,7 +832,7 @@
 			point of the Extended Flags TLV is &IANA_RM_CODE_EXT_FLAGS;.</t>
 
 			<t>In BMP message types that require indexing, for example Route
-			Monitoring, the index field must be included and set to zero. This
+			Monitoring, the index field MUST be included and set to zero. This
 			TLV MUST NOT be repeated within the same message.</t>
 
 			<t>
@@ -841,7 +841,7 @@
 			    already existing flags. The flags carried in this TLV are
 			    defined in the BMP Extended Peer Flags IANA registry defined
 			    by this document. The first byte of the sequence carries all
-			    flags defined previous to this document, that is Flags V, L,
+			    flags defined prior to this document, that is Flags V, L,
 			    A, O, and F as defined in <xref target="RFC7854">Section 10.3
 			    of</xref>, <xref target="RFC8671">Section 9.1 of</xref> and
 			    <xref target="RFC9069"> Section 4.2 of</xref>.
@@ -850,7 +850,7 @@
 			<t>The value of the Length field is the number of bytes in the
 			sequence. The Index field is not included in the length.</t>
 
-			<t>The TLV structure including the index, ie. suitable for the
+			<t>The TLV structure including the index, i.e., suitable for the
 			Route Monitoring message type, is illustrated in <xref
 			target="fig-flags-tlv"></xref>.</t>
 
@@ -879,7 +879,7 @@
 			    Unused bits of the first byte are declared as reserved, newly
 			    allocated bits will be carried in the following byte(s) of the
 			    sequence and counting of the bits will always start at bit zero
-			    of the first byte (ie. first bit of the second byte will be 8).
+			    of the first byte (i.e., first bit of the second byte will be 8).
 			</t>
 		</section>
 	    </section>
@@ -887,7 +887,7 @@
 
         <section title="Error Handling" anchor="ErrHdl">
 	    <t>
-		<xref target="RFC8654">RFC8654</xref> permits BGP Update and other
+		<xref target="RFC8654">RFC 8654</xref> permits BGP Update and other
 		messages to grow to a length of 65535 octets. This may cause a BMP
 		PDU that attempts to encapsulate such long messages to overflow.
 	    </t>
@@ -896,7 +896,7 @@
 		of the protocol; being BMP uni-directional, with data flowing only
 		from the exporter to the station, the station SHOULD close the BMP
 		session and log the condition as a warning; the exporter SHOULD
-		retry to connect with a non-aggressitve timer.
+		retry to connect with a non-aggressive timer.
 	    </t>
 	    <t>
  		A BMP station may not support some of the TLVs encoded by the
@@ -910,7 +910,7 @@
         <section title="Security Considerations">
             <t>
                 It is not believed that this document adds any additional security
-		considerations compared to <xref target="RFC7854">RFC7854</xref>.
+		considerations compared to <xref target="RFC7854">RFC 7854</xref>.
             </t>
         </section>
 
@@ -920,7 +920,7 @@
 		the amount of NLRIs carried in the BGP Update message. This may
 		degrade the packing of information in such messages and have
 		specific impacts on the memory and CPU used in a BMP implementation.
-		As a result of that it should always be possible to disable such
+		As a result of that it SHOULD always be possible to disable such
 		features to mitigate their impact.
             </t>
             <t>
@@ -930,7 +930,7 @@
                 ordering matters and repeating is allowed.
             </t>
             <t> 
-                It is recommended that implementors making use of the Enterprise
+                It is recommended that implementers making use of the Enterprise
                 Bit extension have a well-defined internal registry for privately
                 assigned code points that is also exposed to the public.
             </t>
@@ -1010,7 +1010,7 @@
 
                 <list style="symbols">
                     <t>
-                        Type = &IANA_SR_CODE_STATS;: Stats TLV. It enclose Stats Count and stats
+                        Type = &IANA_SR_CODE_STATS;: Stats TLV. It encloses Stats Count and stats
 			data. The value field is defined in <xref target="TLVinSR"/>
                     </t>
                     <t>
@@ -1054,10 +1054,10 @@
                 <t>                         
                     This document also requests to remove the Experimental allocation
                     from the same registries, the code points now flagged Experimental
-                    will become Unassigned. The the high-order, or leftmost, bit of
+                    will become Unassigned. The high-order, or leftmost, bit of
 		    each registry will be assigned to the E-bit, hence reducing the
-		    Unassigned pool: the maximum availble value for assignment for the
-		    registries will be 32767 (ie. as opposed to current 65530).
+		    Unassigned pool: the maximum available value for assignment for the
+		    registries will be 32767 (i.e., as opposed to current 65530).
                 </t>
 	        <t>
 		    For the same registries, this document requests IANA to allocate
