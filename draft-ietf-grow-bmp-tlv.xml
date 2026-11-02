@@ -105,8 +105,8 @@
 		Base) Stats Reports (which supply periodical counters) and Peer Down
 		messages (which indicate that a peering session was terminated) do not.
 		Supporting (optional) data in TLV format across all BMP message types
-		provides consistent and extensible structures that would be useful among
-		the various use-cases where conveying additional data to a monitoring
+		provides consistent and extensible structures that would be useful in
+		the various use cases where conveying additional data to a monitoring
 		station is required. This document updates <xref target="RFC7854">RFC
 		7854</xref> to support TLV data in all message types and defines some
 		essential TLVs.
@@ -167,9 +167,8 @@
 		Up message. This document:
 		<list style="symbols">
 			<t>Bumps the BMP version for all message types defined in
-			   <xref target="RFC7854">RFC 7854</xref>for backward compatibility,
-			   in that it allows receivers to distinguish v4 and reject or handle
-			   it explicitly</t>
+			   <xref target="RFC7854">RFC 7854</xref>, allowing receivers to
+			   distinguish BMPv4 from BMPv3 and handle it explicitly</t>
 			<t>Changes the structure of Route Monitoring message type so that the
 			   BGP Update PDU is enclosed in a TLV. The BGP Message TLV is
 			   mandatory</t>
@@ -205,7 +204,7 @@
             </t>
         </section>
 
-	<section title="Message version">
+	<section title="Message Version">
 	    <t>
 		For an exporter to flag a receiver that it complies with this
 		specification, the Version field of the BMP Common Header, documented
@@ -234,8 +233,8 @@
 	        <t>
 		    <list style="symbols">
                         <t>
-                        	1 bit to flag an enterprise-specific TLV, set to 0. The
-                        	TLV Type value must have been defined in <xref target="IANA-BMP">IANA-BMP</xref>
+                        	1 bit to flag an enterprise-specific TLV, set to 0.
+				The TLV Type value MUST have been defined in <xref target="IANA-BMP">IANA-BMP</xref>
                         </t>
 		        <t>
 				15 bits of TLV Type,
@@ -276,7 +275,7 @@
                         15 bits of TLV Type,
                     </t>
                     <t>
-                        2 octets of TLV length. Comprising length of IANA PEN plus TLV value,
+                        2 octets of TLV length. This comprises the length of the IANA PEN plus the TLV Value.
                     </t>
                     <t>
                         4 octets of IANA Private Enterprise Number <xref target="IANA-PEN">IANA-PEN</xref>
@@ -302,11 +301,11 @@
             </figure>
             <t>
                 Stats Report messages are also encoded in a TLV-like fashion, as
-                documented in <xref target="RFC7854">Section 4.8 of</xref>. E-bit
-                does hence similarly apply to these messages too, with the most
-                relevant bit of Stat Type set to 1 in order to flag the presence
-		of a 4-byte PEN field following Stat Len field and preceding
-		Stat Data field, i.e.:
+                documented in <xref target="RFC7854">Section 4.8 of</xref>. the
+		E-bit therefore similarly applies to these messages too, with the
+		most significant bit of Stat Type set to 1 in order to flag the
+		presence of a 4-byte PEN field following Stat Len field and
+		preceding Stat Data field, i.e.:
             </t>
             <figure anchor="BMP-Stats-Report-enterprise--header" align="center">
                 <artwork align="center">
@@ -338,7 +337,7 @@
                 as part of the TLV.
             </t>
             <t>
-                Future BMPv4 Message Types MUST make use of the TLV encoding defined
+                Future BMPv4 message types MUST make use of the TLV encoding defined
                 in this document.
             </t>
 	    </section>
@@ -394,7 +393,7 @@
 		of the transported BGP Update message.
 	    </t>
 	    </section>
-	    <section title="Enterprise-specific Indexed TLV encoding" anchor="EnterpriseIndexedTlv">
+	    <section title="Enterprise-specific Indexed TLV Encoding" anchor="EnterpriseIndexedTlv">
 	    <t>
 	        For completeness, following is an illustration of the structure of
 		an Enterprise-specific Indexed TLV.
@@ -461,11 +460,11 @@
 	    <section title="Group TLV" anchor="GroupTLVinRM">
 		<t>
 		    In a Route Monitoring message where a BGP Update PDU carries N
-		    NLRIs, indexed TLVs do allow to handle the cases of 1:1 and N:1
+		    NLRIs, indexed TLVs allow handling of the cases of 1:1 and N:1
 		    relationship among TLVs and NLRIs (i.e., one TLV applies to one
 		    NLRI, N TLVs apply to one same NLRI). The cases of 1:N and M:N
 		    relationships (i.e., one TLV applies to N NLRIs and M TLVs apply
-		    to N NLRIs) can benefit by a form of grouping. For that purpose,
+		    to N NLRIs) can benefit from grouping. For that purpose,
 		    a Group TLV is defined with the aim to limit both verbosity and
 		    repetitions.
 		</t>
@@ -502,14 +501,14 @@
 		    sectionFormat="of" target="RFC9069"/>.
 		</t>
 		<t>
-		    The VRF/Table Name TLV type is &IANA_RM_CODE_VRF;
+		    The VRF/Table Name TLV type is &IANA_RM_CODE_VRF;.
 		</t>
 	    </section>
 	    <section title="Stateless Parsing TLV" anchor="SpTLVinRM">
 		<t>
 		    Stateless parsing helps scaling the number of Route Monitoring
-		    messages that can be processed at collection time, avoiding to
-		    have to correlate them to BGP capabilities received as part of
+		    messages that can be processed at collection time, avoiding having
+		    to correlate them to BGP capabilities received as part of
 		    the Peer Up message, for example.
 		</t>
 		<t>
@@ -557,8 +556,8 @@
 		    If no Stateless Parsing TLV is present in a Route Monitoring
 		    message, the receiver MUST fall back to use capabilities present
 		    in the BGP Open PDU contained in the relevant BMP Peer Up message
-		    in order to properly parse BGP Update PDUs. Each BGP capability  
-		    is to be encoded in a separate Stateless Parsing TLV.
+		    in order to properly parse BGP Update PDUs. Each BGP capability
+		    MUST be encoded in a separate Stateless Parsing TLV.
 		</t>
 		<t>
 		    It is RECOMMENDED that the Stateless Parsing TLV is encoded
@@ -589,7 +588,7 @@
 		<t>
 		    The Stats Reports message is extended so that the Stats Count
 		    and stats data as defined in <xref target="RFC7854">Section
-		    4.8 of</xref> are all enclosed inside a Stats TLV with code-
+		    4.8 of</xref> are all enclosed inside a Stats TLV with code
 		    point &IANA_SR_CODE_STATS;. The Stats TLV is mandatory and
 		    can be followed by optional TLV data. 
 		</t>
@@ -603,9 +602,9 @@
 	    <section title="TLV Data in Other BMP Messages" anchor="TLVinOther">
 		<t>
 		    All other message types defined in <xref target="RFC7854">RFC 7854</xref>
-		    do already provision for TLV data. All future defined BMPv4 
-		    message types are RECOMMENDED to provide for optional TLV data
-		    consistently to existing message types.
+		    do already provision for TLV data. It is RECOMMENDED that all future BMPv4
+		    message types provide optional TLV data, consistently with existing message
+		    types.
 		</t>
 	    </section>
 	    <section title="New TLVs in all BMP Messages" anchor="TLVinAll">
@@ -622,12 +621,12 @@
 
 		</t>
 		<section title="Timestamp TLV" anchor="timestamp-tlv">
-			<t>The Timestamp TLV carries one of multiple types of Timestamp
+			<t>The Timestamp TLV carries one of several timestamp types
 			for a BMP message. For each TLV registry seeded in this document, 
 			the code point of the Timestamp TLV is &IANA_RM_CODE_TSTAMP;.</t>
 
 			<t>The value of the TLV is the Timestamp Type code, defined in
-			<xref target="list-timestamp-types"></xref> followed by a 4 bytes 
+			<xref target="list-timestamp-types"></xref> followed by a 4-byte
 			"Timestamp Seconds" field representing the number of seconds 
 			since midnight (zero hour), January 1, 1970 (UTC).</t>
 
@@ -643,12 +642,12 @@
 
 			<t>The timestamp MUST NOT be set to zero to indicate unavailability. For
 			the timestamp field in the Per-Peer Header this means that it MUST always
-			be populated. The Timestamp TLV is optional, a timestamp MUST NOT be
+			be populated. The Timestamp TLV is optional; a timestamp MUST NOT be
 			included if it is not available.</t>
 
 			<t>The value of the Length field is 5 bytes (1 byte for the
-			Timestamp Type field plus the length of the 4 bytes "Timestamp Seconds"
-			field). The value of Length field is 9 bytes when microseconds are
+			Timestamp Type field plus the length of the 4-byte "Timestamp Seconds"
+			field). The value of the Length field is 9 bytes when microseconds are
 			included as the "Timestamp Microseconds" field. The Index field is not
 			included in the length.</t>
 
@@ -677,7 +676,7 @@
 			of currently defined Timestamp Types.</t>
 
 			<section title="Timestamp Types" anchor="sec-timestamp-types">
-				<t>The <xref target="list-timestamp-types"></xref> defines the list
+				<t><xref target="list-timestamp-types"></xref> defines the list
 				of timestamp types that can be carried in the Timestamp TLV.
 				Each timestamp type is described in the section associated with its
 				name and code in the table.</t>
@@ -800,7 +799,7 @@
 			session.</t>
 
 			<t>The value of the TLV is the sequence number of the BMP message
-			in the BMP session, starting at 0, and encoded on 8 bytes. If the
+			in the BMP session, starting at 0, and encoded as an 8-byte integer. If the
 			sequence number would overflow, the BMP session MUST be reset.</t>
 
 			<t>The value of the Length field is 8. The Index field is not
@@ -839,7 +838,7 @@
 
 			<t>
 			    The value of the TLV is a sequence of bytes of variable size.
-			    The minimum size of the sequence is one, to fit at least the
+			    The minimum size of the sequence is one byte, to fit at least the
 			    already existing flags. The flags carried in this TLV are
 			    defined in the BMP Extended Peer Flags IANA registry defined
 			    by this document. The first byte of the sequence carries all
@@ -874,8 +873,7 @@
 			    that the flags to consider are carried in this TLV. The flags in
 			    the Per-Peer Header are still set according to the current
 			    specification, allowing collectors that do not understand the X
-			    Flag and Extended Flags TLV to still function. For consistency,
-			    the X flag MUST always be set in the Extended Flags TLV.
+			    Flag and Extended Flags TLV to still function.
 			</t>
 			<t>
 			    Unused bits of the first byte are declared as reserved, newly
@@ -895,10 +893,10 @@
 	    </t>
 	    <t>
 		A BMP exporter and a BMP station may not support the same version
-		of the protocol; being BMP uni-directional, with data flowing only
-		from the exporter to the station, the station SHOULD close the BMP
-		session and log the condition as a warning; the exporter SHOULD
-		retry to connect with a non-aggressive timer.
+		of the protocol. Because BMP is unidirectional, with data flowing
+		only from the exporter to the station, the station SHOULD close the
+		BMP session and log the condition as a warning; the exporter SHOULD
+		retry connecting with a non-aggressive timer.
 	    </t>
 	    <t>
  		A BMP station may not support some of the TLVs encoded by the
@@ -919,7 +917,7 @@
         <section title="Operational Considerations">
             <t>
                 In Route Monitoring messages, the number of TLVs can be bound to
-		the amount of NLRIs carried in the BGP Update message. This may
+		the number of NLRIs carried in the BGP Update message. This may
 		degrade the packing of information in such messages and have
 		specific impacts on the memory and CPU used in a BMP implementation.
 		As a result of that it SHOULD always be possible to disable such
@@ -927,12 +925,12 @@
             </t>
             <t>
                 Multiple TLVs of the same type can be repeated as part of the same
-		message; it is left to the specific use-cases whether all, any, the
+		message; it is left to the specific use cases whether all, any, the
                 first or the last TLV should be considered as well as whether
                 ordering matters and repeating is allowed.
             </t>
             <t> 
-                It is recommended that implementers making use of the Enterprise
+                It is RECOMMENDED that implementers making use of the Enterprise
                 Bit extension have a well-defined internal registry for privately
                 assigned code points that is also exposed to the public.
             </t>
@@ -945,7 +943,7 @@
 
 		    <ul spacing="compact">
 			<li>Version change from 3 to 4 in the Common Header</li>
-			<li>Timestamp can't be zero in the Per-Peer Header</li>
+			<li>The Per-Peer Header timestamp MUST NOT be zero</li>
 			<li>BGP Message TLV in Route Monitoring message</li>
 			<li>Stats TLV container in Stats Report message</li>
 		    </ul>
@@ -1014,7 +1012,7 @@
                 <list style="symbols">
                     <t>
                         Type = &IANA_SR_CODE_STATS;: Stats TLV. It encloses Stats Count and stats
-			data. The value field is defined in <xref target="TLVinSR"/>
+			data. The value field is defined in <xref target="TLVinSR"/>.
                     </t>
                     <t>
 		        Type = &IANA_RM_CODE_SEQ;: Sequence Number TLV. The value field is defined
@@ -1067,15 +1065,15 @@
                 </t>
 	        <t>
 		    For the same registries, this document requests IANA to allocate
-		    the codepoints for Timestamp TLV (&IANA_ALL_CODE_TSTAMP;), Sequence
+		    the code points for Timestamp TLV (&IANA_ALL_CODE_TSTAMP;), Sequence
 		    Number TLV (&IANA_ALL_CODE_SEQ;) and Extended Flags TLV
-		    (&IANA_ALL_CODE_EXT_FLAGS;). It is recommended that the code points
-		    are assigned consistently to "BMP Route Monitoring TLVs" and "BMP
-		    Stats Reports TLVs" registries seeded in this document (ie.
-		    Timestamp TLV = &IANA_RM_CODE_TSTAMP; , etc.).
+		    (&IANA_ALL_CODE_EXT_FLAGS;). IANA is requested to assign the code
+		    points consistently to "BMP Route Monitoring TLVs" and "BMP
+		    Stats Reports TLVs" registries seeded in this document (i.e.,
+		    Timestamp TLV = &IANA_RM_CODE_TSTAMP;, etc.).
                 </t>
 		<t>
-		    This document requests that IANA assigns the following new code
+		    This document requests that IANA assign the following new code
 		    points to the "BMP Peer Flags for Peer Types 0 through 2" and the
 		    "BMP Peer Flags for Loc-RIB Instance Peer Type" registries:
 		</t>
@@ -1230,14 +1228,14 @@
             <t>
                 The diagram in <xref target="BMP-RM-TLVs"/> shows an example of a
                 Route Monitoring message carrying a BGP UPDATE containing 10
-                NLRIs. The TLVs are comprised of:
+                NLRIs. The message contains the following TLVs:
                 <list style="numbers">
                     <t>
-                        a Group TLV with index 0x000b, pointing to NLRI 1, 2, 3
+                        a Group TLV with index 0x800b, pointing to NLRI 1, 2, 3
                         and 10
                     </t>
                     <t>
-                        a Group TLV with index 0x000c, pointing to NLRI 4, 5 and
+                        a Group TLV with index 0x800c, pointing to NLRI 4, 5 and
                         6
                     </t>
 		    <t>
@@ -1269,25 +1267,25 @@
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|          type=2             |         length=0x0008         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |1|           index=0x0001      |
+  |1|           index=0x000b      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0001,   0x0002,                     |
   |                         0x0003,   0x000a}                     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|          type=2             |        length=0x0006          |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |1|           index=0x0002      |
+  |1|           index=0x000c      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                  value={0x0004,   0x0005,                     |
   |                         0x0006}                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |0|          type=4             |         length=0x0005         |
+  |0|          type=3             |         length=0x0005         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|           index=0           |     code=69   |     len=4     |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |      afi=1    |    safi=1     |     value=3   |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |0|          type=1             |         length=X              |
+  |0|          type=4             |         length=X              |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|           index=0           |    value=$BGP_UPDATE_PDU{     ~
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               ~
@@ -1297,13 +1295,13 @@
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|          type=SomeTlvX      |         length=0x0004         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |1|           index=0x0001      |
+  |1|           index=0x000b      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={4 bytes}                      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |0|          type=SomeTlvY      |         length=0x0008         |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |1|           index=0x0002      |
+  |1|           index=0x000c      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                          value={8 bytes}                      ~
   ~                                                               |
