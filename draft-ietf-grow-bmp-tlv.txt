@@ -105,7 +105,7 @@ Table of Contents
      10.2.  BMP Stats Reports TLVs . . . . . . . . . . . . . . . . .  18
      10.3.  Changes to existing registries . . . . . . . . . . . . .  18
      10.4.  BMP Extended Peer Flags  . . . . . . . . . . . . . . . .  19
-     10.5.  BMP Timestamp Types  . . . . . . . . . . . . . . . . . .  19
+     10.5.  BMP Timestamp Types  . . . . . . . . . . . . . . . . . .  20
 
 
 
@@ -181,10 +181,11 @@ Internet-Draft                   BMP TLV                   November 2026
    messages, including the Peer Up message.  This document:
 
    *  Bumps the BMP version for all message types defined in RFC 7854
-      [RFC7854] for backward compatibility
+      [RFC7854]for backward compatibility, in that it allows receivers
+      to distinguish v4 and reject or handle it explicitly
 
    *  Changes the structure of Route Monitoring message type so that the
-      BGP Update PDU is enclosed in a TLV.  The BGP Message PDU TLV is
+      BGP Update PDU is enclosed in a TLV.  The BGP Message TLV is
       mandatory
 
    *  Allows all defined BMP message types to make provision for
@@ -216,7 +217,6 @@ Internet-Draft                   BMP TLV                   November 2026
    specification, the Version field of the BMP Common Header, documented
    in Section 4.4 of [RFC7854], MUST be set to 4.  This applies to every
    BMP message type.
-
 
 
 
@@ -328,8 +328,8 @@ Internet-Draft                   BMP TLV                   November 2026
    Reserved value is instead excluded by the E-bit mechanism such that
    no PEN will be included as part of the TLV.
 
-   Future BMP Message Types MUST make use of the TLV encoding defined in
-   this document.
+   Future BMPv4 Message Types MUST make use of the TLV encoding defined
+   in this document.
 
 
 
@@ -420,7 +420,7 @@ Internet-Draft                   BMP TLV                   November 2026
       message types defined in RFC 7854 [RFC7854].
 
    *  Message Length: Total length of the message in bytes (including
-      headers, encapsulated BGP Message PDU TLV and optional TLV data).
+      headers, encapsulated BGP Message TLV and optional TLV data).
 
 5.2.  TLV Data in Route Monitoring
 
@@ -523,8 +523,8 @@ Internet-Draft                   BMP TLV                   November 2026
    Length, and Capability Value fields defined in [RFC5492].
 
    For example, an ADD-PATH capability, as defined by RFC 7911
-   [RFC7911], for IP/Unicast with value Send/Receive would be encoded in
-   the Capability Value as:
+   [RFC7911], for IP/Unicast with value Send/Receive would be encoded as
+   a BGP Capability as:
 
    *  Capability Code, 1 byte, value=69
 
@@ -583,9 +583,9 @@ Internet-Draft                   BMP TLV                   November 2026
 5.5.  TLV Data in Other BMP Messages
 
    All other message types defined in RFC 7854 [RFC7854] do already
-   provision for TLV data.  It is RECOMMENDED that all future defined
-   BMP message types will also provide for optional TLV data following a
-   consistency model for encoding with existing message types.
+   provision for TLV data.  All future defined BMPv4 message types are
+   RECOMMENDED to provide for optional TLV data consistently to existing
+   message types.
 
 5.6.  New TLVs in all BMP Messages
 
@@ -593,10 +593,11 @@ Internet-Draft                   BMP TLV                   November 2026
    BMP message types and as such will need a code point reserved in all
    TLV registries, namely: BMP Initiation Information TLVs, BMP
    Termination Message TLVs, BMP Route Mirroring TLVs along with
-   registries defined in this document BMP Route Monitoring TLVs and BMP
-   Peer Up and Peer Down TLVs.  We thus request IANA to allocate, for
-   each TLV, the same codepoint value in every TLV codepoint registry of
-   this document, as detailed in their respective sections.
+   registries defined in this document BMP Route Monitoring TLVs, BMP
+   Peer Up and Peer Down TLVs and BMP Stats Reports TLVs.  We thus
+   request IANA to allocate, for each TLV, the same codepoint value in
+   every TLV codepoint registry of this document, as detailed in their
+   respective sections.
 
 5.6.1.  Timestamp TLV
 
@@ -607,7 +608,6 @@ Internet-Draft                   BMP TLV                   November 2026
    The value of the TLV is the Timestamp Type code, defined in Table 1
    followed by a 4 bytes "Timestamp Seconds" field representing the
    number of seconds since midnight (zero hour), January 1, 1970 (UTC).
-
 
 
 
@@ -628,8 +628,9 @@ Internet-Draft                   BMP TLV                   November 2026
    [RFC9069].
 
    The timestamp MUST NOT be set to zero to indicate unavailability.
-   The Timestamp TLV is optional, a timestamp MUST NOT be included if it
-   is not available.
+   For the timestamp field in the Per-Peer Header this means that it
+   MUST always be populated.  The Timestamp TLV is optional, a timestamp
+   MUST NOT be included if it is not available.
 
    The value of the Length field is 5 bytes (1 byte for the Timestamp
    Type field plus the length of the 4 bytes "Timestamp Seconds" field).
@@ -662,7 +663,6 @@ Internet-Draft                   BMP TLV                   November 2026
    The Table 1 defines the list of timestamp types that can be carried
    in the Timestamp TLV.  Each timestamp type is described in the
    section associated with its name and code in the table.
-
 
 
 
@@ -849,7 +849,7 @@ Internet-Draft                   BMP TLV                   November 2026
    the flags to consider are carried in this TLV.  The flags in the Per-
    Peer Header are still set according to the current specification,
    allowing collectors that do not understand the X Flag and Extended
-   Flags TLV to still function.  For consistency, the X Flag MUST always
+   Flags TLV to still function.  For consistency, the X flag MUST always
    be set in the Extended Flags TLV.
 
    Unused bits of the first byte are declared as reserved, newly
@@ -924,11 +924,11 @@ Internet-Draft                   BMP TLV                   November 2026
 
 10.1.  BMP Route Monitoring TLVs
 
-   It is requested the definition of a new registry "BMP Route
-   Monitoring TLVs" which is to be seeded with the following new TLV
-   types (Section 5.2):
+   IANA is requested to create a new registry "BMP Route Monitoring
+   TLVs" which is to be seeded with the following new TLV types
+   (Section 5.2):
 
-   *  Type = 5: Sequence TLV.  The value field is defined in
+   *  Type = 5: Sequence Number TLV.  The value field is defined in
       Section 5.6.2.
 
    *  Type = 6: Extended Flags TLV.  The value field is defined in
@@ -961,18 +961,19 @@ Internet-Draft                   BMP TLV                   November 2026
    MUST be assigned using the Standards Action policy as defined in
    Section 4.9 of [RFC8126]; values 16384 through 32767 MUST be assigned
    using the First Come First Served policy as defined in Section 4.4 of
-   [RFC8126].  The upper bound of the registry is 65535.  Value 65535 is
-   Reserved.
+   [RFC8126].  The upper bound of the registry is 65535.  Values 32768
+   through 65534 are enterprise-specific as identified by the E-bit and
+   therefore not IANA-assigned.  Value 65535 is Reserved.
 
 10.2.  BMP Stats Reports TLVs
 
-   It is requested the definition of a new "BMP Stats Reports TLVs"
-   registry seeded with the following new TLV types (Section 5.4):
+   IANA is requested to create a new registry "BMP Stats Reports TLVs"
+   seeded with the following new TLV types (Section 5.4):
 
    *  Type = 1: Stats TLV.  It encloses Stats Count and stats data.  The
       value field is defined in Section 5.4
 
-   *  Type = 5: Sequence TLV.  The value field is defined in
+   *  Type = 5: Sequence Number TLV.  The value field is defined in
       Section 5.6.2.
 
    *  Type = 6: Extended Flags TLV.  The value field is defined in
@@ -985,8 +986,9 @@ Internet-Draft                   BMP TLV                   November 2026
    be assigned using the Standards Action policy as defined in
    Section 4.9 of [RFC8126]; values 16384 through 32767 MUST be assigned
    using the First Come First Served policy as defined in Section 4.4 of
-   [RFC8126].  The upper bound of the registry is 65535.  Value 65535 is
-   Reserved.
+   [RFC8126].  The upper bound of the registry is 65535.  Values 32768
+   through 65534 are enterprise-specific as identified by the E-bit and
+   therefore not IANA-assigned.  Value 65535 is Reserved.
 
 10.3.  Changes to existing registries
 
@@ -994,12 +996,10 @@ Internet-Draft                   BMP TLV                   November 2026
    Message Namespace [RFC9736] is to be renamed "BMP Peer Up and Peer
    Down TLVs".
 
-   For BMP Initiation Information TLVs, BMP Termination Message TLVs,
-   BMP Peer Up and Peer Down TLVs and BMP Route Mirroring TLVs
-   registries it is requested to make the range 0-16383 as Standards
-   Action (down from current 0-32767); it also asks to make the range
-   16384-32767 as First Come First Served (in place of current
-   32768-65530).
+
+
+
+
 
 
 
@@ -1009,6 +1009,14 @@ Lucente, et al.            Expires 6 May 2027                  [Page 18]
 
 Internet-Draft                   BMP TLV                   November 2026
 
+
+   For BMP Initiation Information TLVs, BMP Termination Message TLVs,
+   BMP Peer Up and Peer Down TLVs and BMP Route Mirroring TLVs
+   registries it is requested to make the range 0-16383 as Standards
+   Action (down from current 0-32767); it also asks to make the range
+   16384-32767 as First Come First Served (in place of current
+   32768-65530).  Values 32768 through 65534 are enterprise-specific as
+   identified by the E-bit and therefore not IANA-assigned.
 
    This document also requests to remove the Experimental allocation
    from the same registries, the code points now flagged Experimental
@@ -1030,7 +1038,7 @@ Internet-Draft                   BMP TLV                   November 2026
 
    *  Flag 5: Reserved
    *  Flag 6: Reserved
-   *  Flag 7: X Flag (Extended Flags).  Set if the Flags are carried in
+   *  Flag 7: X flag (Extended Flags).  Set if the Flags are carried in
       the Extended Flags TLV instead of the Per-Peer Header.
 
 10.4.  BMP Extended Peer Flags
@@ -1051,6 +1059,13 @@ Internet-Draft                   BMP TLV                   November 2026
    *  Flag 6: Reserved
    *  Flag 7: X flag defined in this document
 
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 19]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
 10.5.  BMP Timestamp Types
 
    This document also requests the definition of a "BMP Timestamp Types"
@@ -1059,40 +1074,31 @@ Internet-Draft                   BMP TLV                   November 2026
    matches the size of the Timestamp Type field defined in Figure 6
    which is 1 byte.
 
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 19]
-
-Internet-Draft                   BMP TLV                   November 2026
-
-
    The registration policy for this registry is Expert Review as defined
    in [RFC8126].
 
    The registry is seeded as follows:
 
    *  Type = 0: Reserved.
-   *  Type = TBD10: Trigger Time.  Set to 1 if the timestamp corresponds
-      to the event that triggered BMP to report the route or state, such
-      as receiving a message or a session transition.
-   *  Type = TBD9: Message Export Time.  Set to 2 if the timestamp
-      corresponds to the time when the BMP message was generated for
-      export.
-   *  Type = TBD4: Adj-RIB-In Pre-Policy Time.  Set to 3 if the
-      timestamp corresponds to when the route was installed in the Adj-
-      RIB-In Pre-Policy, as per [RFC7854].
-   *  Type = TBD5: Adj-RIB-In Post-Policy Time.  Set to 3 if the
-      timestamp corresponds to when the route was installed in the Adj-
-      RIB-In Post-Policy, as per [RFC7854].
-   *  Type = TBD6: Local-RIB Time.  Set to 4 if the timestamp
-      corresponds to when the route was installed in the Local-RIB, as
-      per [RFC9069].
-   *  Type = TBD7: Adj-RIB-Out Pre-Policy Time.  Set to 5 if the
-      timestamp corresponds to when the route was installed in the Adj-
-      RIB-Out Pre-Policy, as per [RFC8671].
-   *  Type = TBD8: Adj-RIB-Out Post-Policy Time.  Set to 5 if the
-      timestamp corresponds to when the route was installed in the Adj-
-      RIB-Out Post-Policy, as per [RFC8671].
+   *  Type = TBD10: Trigger Time.  The timestamp corresponds to the
+      event that triggered BMP to report the route or state, such as
+      receiving a message or a session transition.
+   *  Type = TBD9: Message Export Time.  The timestamp corresponds to
+      the time when the BMP message was generated for export.
+   *  Type = TBD4: Adj-RIB-In Pre-Policy Time.  The timestamp
+      corresponds to when the route was installed in the Adj-RIB-In Pre-
+      Policy, as per [RFC7854].
+   *  Type = TBD5: Adj-RIB-In Post-Policy Time.  The timestamp
+      corresponds to when the route was installed in the Adj-RIB-In
+      Post-Policy, as per [RFC7854].
+   *  Type = TBD6: Local-RIB Time.  The timestamp corresponds to when
+      the route was installed in the Local-RIB, as per [RFC9069].
+   *  Type = TBD7: Adj-RIB-Out Pre-Policy Time.  The timestamp
+      corresponds to when the route was installed in the Adj-RIB-Out
+      Pre-Policy, as per [RFC8671].
+   *  Type = TBD8: Adj-RIB-Out Post-Policy Time.  The timestamp
+      corresponds to when the route was installed in the Adj-RIB-Out
+      Post-Policy, as per [RFC8671].
 
 10.6.  Miscellaneous
 
@@ -1109,18 +1115,17 @@ Internet-Draft                   BMP TLV                   November 2026
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
-              Border Gateway Protocol 4 (BGP-4)", RFC 4271,
-              DOI 10.17487/RFC4271, January 2006,
-              <https://www.rfc-editor.org/info/rfc4271>.
-
-
 
 
 Lucente, et al.            Expires 6 May 2027                  [Page 20]
 
 Internet-Draft                   BMP TLV                   November 2026
 
+
+   [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
+              Border Gateway Protocol 4 (BGP-4)", RFC 4271,
+              DOI 10.17487/RFC4271, January 2006,
+              <https://www.rfc-editor.org/info/rfc4271>.
 
    [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
               Monitoring Protocol (BMP)", RFC 7854,
@@ -1166,17 +1171,15 @@ Internet-Draft                   BMP TLV                   November 2026
               <https://www.iana.org/assignments/bmp-parameters/bmp-
               parameters.xhtml#peer-flags>.
 
-   [IANA-PEN] IANA, "Private Enterprise Numbers", 1982,
-              <http://www.iana.org/assignments/enterprise-numbers/>.
-
-
-
 
 
 Lucente, et al.            Expires 6 May 2027                  [Page 21]
 
 Internet-Draft                   BMP TLV                   November 2026
 
+
+   [IANA-PEN] IANA, "Private Enterprise Numbers", 1982,
+              <http://www.iana.org/assignments/enterprise-numbers/>.
 
    [RFC5492]  Scudder, J. and R. Chandra, "Capabilities Advertisement
               with BGP-4", RFC 5492, DOI 10.17487/RFC5492, February
@@ -1221,11 +1224,8 @@ Appendix A.  Wire-format Example
        2
 
 
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        Common Header + Per-Peer Header (6 + 42 bytes)         ~
-      ~                                                               |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
 
 
 
@@ -1234,6 +1234,11 @@ Lucente, et al.            Expires 6 May 2027                  [Page 22]
 Internet-Draft                   BMP TLV                   November 2026
 
 
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |        Common Header + Per-Peer Header (6 + 42 bytes)         ~
+      ~                                                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|          type=2             |         length=0x0008         |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |1|           index=0x0001      |
@@ -1277,17 +1282,19 @@ Internet-Draft                   BMP TLV                   November 2026
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|          type=SomeTlvZ      |         length=0x0008         |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |0|           index=0x0007      |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                          value={8 bytes}                      ~
-      ~                                                               |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
 
 Lucente, et al.            Expires 6 May 2027                  [Page 23]
 
 Internet-Draft                   BMP TLV                   November 2026
+
+
+      |0|           index=0x0007      |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                          value={8 bytes}                      ~
+      ~                                                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
                                   Figure 9
@@ -1330,13 +1337,6 @@ Authors' Addresses
    INSA-Lyon
    France
    Email: pierre.francois@insa-lyon.fr
-
-
-
-
-
-
-
 
 
 

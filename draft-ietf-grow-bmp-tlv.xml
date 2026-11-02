@@ -167,9 +167,12 @@
 		Up message. This document:
 		<list style="symbols">
 			<t>Bumps the BMP version for all message types defined in
-			   <xref target="RFC7854">RFC 7854</xref> for backward compatibility</t>
-			<t>Changes the structure of Route Monitoring message type so that the BGP
-			   Update PDU is enclosed in a TLV. The BGP Message PDU TLV is mandatory</t>
+			   <xref target="RFC7854">RFC 7854</xref>for backward compatibility,
+			   in that it allows receivers to distinguish v4 and reject or handle
+			   it explicitly</t>
+			<t>Changes the structure of Route Monitoring message type so that the
+			   BGP Update PDU is enclosed in a TLV. The BGP Message TLV is
+			   mandatory</t>
 			<t>Allows all defined BMP message types to make provision for optional
 			   TLV data.</t>
 		</list>
@@ -335,7 +338,7 @@
                 as part of the TLV.
             </t>
             <t>
-                Future BMP Message Types MUST make use of the TLV encoding defined
+                Future BMPv4 Message Types MUST make use of the TLV encoding defined
                 in this document.
             </t>
 	    </section>
@@ -431,7 +434,7 @@
 			<t>
 				Message Length: Total length of the message in
 				bytes (including headers, encapsulated BGP Message
-				PDU TLV and optional TLV data).
+				TLV and optional TLV data).
 			</t>
 		    </list> 
                 </t>
@@ -535,8 +538,8 @@
 		</t>
 		<t>
 		    For example, an ADD-PATH capability, as defined by <xref target="RFC7911">RFC
-		    7911</xref>, for IP/Unicast with value Send/Receive would be
-		    encoded in the Capability Value as: 
+		    7911</xref>, for IP/Unicast with value Send/Receive would be encoded as a BGP
+		    Capability as: 
 		</t>
 		<t>
 		    <list style="symbols">
@@ -600,10 +603,9 @@
 	    <section title="TLV Data in Other BMP Messages" anchor="TLVinOther">
 		<t>
 		    All other message types defined in <xref target="RFC7854">RFC 7854</xref>
-		    do already provision for TLV data. It is RECOMMENDED that
-		    all future defined BMP message types will also provide for
-		    optional TLV data following a consistency model for encoding
-		    with existing message types.
+		    do already provision for TLV data. All future defined BMPv4 
+		    message types are RECOMMENDED to provide for optional TLV data
+		    consistently to existing message types.
 		</t>
 	    </section>
 	    <section title="New TLVs in all BMP Messages" anchor="TLVinAll">
@@ -612,10 +614,11 @@
 			existing BMP message types and as such will need a code point
 			reserved in all TLV registries, namely: BMP Initiation Information TLVs,
 			BMP Termination Message TLVs, BMP Route Mirroring TLVs along with
-			registries defined in this document BMP Route Monitoring TLVs and
-			BMP Peer Up and Peer Down TLVs. We thus request IANA to allocate, for each TLV, 
-			the same codepoint value in every TLV codepoint registry of this document, 
-			as detailed in their respective sections.
+			registries defined in this document BMP Route Monitoring TLVs,
+			BMP Peer Up and Peer Down TLVs and BMP Stats Reports TLVs. We
+			thus request IANA to allocate, for each TLV, the same codepoint
+			value in every TLV codepoint registry of this document, as detailed
+			in their respective sections.
 
 		</t>
 		<section title="Timestamp TLV" anchor="timestamp-tlv">
@@ -638,11 +641,10 @@
 			<xref target="RFC8671"> </xref>, and <xref target="RFC9069"></xref>.
 			</t>
 
-			<t>
-			The timestamp MUST NOT be set to zero to indicate unavailability. The
-			Timestamp TLV is optional, a timestamp MUST NOT be included if it
-			is not available.
-			</t>
+			<t>The timestamp MUST NOT be set to zero to indicate unavailability. For
+			the timestamp field in the Per-Peer Header this means that it MUST always
+			be populated. The Timestamp TLV is optional, a timestamp MUST NOT be
+			included if it is not available.</t>
 
 			<t>The value of the Length field is 5 bytes (1 byte for the
 			Timestamp Type field plus the length of the 4 bytes "Timestamp Seconds"
@@ -873,7 +875,7 @@
 			    the Per-Peer Header are still set according to the current
 			    specification, allowing collectors that do not understand the X
 			    Flag and Extended Flags TLV to still function. For consistency,
-			    the X Flag MUST always be set in the Extended Flags TLV.
+			    the X flag MUST always be set in the Extended Flags TLV.
 			</t>
 			<t>
 			    Unused bits of the first byte are declared as reserved, newly
@@ -958,13 +960,13 @@
 
 	    <section title="BMP Route Monitoring TLVs">
 		<t>
-		It is requested the definition of a new registry "BMP Route Monitoring TLVs"
-		which is to be seeded with the following new TLV types (<xref target="TLVinRM"/>):
+		IANA is requested to create a new registry "BMP Route Monitoring TLVs" which is
+		to be seeded with the following new TLV types (<xref target="TLVinRM"/>):
 
 		<list style="symbols">
 		    <t>
-			Type = &IANA_RM_CODE_SEQ;: Sequence TLV. The value field is defined in
-			<xref target="seq-num-tlv"/>.
+			Type = &IANA_RM_CODE_SEQ;: Sequence Number TLV. The value field is defined
+			in <xref target="seq-num-tlv"/>.
 		    </t>
 		    <t>
 			Type = &IANA_RM_CODE_EXT_FLAGS;: Extended Flags TLV. The value field is
@@ -999,14 +1001,15 @@
 		    target="RFC8126">Section 4.9 of</xref>; values 16384 through 32767 MUST be
 		    assigned using the First Come First Served policy as defined in <xref
 		    target="RFC8126"> Section 4.4 of</xref>. The upper bound of the registry is
-		    65535. Value 65535 is Reserved.
+		    65535. Values 32768 through 65534 are enterprise-specific as identified by
+		    the E-bit and therefore not IANA-assigned. Value 65535 is Reserved.
                 </t>
 	    </section>
 
 	    <section title="BMP Stats Reports TLVs">
 	        <t>
-		It is requested the definition of a new "BMP Stats Reports TLVs" registry seeded
-                with the following new TLV types (<xref target="TLVinSR"/>):
+		IANA is requested to create a new registry "BMP Stats Reports TLVs" seeded with
+		the following new TLV types (<xref target="TLVinSR"/>):
 
                 <list style="symbols">
                     <t>
@@ -1014,8 +1017,8 @@
 			data. The value field is defined in <xref target="TLVinSR"/>
                     </t>
                     <t>
-		        Type = &IANA_RM_CODE_SEQ;: Sequence TLV. The value field is defined in
-			<xref target="seq-num-tlv"/>.
+		        Type = &IANA_RM_CODE_SEQ;: Sequence Number TLV. The value field is defined
+			in <xref target="seq-num-tlv"/>.
 	            </t>
 	            <t>
 		        Type = &IANA_RM_CODE_EXT_FLAGS;: Extended Flags TLV. The value field is
@@ -1034,7 +1037,8 @@
 		    target="RFC8126">Section 4.9 of</xref>; values 16384 through 32767 MUST be
 		    assigned using the First Come First Served policy as defined in <xref
 		    target="RFC8126"> Section 4.4 of</xref>. The upper bound of the registry is
-		    65535. Value 65535 is Reserved.
+		    65535. Values 32768 through 65534 are enterprise-specific as identified by
+		    the E-bit and therefore not IANA-assigned. Value 65535 is Reserved.
                 </t>
 	    </section>
 
@@ -1050,6 +1054,8 @@
 		    it is requested to make the range 0-16383 as Standards Action (down
 		    from current 0-32767); it also asks to make the range 16384-32767 as
 		    First Come First Served (in place of current 32768-65530).
+		    Values 32768 through 65534 are enterprise-specific as identified by
+		    the E-bit and therefore not IANA-assigned.
                 </t>                
                 <t>                         
                     This document also requests to remove the Experimental allocation
@@ -1077,7 +1083,7 @@
 		   <ul spacing="compact">
 		       <li>Flag 5: Reserved</li>
 		       <li>Flag 6: Reserved</li>
-		       <li>Flag 7: X Flag (Extended Flags). Set if the Flags are carried
+		       <li>Flag 7: X flag (Extended Flags). Set if the Flags are carried
 		           in the Extended Flags TLV instead of the Per-Peer Header.</li>
 		    </ul>
 		</t>
@@ -1125,28 +1131,26 @@
 
 		    <ul spacing="compact">
 			<li>Type = 0: Reserved.</li>
-			<li>Type = &IANA_TIMESTAMP_CODE_TRIGGER;: Trigger Time. Set to 1 if the timestamp
-			corresponds to the event that triggered BMP to report the
-			route or state, such as receiving a message or a session
-			transition.</li>
-			<li>Type = &IANA_TIMESTAMP_CODE_EXPORT;: Message Export Time. Set to 2 if the timestamp
-			corresponds to the time when the BMP message was generated
-			for export.</li>
-			<li>Type = &IANA_TIMESTAMP_CODE_ADJINPRE;: Adj-RIB-In Pre-Policy Time. Set to 3 if the timestamp
-			corresponds to when the route was installed in the Adj-RIB-In Pre-Policy,
-			as per <xref target="RFC7854"/>.</li>
-			<li>Type = &IANA_TIMESTAMP_CODE_ADJINPOST;: Adj-RIB-In Post-Policy Time. Set to 3 if the timestamp
-			corresponds to when the route was installed in the Adj-RIB-In Post-Policy,
-			as per <xref target="RFC7854"/>.</li>
-			<li>Type = &IANA_TIMESTAMP_CODE_LOCRIB;: Local-RIB Time. Set to 4 if the timestamp
-			corresponds to when the route was installed in the Local-RIB,
-			as per <xref target="RFC9069"/>.</li>
-			<li>Type = &IANA_TIMESTAMP_CODE_ADJOUTPRE;: Adj-RIB-Out Pre-Policy Time. Set to 5 if the timestamp
-			corresponds to when the route was installed in the Adj-RIB-Out Pre-Policy,
-			as per <xref target="RFC8671"/>.</li>			
-			<li>Type = &IANA_TIMESTAMP_CODE_ADJOUTPOST;: Adj-RIB-Out Post-Policy Time. Set to 5 if the timestamp
-			corresponds to when the route was installed in the Adj-RIB-Out Post-Policy,
-			as per <xref target="RFC8671"/>.</li>
+			<li>Type = &IANA_TIMESTAMP_CODE_TRIGGER;: Trigger Time. The timestamp corresponds
+			to the event that triggered BMP to report the route or state, such as receiving a
+			message or a session transition.</li>
+			<li>Type = &IANA_TIMESTAMP_CODE_EXPORT;: Message Export Time. The timestamp
+			corresponds to the time when the BMP message was generated for export.</li>
+			<li>Type = &IANA_TIMESTAMP_CODE_ADJINPRE;: Adj-RIB-In Pre-Policy Time. The
+			timestamp corresponds to when the route was installed in the Adj-RIB-In
+			Pre-Policy, as per <xref target="RFC7854"/>.</li>
+			<li>Type = &IANA_TIMESTAMP_CODE_ADJINPOST;: Adj-RIB-In Post-Policy Time. The
+			timestamp corresponds to when the route was installed in the Adj-RIB-In
+			Post-Policy, as per <xref target="RFC7854"/>.</li>
+			<li>Type = &IANA_TIMESTAMP_CODE_LOCRIB;: Local-RIB Time. The timestamp
+			corresponds to when the route was installed in the Local-RIB, as per
+			<xref target="RFC9069"/>.</li>
+			<li>Type = &IANA_TIMESTAMP_CODE_ADJOUTPRE;: Adj-RIB-Out Pre-Policy Time. The
+			timestamp corresponds to when the route was installed in the Adj-RIB-Out
+			Pre-Policy, as per <xref target="RFC8671"/>.</li>			
+			<li>Type = &IANA_TIMESTAMP_CODE_ADJOUTPOST;: Adj-RIB-Out Post-Policy Time. The
+			timestamp corresponds to when the route was installed in the Adj-RIB-Out
+			Post-Policy, as per <xref target="RFC8671"/>.</li>
 		    </ul>
 		</t>
 	    </section>
