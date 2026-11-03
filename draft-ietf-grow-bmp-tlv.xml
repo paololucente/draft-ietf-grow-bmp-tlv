@@ -349,10 +349,34 @@
 		example, to express additional characteristics of a specific NLRI. For
 		this purpose, TLVs enclosed in a Route Monitoring message MUST be
 		indexed, with the index starting at one (1) to refer to the first NLRI.
-		Index zero (0) specifies that a TLV applies to all NLRIs contained in
-		the BGP Update message. The Index field is 2 bytes long, of which the
+		Index zero (0) specifies that a TLV applies to all NLRIs contained in the
+		BGP Update PDU. TLVs that are message-wide rather than NLRI-specific also
+		use Index zero, as specified in their respective definitions.
+	    </t>
+	    <t> An NLRI Index identifies an NLRI occurrence in the BGP Update PDU. NLRIs
+		are numbered sequentially, starting at one (1), in the order in which they
+		occur in the BGP Update PDU, as follows:
+		<ul spacing="compact">
+			<li>Each NLRI in the Withdrawn Routes field, in encoded order.</li>
+			<li>For each Path Attribute that carries NLRIs, in the order in
+			    which the Path Attributes appear in the UPDATE, each NLRI
+			    carried by that attribute, in encoded order. This includes
+			    NLRIs in MP_UNREACH_NLRI and MP_REACH_NLRI attributes.</li>
+			<li>Each NLRI in the trailing IPv4-unicast NLRI field, in encoded
+			    order, if present.</li>
+		</ul>
+		Each occurrence of an NLRI is indexed independently. In particular, if the
+		same prefix appears more than once in the BGP Update PDU, including with
+		different Path Identifiers when ADD-PATH is in use, each occurrence
+		receives a distinct NLRI Index. Withdrawn NLRIs and advertised NLRIs share
+		the same NLRI Index space. 
+	    </t>
+	    <t>
+		The Index field is 2 bytes long, of which the
 		top-most bit, G-bit, is used to flag a Group Index (more in <xref
 		target="GroupTLVinRM"/>).
+	    </t>
+	    <t>
 		TLVs of the same type and with the same index can be repeated
 		as part of the same message, unless specified otherwise by the definition
 		of the specific TLV. Indexed TLVs are encoded as in the following figure:
@@ -759,7 +783,7 @@
 					in the Adj-RIB-In Pre-Policy and Post-Policy, as per
 					<xref target="RFC7854"></xref>. This type is per NLRI
 					and hence applies only to message types supporting
-					indexing. If the timestamp applies to all prefixes in
+					indexing. If the timestamp applies to all NLRIs in
 					a BGP PDU, index MUST be zero.</t> 
 				</section>
 	
@@ -768,7 +792,7 @@
 					been installed in the Local-RIB, as per <xref target="RFC9069">
 					</xref>. This type is per NLRI and hence applies only to
 					message types supporting indexing. If the timestamp
-					applies to all prefixes in a BGP PDU, index must be
+					applies to all NLRIs in a BGP PDU, index must be
 					zero.</t>
 				</section>
 	
@@ -778,7 +802,7 @@
 					in the Adj-RIB-Out Pre-Policy and Post-Policy, as per
 					<xref target="RFC8671"></xref>. This type is per NLRI
                                         and hence applies only to message types supporting
-                                        indexing. If the timestamp applies to all prefixes in
+                                        indexing. If the timestamp applies to all NLRIs in
                                         a BGP PDU, index MUST be zero.</t>
 				</section>
 			</section>
@@ -902,8 +926,9 @@
  		A BMP station may not support some of the TLVs encoded by the
 		exporter; the station MUST ignore unsupported TLV types; additionally,
 		in case of indexed TLVs, if the index is invalid (i.e. out of bounds),
-		the TLV MUST be ignored. The station SHOULD log the condition as a
-		warning.  
+		the TLV MUST be ignored. A Group TLV or an indexed TLV that references
+		an undefined Group Index MUST also be ignored. The station SHOULD log
+		the condition as a warning.  
 	    </t>
         </section>
 

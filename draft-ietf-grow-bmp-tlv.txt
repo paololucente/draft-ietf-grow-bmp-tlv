@@ -81,30 +81,30 @@ Table of Contents
      4.1.  IANA-registered TLV Encoding  . . . . . . . . . . . . . .   5
      4.2.  Enterprise-specific TLV Encoding  . . . . . . . . . . . .   5
      4.3.  IANA-registered Indexed TLV Encoding  . . . . . . . . . .   7
-     4.4.  Enterprise-specific Indexed TLV Encoding  . . . . . . . .   7
+     4.4.  Enterprise-specific Indexed TLV Encoding  . . . . . . . .   8
    5.  BMP Message Format  . . . . . . . . . . . . . . . . . . . . .   8
      5.1.  Common Header . . . . . . . . . . . . . . . . . . . . . .   8
-     5.2.  TLV Data in Route Monitoring  . . . . . . . . . . . . . .   8
+     5.2.  TLV Data in Route Monitoring  . . . . . . . . . . . . . .   9
        5.2.1.  Group TLV . . . . . . . . . . . . . . . . . . . . . .   9
-       5.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .   9
-       5.2.3.  Stateless Parsing TLV . . . . . . . . . . . . . . . .   9
-     5.3.  TLV Data in Peer Down . . . . . . . . . . . . . . . . . .  10
+       5.2.2.  VRF/Table Name TLV  . . . . . . . . . . . . . . . . .  10
+       5.2.3.  Stateless Parsing TLV . . . . . . . . . . . . . . . .  10
+     5.3.  TLV Data in Peer Down . . . . . . . . . . . . . . . . . .  11
      5.4.  TLV Data in Stats Reports . . . . . . . . . . . . . . . .  11
      5.5.  TLV Data in Other BMP Messages  . . . . . . . . . . . . .  11
-     5.6.  New TLVs in all BMP Messages  . . . . . . . . . . . . . .  11
-       5.6.1.  Timestamp TLV . . . . . . . . . . . . . . . . . . . .  11
-         5.6.1.1.  Timestamp Types . . . . . . . . . . . . . . . . .  12
+     5.6.  New TLVs in all BMP Messages  . . . . . . . . . . . . . .  12
+       5.6.1.  Timestamp TLV . . . . . . . . . . . . . . . . . . . .  12
+         5.6.1.1.  Timestamp Types . . . . . . . . . . . . . . . . .  13
        5.6.2.  Sequence Number TLV . . . . . . . . . . . . . . . . .  14
        5.6.3.  Extended Flags TLV  . . . . . . . . . . . . . . . . .  15
    6.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  16
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
-   8.  Operational Considerations  . . . . . . . . . . . . . . . . .  16
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
+   8.  Operational Considerations  . . . . . . . . . . . . . . . . .  17
    9.  Upgrading an exporter from BMPv3  . . . . . . . . . . . . . .  17
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
-     10.1.  BMP Route Monitoring TLVs  . . . . . . . . . . . . . . .  17
+     10.1.  BMP Route Monitoring TLVs  . . . . . . . . . . . . . . .  18
      10.2.  BMP Stats Reports TLVs . . . . . . . . . . . . . . . . .  18
-     10.3.  Changes to existing registries . . . . . . . . . . . . .  18
-     10.4.  BMP Extended Peer Flags  . . . . . . . . . . . . . . . .  19
+     10.3.  Changes to existing registries . . . . . . . . . . . . .  19
+     10.4.  BMP Extended Peer Flags  . . . . . . . . . . . . . . . .  20
      10.5.  BMP Timestamp Types  . . . . . . . . . . . . . . . . . .  20
 
 
@@ -114,11 +114,11 @@ Lucente, et al.            Expires 6 May 2027                   [Page 2]
 Internet-Draft                   BMP TLV                   November 2026
 
 
-     10.6.  Miscellaneous  . . . . . . . . . . . . . . . . . . . . .  20
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  20
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  21
-   Appendix A.  Wire-format Example  . . . . . . . . . . . . . . . .  22
+     10.6.  Miscellaneous  . . . . . . . . . . . . . . . . . . . . .  21
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  21
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  22
+   Appendix A.  Wire-format Example  . . . . . . . . . . . . . . . .  23
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  24
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
 
@@ -346,12 +346,35 @@ Internet-Draft                   BMP TLV                   November 2026
    specific NLRI.  For this purpose, TLVs enclosed in a Route Monitoring
    message MUST be indexed, with the index starting at one (1) to refer
    to the first NLRI.  Index zero (0) specifies that a TLV applies to
-   all NLRIs contained in the BGP Update message.  The Index field is 2
-   bytes long, of which the top-most bit, G-bit, is used to flag a Group
-   Index (more in Section 5.2.1).  TLVs of the same type and with the
-   same index can be repeated as part of the same message, unless
-   specified otherwise by the definition of the specific TLV.  Indexed
-   TLVs are encoded as in the following figure:
+   all NLRIs contained in the BGP Update PDU.  TLVs that are message-
+   wide rather than NLRI-specific also use Index zero, as specified in
+   their respective definitions.
+
+   An NLRI Index identifies an NLRI occurrence in the BGP Update PDU.
+   NLRIs are numbered sequentially, starting at one (1), in the order in
+   which they occur in the BGP Update PDU, as follows:
+
+   *  Each NLRI in the Withdrawn Routes field, in encoded order.
+   *  For each Path Attribute that carries NLRIs, in the order in which
+      the Path Attributes appear in the UPDATE, each NLRI carried by
+      that attribute, in encoded order.  This includes NLRIs in
+      MP_UNREACH_NLRI and MP_REACH_NLRI attributes.
+   *  Each NLRI in the trailing IPv4-unicast NLRI field, in encoded
+      order, if present.
+
+   Each occurrence of an NLRI is indexed independently.  In particular,
+   if the same prefix appears more than once in the BGP Update PDU,
+   including with different Path Identifiers when ADD-PATH is in use,
+   each occurrence receives a distinct NLRI Index.  Withdrawn NLRIs and
+   advertised NLRIs share the same NLRI Index space.
+
+   The Index field is 2 bytes long, of which the top-most bit, G-bit, is
+   used to flag a Group Index (more in Section 5.2.1).
+
+   TLVs of the same type and with the same index can be repeated as part
+   of the same message, unless specified otherwise by the definition of
+   the specific TLV.  Indexed TLVs are encoded as in the following
+   figure:
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -362,6 +385,13 @@ Internet-Draft                   BMP TLV                   November 2026
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       ~                      Value (variable)                         ~
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                   [Page 7]
+
+Internet-Draft                   BMP TLV                   November 2026
 
 
                                   Figure 4
@@ -384,14 +414,6 @@ Internet-Draft                   BMP TLV                   November 2026
 
    For completeness, following is an illustration of the structure of an
    Enterprise-specific Indexed TLV.
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                   [Page 7]
-
-Internet-Draft                   BMP TLV                   November 2026
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -419,6 +441,15 @@ Internet-Draft                   BMP TLV                   November 2026
    *  Version: Indicates the BMP version.  This is set to '4' for all
       message types defined in RFC 7854 [RFC7854].
 
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                   [Page 8]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    *  Message Length: Total length of the message in bytes (including
       headers, encapsulated BGP Message TLV and optional TLV data).
 
@@ -437,18 +468,6 @@ Internet-Draft                   BMP TLV                   November 2026
    Consequently, the BGP Update PDU is not encoded as part of the
    message as was the case for BMPv3 (RFC 7854 [RFC7854]) but it is
    rather enclosed in a TLV.
-
-
-
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                   [Page 8]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
 5.2.1.  Group TLV
 
@@ -479,6 +498,14 @@ Internet-Draft                   BMP TLV                   November 2026
    first in order to ease parsing of the Route Monitoring message at the
    BMP station side.
 
+
+
+
+Lucente, et al.            Expires 6 May 2027                   [Page 9]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
 5.2.2.  VRF/Table Name TLV
 
    The Value field contains a UTF-8 string whose value MUST be equal to
@@ -498,14 +525,6 @@ Internet-Draft                   BMP TLV                   November 2026
    Some BGP capabilities are not per AFI/SAFI, like 4-byte ASN RFC 6793
    [RFC6793], and hence these can potentially be part of the BMP Peer
    flags [IANA-BPPF] of a Route Monitoring message.  Those that are,
-
-
-
-Lucente, et al.            Expires 6 May 2027                   [Page 9]
-
-Internet-Draft                   BMP TLV                   November 2026
-
-
    instead, per AFI/SAFI require finer granularity and hence the need to
    use an indexed TLV.  To maintain the consistency between BGP
    Capabilities, they are all carried in Stateless Parsing TLVs,
@@ -536,6 +555,13 @@ Internet-Draft                   BMP TLV                   November 2026
 
    *  Value, 1 byte, value=3
 
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 10]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    The index of the Stateless Parsing TLV MUST be set to 0.
 
    If no Stateless Parsing TLV is present in a Route Monitoring message,
@@ -554,13 +580,6 @@ Internet-Draft                   BMP TLV                   November 2026
    extended following a consistent approach with the Peer Up type
    (Section 4.10 of [RFC7854]).  That is, the message is extended so
    that optional TLVs are placed at the end of the message.
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 10]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
    This means for Reason codes 1 or 3, a BGP Notification PDU follows;
    the PDU MAY be further followed by TLV data.  For Reason code 2, a
@@ -587,6 +606,18 @@ Internet-Draft                   BMP TLV                   November 2026
    message types provide optional TLV data, consistently with existing
    message types.
 
+
+
+
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 11]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
 5.6.  New TLVs in all BMP Messages
 
    In this section some TLVs are introduced that apply to all existing
@@ -608,15 +639,6 @@ Internet-Draft                   BMP TLV                   November 2026
    The value of the TLV is the Timestamp Type code, defined in Table 1
    followed by a 4-byte "Timestamp Seconds" field representing the
    number of seconds since midnight (zero hour), January 1, 1970 (UTC).
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 11]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
    The Timestamp TLV also optionally supports microseconds precision.
    If available, the subsecond microseconds of the timestamp follow the
@@ -641,6 +663,17 @@ Internet-Draft                   BMP TLV                   November 2026
    The TLV structure including the index, i.e., suitable for the Route
    Monitoring message type, is illustrated in Figure 6.
 
+
+
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 12]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -663,16 +696,6 @@ Internet-Draft                   BMP TLV                   November 2026
    Table 1 defines the list of timestamp types that can be carried in
    the Timestamp TLV.  Each timestamp type is described in the section
    associated with its name and code in the table.
-
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 12]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
        +=======+==============================+===================+
        | Code  | Name                         | Section           |
@@ -700,6 +723,13 @@ Internet-Draft                   BMP TLV                   November 2026
    report the event.  This might be a received message, a BGP peering or
    a BMP session going down or up, etc.
 
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 13]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    This type applies to all BMP messages and is unique within a BMP
    message.  In message types that require indexing the index field MUST
    be included and set to zero.
@@ -717,25 +747,14 @@ Internet-Draft                   BMP TLV                   November 2026
    times at which the route has been installed in the Adj-RIB-In Pre-
    Policy and Post-Policy, as per [RFC7854].  This type is per NLRI and
    hence applies only to message types supporting indexing.  If the
-   timestamp applies to all prefixes in a BGP PDU, index MUST be zero.
-
-
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 13]
-
-Internet-Draft                   BMP TLV                   November 2026
-
+   timestamp applies to all NLRIs in a BGP PDU, index MUST be zero.
 
 5.6.1.1.4.  Local-RIB Time
 
    The Local-RIB Time is the time at which the route has been installed
    in the Local-RIB, as per [RFC9069].  This type is per NLRI and hence
    applies only to message types supporting indexing.  If the timestamp
-   applies to all prefixes in a BGP PDU, index must be zero.
+   applies to all NLRIs in a BGP PDU, index must be zero.
 
 5.6.1.1.5.  Adj-RIB-Out Time
 
@@ -743,7 +762,7 @@ Internet-Draft                   BMP TLV                   November 2026
    times at which the route has been installed in the Adj-RIB-Out Pre-
    Policy and Post-Policy, as per [RFC8671].  This type is per NLRI and
    hence applies only to message types supporting indexing.  If the
-   timestamp applies to all prefixes in a BGP PDU, index MUST be zero.
+   timestamp applies to all NLRIs in a BGP PDU, index MUST be zero.
 
 5.6.2.  Sequence Number TLV
 
@@ -754,6 +773,18 @@ Internet-Draft                   BMP TLV                   November 2026
    In BMP message types that require indexing, for example Route
    Monitoring, the index field MUST be included and set to zero.  This
    TLV MUST NOT be repeated within the same message.
+
+
+
+
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 14]
+
+Internet-Draft                   BMP TLV                   November 2026
+
 
    Ordering of BMP messages based on timestamp becomes complicated when
    timestamps have conflicting meanings or when they are simply
@@ -770,21 +801,6 @@ Internet-Draft                   BMP TLV                   November 2026
 
    The TLV structure including the index, i.e., suitable for the Route
    Monitoring message type, is illustrated in Figure 7.
-
-
-
-
-
-
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 14]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -812,6 +828,20 @@ Internet-Draft                   BMP TLV                   November 2026
    Monitoring, the index field MUST be included and set to zero.  This
    TLV MUST NOT be repeated within the same message.
 
+
+
+
+
+
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 15]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    The value of the TLV is a sequence of bytes of variable size.  The
    minimum size of the sequence is one byte, to fit at least the already
    existing flags.  The flags carried in this TLV are defined in the BMP
@@ -833,14 +863,6 @@ Internet-Draft                   BMP TLV                   November 2026
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |G|      Index (2 octets)       |        Flags (Variable)       ~
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 15]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
                         Figure 8: Extended Flags TLV
 
@@ -868,11 +890,20 @@ Internet-Draft                   BMP TLV                   November 2026
    session and log the condition as a warning; the exporter SHOULD retry
    connecting with a non-aggressive timer.
 
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 16]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    A BMP station may not support some of the TLVs encoded by the
    exporter; the station MUST ignore unsupported TLV types;
    additionally, in case of indexed TLVs, if the index is invalid (i.e.
-   out of bounds), the TLV MUST be ignored.  The station SHOULD log the
-   condition as a warning.
+   out of bounds), the TLV MUST be ignored.  A Group TLV or an indexed
+   TLV that references an undefined Group Index MUST also be ignored.
+   The station SHOULD log the condition as a warning.
 
 7.  Security Considerations
 
@@ -887,16 +918,6 @@ Internet-Draft                   BMP TLV                   November 2026
    on the memory and CPU used in a BMP implementation.  As a result of
    that it SHOULD always be possible to disable such features to
    mitigate their impact.
-
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 16]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
    Multiple TLVs of the same type can be repeated as part of the same
    message; it is left to the specific use cases whether all, any, the
@@ -922,6 +943,17 @@ Internet-Draft                   BMP TLV                   November 2026
    procedures and available values for, and add assignments to
    registries.
 
+
+
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 17]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
 10.1.  BMP Route Monitoring TLVs
 
    IANA is requested to create a new registry "BMP Route Monitoring
@@ -944,15 +976,6 @@ Internet-Draft                   BMP TLV                   November 2026
 
    *  Type = 3: Stateless Parsing TLV.  The value field is defined in
       Section 5.2.3.
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 17]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
    *  Type = 4: BGP Message TLV.  The value field is defined in
       Section 5.2.
@@ -979,6 +1002,14 @@ Internet-Draft                   BMP TLV                   November 2026
    *  Type = 6: Extended Flags TLV.  The value field is defined in
       Section 5.6.3.
 
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 18]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    *  Type = 7: Timestamp TLV.  The value field is defined in
       Section 5.6.1.
 
@@ -995,20 +1026,6 @@ Internet-Draft                   BMP TLV                   November 2026
    The "BMP Peer Up Message TLVs" registry defined by BMP Peer Up
    Message Namespace [RFC9736] is to be renamed "BMP Peer Up and Peer
    Down TLVs".
-
-
-
-
-
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 18]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
    For BMP Initiation Information TLVs, BMP Termination Message TLVs,
    BMP Peer Up and Peer Down TLVs and BMP Route Mirroring TLVs
@@ -1041,6 +1058,14 @@ Internet-Draft                   BMP TLV                   November 2026
    *  Flag 7: X flag (Extended Flags).  Set if the Flags are carried in
       the Extended Flags TLV instead of the Per-Peer Header.
 
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 19]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
 10.4.  BMP Extended Peer Flags
 
    This document also requests the definition of a "BMP Extended Peer
@@ -1058,13 +1083,6 @@ Internet-Draft                   BMP TLV                   November 2026
    *  Flag 5: Reserved
    *  Flag 6: Reserved
    *  Flag 7: X flag defined in this document
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 19]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
 10.5.  BMP Timestamp Types
 
@@ -1096,6 +1114,14 @@ Internet-Draft                   BMP TLV                   November 2026
    *  Type = TBD7: Adj-RIB-Out Pre-Policy Time.  The timestamp
       corresponds to when the route was installed in the Adj-RIB-Out
       Pre-Policy, as per [RFC8671].
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 20]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    *  Type = TBD8: Adj-RIB-Out Post-Policy Time.  The timestamp
       corresponds to when the route was installed in the Adj-RIB-Out
       Post-Policy, as per [RFC8671].
@@ -1114,13 +1140,6 @@ Internet-Draft                   BMP TLV                   November 2026
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 20]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
    [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
               Border Gateway Protocol 4 (BGP-4)", RFC 4271,
@@ -1150,6 +1169,15 @@ Internet-Draft                   BMP TLV                   November 2026
               Protocol (BMP)", RFC 8671, DOI 10.17487/RFC8671, November
               2019, <https://www.rfc-editor.org/info/rfc8671>.
 
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 21]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    [RFC9069]  Evens, T., Bayraktar, S., Bhardwaj, M., and P. Lucente,
               "Support for Local RIB in the BGP Monitoring Protocol
               (BMP)", RFC 9069, DOI 10.17487/RFC9069, February 2022,
@@ -1170,13 +1198,6 @@ Internet-Draft                   BMP TLV                   November 2026
               IANA, "BMP Peer Flags", 2024,
               <https://www.iana.org/assignments/bmp-parameters/bmp-
               parameters.xhtml#peer-flags>.
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 21]
-
-Internet-Draft                   BMP TLV                   November 2026
-
 
    [IANA-PEN] IANA, "Private Enterprise Numbers", 1982,
               <http://www.iana.org/assignments/enterprise-numbers/>.
@@ -1201,6 +1222,18 @@ Internet-Draft                   BMP TLV                   November 2026
               DOI 10.17487/RFC7911, July 2016,
               <https://www.rfc-editor.org/info/rfc7911>.
 
+
+
+
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 22]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
 Appendix A.  Wire-format Example
 
    The diagram in Figure 9 shows an example of a Route Monitoring
@@ -1222,16 +1255,6 @@ Appendix A.  Wire-format Example
 
    6.  a TLV pertaining to the NLRIs listed in the Group TLV defined in
        2
-
-
-
-
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 22]
-
-Internet-Draft                   BMP TLV                   November 2026
 
 
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1259,6 +1282,14 @@ Internet-Draft                   BMP TLV                   November 2026
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |      afi=1    |    safi=1     |     value=3   |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 23]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
       |0|          type=4             |         length=X              |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|           index=0           |    value=$BGP_UPDATE_PDU{     ~
@@ -1282,14 +1313,6 @@ Internet-Draft                   BMP TLV                   November 2026
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |0|          type=SomeTlvZ      |         length=0x0008         |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-
-
-Lucente, et al.            Expires 6 May 2027                  [Page 23]
-
-Internet-Draft                   BMP TLV                   November 2026
-
-
       |0|           index=0x0007      |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       |                          value={8 bytes}                      ~
@@ -1315,6 +1338,14 @@ Authors' Addresses
    Veemweg 23
    3771 Barneveld
    Netherlands
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 24]
+
+Internet-Draft                   BMP TLV                   November 2026
+
+
    Email: paolo@ntt.net
 
 
@@ -1341,4 +1372,29 @@ Authors' Addresses
 
 
 
-Lucente, et al.            Expires 6 May 2027                  [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lucente, et al.            Expires 6 May 2027                  [Page 25]
